@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getKoreanDate } from "../utils/formatDate";
+import BodyInfoForm from "../components/bodyInfo/bodyInfoForm";
 
 export default function BodyInfoPage() {
   const navigate = useNavigate();
@@ -60,107 +61,5 @@ export default function BodyInfoPage() {
     }
   };
 
-  return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold">신체 정보 입력</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <label className="font-semibold">성별</label>
-        <select name="gender" className="border p-2 rounded w-full" required>
-          <option value="male">남자</option>
-          <option value="female">여자</option>
-        </select>
-        <label className="font-semibold">나이</label>
-        <input
-          type="number"
-          name="age"
-          placeholder="나이"
-          defaultValue={bodyData.age || ""}
-          className="border p-2 rounded w-full"
-          required
-        />
-        <label className="font-semibold">키</label>
-        <input
-          type="number"
-          name="height"
-          step="0.1"
-          placeholder="신장 (cm)"
-          defaultValue={bodyData.height || ""}
-          className="border p-2 rounded w-full"
-          required
-        />
-        <label className="font-semibold">체중</label>
-        <input
-          type="number"
-          step="0.1"
-          name="weight"
-          placeholder="체중 (kg)"
-          defaultValue={bodyData.weight || ""}
-          className="border p-2 rounded w-full"
-          required
-        />
-        <label className="font-semibold">골격근량</label>
-        <input
-          type="number"
-          step="0.1"
-          name="muscle"
-          placeholder="골격근량 (kg)"
-          defaultValue={bodyData.muscle || ""}
-          className="border p-2 rounded w-full"
-          required
-        />
-        <label className="font-semibold">체지방량</label>
-        <input
-          type="number"
-          step="0.1"
-          name="fatMass"
-          placeholder="체지방량 (kg)"
-          defaultValue={bodyData.fatMass || ""}
-          className="border p-2 rounded w-full"
-          required
-        />
-
-        {/* TDEE계산을 위한 활동지수 */}
-        <label className="font-semibold">운동 빈도</label>
-        <select
-          name="exerciseFrequency"
-          className="border p-2 rounded w-full"
-          required
-        >
-          <option value="1.2" selected={bodyData.exerciseFrequency === "1.2"}>
-            거의 활동 없음
-          </option>
-          <option
-            value="1.375"
-            selected={bodyData.exerciseFrequency === "1.375"}
-          >
-            가벼운 활동(주 1~2회 운동)
-          </option>
-          <option value="1.55" selected={bodyData.exerciseFrequency === "1.55"}>
-            보통 활동 (주 3~5회 운동)
-          </option>
-          <option
-            value="1.725"
-            selected={bodyData.exerciseFrequency === "1.725"}
-          >
-            매우 활동적 (주 6~7회)
-          </option>
-        </select>
-        <label className="font-semibold">목표</label>
-        <select name="goal" className="border p-2 rounded w-full" required>
-          <option value="maintain" selected={bodyData.goal === "maintain"}>
-            체중 유지
-          </option>
-          <option value="lose" selected={bodyData.goal === "lose"}>
-            체중 감량
-          </option>
-          <option value="gain" selected={bodyData.goal === "gain"}>
-            근육 증량
-          </option>
-        </select>
-        <button className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600">
-          저장하고 홈으로 이동
-        </button>
-      </form>
-    </div>
-  );
+  return <BodyInfoForm bodyData={bodyData} handleSubmit={handleSubmit} />;
 }

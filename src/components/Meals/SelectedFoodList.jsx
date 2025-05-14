@@ -10,7 +10,7 @@ export default function SelectedFoodList({
     (sum, food) => sum + calculateCalories(food),
     0
   );
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
     const mealsRecord = {
       id: Date.now(),
@@ -23,7 +23,7 @@ export default function SelectedFoodList({
     const records = existingRecords ? JSON.parse(existingRecords) : [];
     records.push(mealsRecord);
     localStorage.setItem("mealsHistory", JSON.stringify(records));
-  };
+  }
   // mb-4 p-2 h-[42px] flex justify-center bg-blue-500 rounded text-white
   return (
     <form onSubmit={handleSubmit}>
@@ -54,10 +54,7 @@ export default function SelectedFoodList({
                 <div>
                   <p className="font-medium">{food.name}</p>
                   <p className="text-sm text-gray-500">
-                    {food.currentServing}g 당{" "}
-                    {isNaN(calculateCalories(food))
-                      ? "0"
-                      : calculateCalories(food)}
+                    {food.currentServing}g 당 {calculateCalories(food)}
                     kcal
                   </p>
                 </div>

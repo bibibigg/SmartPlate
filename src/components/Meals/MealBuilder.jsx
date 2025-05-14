@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import { fetchFoodData } from "../utils/fetch";
-import SearchForm from "./Meals/SearchForm";
-import SearchResults from "./Meals/SearchResults";
-import SelectedFoodList from "./Meals/SelectedFoodList";
+import { fetchFoodData } from "../../utils/fetch";
+import SearchForm from "./SearchForm";
+import SearchResults from "./SearchResults";
+import SelectedFoodList from "./SelectedFoodList";
 
-export default function FoodSearch() {
+export default function MealBuilder() {
   const [foodData, setFoodData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
 
+  // 음식 데이터 가져오기
   useEffect(() => {
     async function loadData() {
       const data = await fetchFoodData();
@@ -18,6 +19,7 @@ export default function FoodSearch() {
     loadData();
   }, []);
 
+  // 검색어에 따라 필터링된 결과 업데이트
   function handleSubmit(event) {
     event.preventDefault();
     if (searchTerm.trim() === "") {
