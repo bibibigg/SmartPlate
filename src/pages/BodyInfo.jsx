@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBodyData, sendBodyData } from "../store/bodyInfo/bodyInfoActions";
@@ -9,13 +9,12 @@ export default function BodyInfoPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const bodyData = useSelector((state) => state.bodyInfo.info ?? []);
-  console.log(bodyData);
+  const uiNotification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
     dispatch(fetchBodyData());
   }, [dispatch]);
   const currentData = bodyData[bodyData.length - 1];
-  console.log(currentData);
 
   // 폼 제출 핸들러
   // 제출 시 로컬스토리지에 데이터를 저장
@@ -60,7 +59,11 @@ export default function BodyInfoPage() {
     }
   }
 
-  return (
-    <BodyInfoForm bodyData={currentData || {}} handleSubmit={handleSubmit} />
-  );
+  if (!uiNotification || uiNotification.status === "pending") {
+    return <div>데이터 로드 중...</div>;
+  }
+
+  if (uiNotification.status === "sucess") {
+    return <BodyInfoForm bodyData={currentData} handleSubmit={handleSubmit} />;
+  }
 }

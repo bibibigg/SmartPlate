@@ -1,17 +1,45 @@
 import { bodyInfoActions } from "./bodyInfoSlice";
+import { uiActions } from "./uiSlice";
 
 export function fetchBodyData() {
   return function (dispatch) {
+    dispatch(
+      uiActions.showNotification({
+        status: "pending",
+        title: "Pending",
+        message: "pending body data",
+      })
+    );
     function fetchData() {
       const savedData = localStorage.getItem("bodyInfo");
       const parsedData = savedData ? JSON.parse(savedData) : [];
       return parsedData;
     }
     try {
+      // dispatch(
+      //   uiActions.showNotification({
+      //     status: "loading",
+      //     title: "Loading",
+      //     message: "loading body data",
+      //   })
+      // );
       const bodydata = fetchData();
       dispatch(bodyInfoActions.loadBodyInfo(bodydata));
-    } catch {
-      // status: 'error'
+      dispatch(
+        uiActions.showNotification({
+          status: "sucess",
+          title: "success",
+          message: "load body data successfully",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          status: "error",
+          title: "Error",
+          message: "fetching cart data failed",
+        })
+      );
     }
   };
 }
@@ -31,3 +59,13 @@ export function sendBodyData(bodyData) {
     }
   };
 }
+
+// export function updateBodyData(updatedBodyData) {
+//   return function (dispatch) {
+//     try {
+//       dispatch(bodyInfoActions.updateBodyInfo(updatedBodyData));
+//     } catch (error) {
+//       console.error("데이터 변경 중 오류:", error);
+//     }
+//   };
+// }

@@ -13,6 +13,12 @@ const bodyInfoSlice = createSlice({
       const newInfo = action.payload;
       state.info.push(newInfo);
     },
+    // updateBodyInfo(state, action) {
+    //   state.info = {
+    //     ...state.info,
+    //     ...action.payload,
+    //   };
+    // },
   },
 });
 

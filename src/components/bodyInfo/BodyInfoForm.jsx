@@ -1,4 +1,8 @@
+// import { useDispatch } from "react-redux";
+// import { updateBodyData } from "../../store/bodyInfo/bodyInfoActions";
+
 export default function BodyInfoForm({ handleSubmit, bodyData }) {
+  // const dispatch = useDispatch();
   console.log(bodyData);
   // 상수 데이터 분리
   const EXERCISE_OPTIONS = [
@@ -13,6 +17,15 @@ export default function BodyInfoForm({ handleSubmit, bodyData }) {
     { value: "lose", label: "체중 감량" },
     { value: "gain", label: "근육 증량" },
   ];
+
+  // function handleChange(event) {
+  //   const { name, value } = event.target;
+  //   const updatedBodyData = {
+  //     ...bodyData,
+  //     [name]: value,
+  //   };
+  //   dispatch(updateBodyData(updatedBodyData));
+  // }
 
   // function getFieldLabel(field) {
   //   const fieldLabel = {
@@ -103,9 +116,10 @@ export default function BodyInfoForm({ handleSubmit, bodyData }) {
             <label className="font-semibold">운동 빈도</label>
             <select
               name="exerciseFrequency"
-              key={bodyData.exerciseFrequency}
               className="border p-2 rounded w-full"
+              key={bodyData.exerciseFrequency}
               defaultValue={bodyData.exerciseFrequency}
+              // onChange={handleChange}
               required
             >
               {EXERCISE_OPTIONS.map(({ value, label }) => (
