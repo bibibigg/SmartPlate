@@ -6,8 +6,8 @@ import {
   calculateBMR,
   calculateTDEE,
   calculateTargetCalories,
+  todayTotalCalories,
 } from "../utils/calorieCalculator";
-import { getKoreanDate } from "../utils/formatDate";
 import CalorieStats from "../components/Dashboard/CalorieStats";
 
 export default function HomePage() {
@@ -21,19 +21,24 @@ export default function HomePage() {
   const [todayCalories, setTodayCalories] = useState(0);
 
   const bodyData = useSelector((state) => state.bodyInfo.info);
-
-  // 데이터 로드를 위한 useEffect
-  useEffect(() => {
-    dispatch(fetchBodyData());
-  }, [dispatch]);
-  console.log(bodyData);
   const currentData = bodyData[bodyData.length - 1];
 
   useEffect(() => {
-    const MealsData = JSON.parse(localStorage.getItem("mealsHistory") || "[]");
-    if (!bodyData) {
-      navigate("/bodyInfo");
+    dispatch(fetchBodyData());
+
+    if (!currentData) {
+      return;
     }
+  }, [dispatch]);
+  console.log(bodyData);
+
+  if (bodyData.length === 0) {
+    navigate("/bodyInfo");
+  }
+
+  useEffect(() => {
+    if (!currentData) return;
+    const MealsData = JSON.parse(localStorage.getItem("mealsHistory") || "[]");
 
     if (currentData) {
       const { weight, height, age, gender, exerciseFrequency, goal } =
@@ -52,26 +57,20 @@ export default function HomePage() {
         targetCalories: Math.round(calculatedTarget),
       });
 
-      // 오늘 날짜에 해당하는 식사 기록 가져오기
-      const today = getKoreanDate().toISOString().split("T")[0];
-      const mealsToday = MealsData.filter(
-        (meal) => meal.date.split("T")[0] === today
-      );
-      const totalCalories = mealsToday.reduce(
-        (sum, meal) => sum + meal.totalCalories,
-        0
-      );
+      const totalCalories = todayTotalCalories(MealsData);
       setTodayCalories(totalCalories);
     }
-  }, [navigate, bodyData, dispatch, currentData]);
+  }, [navigate, currentData]);
 
   return (
     <>
-      <CalorieStats
-        calorieStats={calorieStats}
-        bodyData={currentData}
-        todayCalories={todayCalories}
-      />
+      {currentData && (
+        <CalorieStats
+          calorieStats={calorieStats}
+          bodyData={currentData}
+          todayCalories={todayCalories}
+        />
+      )}
     </>
   );
 }

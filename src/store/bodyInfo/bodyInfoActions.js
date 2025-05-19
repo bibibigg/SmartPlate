@@ -1,5 +1,6 @@
 import { bodyInfoActions } from "./bodyInfoSlice";
 import { uiActions } from "./uiSlice";
+import { getKoreanDate } from "../../utils/formatDate";
 
 export function fetchBodyData() {
   return function (dispatch) {
@@ -24,10 +25,11 @@ export function fetchBodyData() {
       //   })
       // );
       const bodydata = fetchData();
+      console.log("로드데이터", bodydata);
       dispatch(bodyInfoActions.loadBodyInfo(bodydata));
       dispatch(
         uiActions.showNotification({
-          status: "sucess",
+          status: "success",
           title: "success",
           message: "load body data successfully",
         })
@@ -46,14 +48,41 @@ export function fetchBodyData() {
 
 export function sendBodyData(bodyData) {
   return function (dispatch) {
-    function sendData() {
-      const data = localStorage.setItem("bodyInfo", bodyData);
-      return data;
-    }
-
     try {
-      const setBodyData = sendData();
-      dispatch(bodyInfoActions.addBodyInfo(setBodyData));
+      const koreanDateTime = getKoreanDate().toISOString();
+      const savedData = localStorage.getItem("bodyInfo");
+      const parsedData = savedData ? JSON.parse(savedData) : [];
+
+      const updateBodyInfo = {
+        ...bodyData,
+        updatedAt: koreanDateTime,
+      };
+
+      const today = koreanDateTime.split("T")[0];
+      const alreadyExists = parsedData.some(
+        (data) => data.updatedAt.split("T")[0] === today
+      );
+
+      if (alreadyExists) {
+        const confirmOverwrite = window.confirm(
+          "오늘 이미 입력한 데이터가 있습니다. 덮어쓸까요?"
+        );
+
+        if (!confirmOverwrite) {
+          return;
+        }
+      }
+
+      const filteredData = alreadyExists
+        ? parsedData.filter((data) => data.updatedAt.split("T")[0] !== today)
+        : parsedData;
+
+      const updateData = [...filteredData, updateBodyInfo];
+
+      localStorage.setItem("bodyInfo", JSON.stringify(updateData));
+
+      dispatch(bodyInfoActions.addBodyInfo(updateBodyInfo));
+      console.log("추가 완료", bodyData);
     } catch (error) {
       console.error("데이터 저장 중 오류:", error);
     }

@@ -1,3 +1,5 @@
+import { getKoreanDate } from "./formatDate";
+
 // BMR 계산
 export function calculateBMR(weight, height, age, gender) {
   const base = 10 * weight + 6.25 * height - 5 * age;
@@ -21,4 +23,16 @@ export function calculateTargetCalories(TDEE, goal) {
     default:
       return TDEE; // 기본값으로 TDEE 반환
   }
+}
+
+export function todayTotalCalories(MealsData) {
+  const today = getKoreanDate().toISOString().split("T")[0];
+  const mealsToday = MealsData.filter(
+    (meal) => meal.date.split("T")[0] === today
+  );
+  const totalCalories = mealsToday.reduce(
+    (sum, meal) => sum + meal.totalCalories,
+    0
+  );
+  return totalCalories;
 }

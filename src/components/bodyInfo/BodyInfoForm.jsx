@@ -118,7 +118,7 @@ export default function BodyInfoForm({ handleSubmit, bodyData }) {
               name="exerciseFrequency"
               className="border p-2 rounded w-full"
               key={bodyData.exerciseFrequency}
-              defaultValue={bodyData.exerciseFrequency}
+              defaultValue={bodyData.exerciseFrequency || ""}
               // onChange={handleChange}
               required
             >
@@ -132,7 +132,7 @@ export default function BodyInfoForm({ handleSubmit, bodyData }) {
             <select
               name="goal"
               key={bodyData.goal}
-              defaultValue={bodyData.goal}
+              defaultValue={bodyData.goal || ""}
               className="border p-2 rounded w-full"
               required
             >

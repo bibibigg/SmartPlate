@@ -3,18 +3,22 @@ import { fetchFoodData } from "../../utils/fetch";
 import SearchForm from "./SearchForm";
 import SearchResults from "./SearchResults";
 import SelectedFoodList from "./SelectedFoodList";
+import { mealActions } from "../../store/meals/mealSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function MealBuilder() {
   const [foodData, setFoodData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
-  const [selectedFood, setSelectedFood] = useState([]);
+  const { selectedFood } = useSelector((state) => state.meal);
+  const dispatch = useDispatch();
 
   // 음식 데이터 가져오기
   useEffect(() => {
     async function loadData() {
       const data = await fetchFoodData();
       setFoodData(data);
+      // dispatch(mealActions.setFoodData(data));
     }
     loadData();
   }, []);
@@ -35,20 +39,11 @@ export default function MealBuilder() {
   //리스트 클릭 시 선택된 음식 추가
   // 중복 체크 후 추가
   function handleFoodClick(food) {
-    const isDuplicate = selectedFood.some((item) => item.id === food.id);
-    if (isDuplicate) {
+    if (selectedFood.find((item) => item.id === food.id)) {
       alert("이미 선택된 음식입니다.");
       return;
     }
-    // 중복이 아닐 경우 선택된 음식추가 및 서빙사이즈 설정 초기값은 totalWeight
-    const foodWithCurrentServing = {
-      ...food,
-      currentServing: food.totalWeight,
-    };
-
-    setSelectedFood((prev) => [...prev, foodWithCurrentServing]);
-    console.log("Selected food:", foodWithCurrentServing);
-    // setSelectedFood((prev) => [...prev, food]);
+    dispatch(mealActions.addSelectedFood(food));
   }
 
   // // 서빙사이즈 변경
@@ -74,8 +69,7 @@ export default function MealBuilder() {
   }
 
   function handleDeleteFood(foodId) {
-    // 선택된 음식에서 삭제
-    setSelectedFood((prev) => prev.filter((item) => item.id !== foodId));
+    dispatch(mealActions.removeSelectedFood(foodId));
   }
 
   return (

@@ -13,3 +13,5 @@ export function formatDate(isoString) {
 export function getKoreanDate(date = new Date()) {
   return new Date(date.getTime() + 9 * 60 * 60 * 1000);
 }
+
+export const koreanDateTime = getKoreanDate().toISOString();
