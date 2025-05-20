@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import bodyInfoReducer from "./bodyInfo/bodyInfoSlice";
 import uiReducer from "./bodyInfo/uiSlice";
 import mealReducer from "./meals/mealSlice";
+import thunk from "redux-thunk";
 
 const store = configureStore({
   reducer: {
@@ -9,6 +10,7 @@ const store = configureStore({
     meal: mealReducer.reducer,
     ui: uiReducer.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
 export default store;

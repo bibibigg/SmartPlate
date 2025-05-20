@@ -24,6 +24,12 @@ const mealSlice = createSlice({
         (food) => food.id !== action.payload
       );
     },
+    ChangeServingSize(state, action) {
+      const { id, newSize } = action.payload;
+      state.selectedFood = state.selectedFood.map((item) =>
+        item.id === id ? { ...item, currentServing: newSize } : item
+      );
+    },
   },
 });
 

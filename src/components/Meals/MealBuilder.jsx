@@ -48,11 +48,7 @@ export default function MealBuilder() {
 
   // // 서빙사이즈 변경
   function handleServingChange(food, newSize) {
-    setSelectedFood((prev) =>
-      prev.map((item) =>
-        item.id === food.id ? { ...item, currentServing: newSize } : item
-      )
-    );
+    dispatch(mealActions.ChangeServingSize({ id: food.id, newSize }));
   }
   // 칼로리 계산
   function calculateCalories(food) {

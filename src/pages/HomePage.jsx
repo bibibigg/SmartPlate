@@ -21,20 +21,18 @@ export default function HomePage() {
   const [todayCalories, setTodayCalories] = useState(0);
 
   const bodyData = useSelector((state) => state.bodyInfo.info);
+  const uiNotification = useSelector((state) => state.ui.notification) || "";
   const currentData = bodyData[bodyData.length - 1];
 
   useEffect(() => {
     dispatch(fetchBodyData());
-
-    if (!currentData) {
-      return;
-    }
   }, [dispatch]);
-  console.log(bodyData);
 
-  if (bodyData.length === 0) {
-    navigate("/bodyInfo");
-  }
+  useEffect(() => {
+    if (uiNotification.status === "success" && bodyData.length === 0) {
+      navigate("/bodyInfo");
+    }
+  }, [navigate, bodyData, uiNotification]);
 
   useEffect(() => {
     if (!currentData) return;
