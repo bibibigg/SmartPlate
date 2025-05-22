@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { fetchFoodData } from "../../utils/fetch";
 import SearchForm from "./SearchForm";
 import SearchResults from "./SearchResults";
 import SelectedFoodList from "./SelectedFoodList";
@@ -7,43 +6,28 @@ import { mealActions } from "../../store/meals/mealSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function MealBuilder() {
-  const [foodData, setFoodData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredResults, setFilteredResults] = useState([]);
-  const { selectedFood } = useSelector((state) => state.meal);
+  const [selectedFood, setSelectedFood] = useState([]);
+  // const { selectedFood } = useSelector((state) => state.meal);
   const dispatch = useDispatch();
 
-  // 음식 데이터 가져오기
-  useEffect(() => {
-    async function loadData() {
-      const data = await fetchFoodData();
-      setFoodData(data);
-      // dispatch(mealActions.setFoodData(data));
-    }
-    loadData();
-  }, []);
-
-  // 검색어에 따라 필터링된 결과 업데이트
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (searchTerm.trim() === "") {
-      setFilteredResults([]);
-      return;
-    }
-    const results = foodData.filter((food) =>
-      food.name.includes(searchTerm.trim())
-    );
-    setFilteredResults(results);
+  function handleSearch(term) {
+    setSearchTerm(term);
   }
 
   //리스트 클릭 시 선택된 음식 추가
   // 중복 체크 후 추가
   function handleFoodClick(food) {
-    if (selectedFood.find((item) => item.id === food.id)) {
+    if (selectedFood.some((item) => item.id === food.id)) {
       alert("이미 선택된 음식입니다.");
       return;
     }
-    dispatch(mealActions.addSelectedFood(food));
+    const foodWithCurrentServing = {
+      ...food,
+      currentServing: food.totalWeight,
+    };
+    setSelectedFood([...selectedFood, foodWithCurrentServing]);
+    console.log(selectedFood);
   }
 
   // // 서빙사이즈 변경
@@ -72,14 +56,9 @@ export default function MealBuilder() {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <SearchForm
-            searchTerm={searchTerm}
-            onSearchChange={(e) => setSearchTerm(e.target.value)}
-            onSubmit={handleSubmit}
-          />
-
+          <SearchForm onSearch={handleSearch} />
           <SearchResults
-            filteredResults={filteredResults}
+            searchTerm={searchTerm}
             onFoodSelect={handleFoodClick}
           />
         </div>

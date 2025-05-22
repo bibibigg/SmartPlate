@@ -1,1 +1,11 @@
-{"gender":"female","age":26,"height":165,"weight":55,"muscle":25,"fatMass":18,"exerciseFrequency":"1.375","goal":"lose"}
+{
+  "gender": "female",
+  "age": 26,
+  "height": 170,
+  "weight": 65,
+  "muscle": 25,
+  "fatMass": 18,
+  "exerciseFrequency": "1.375",
+  "goal": "lose",
+  "updatedAt": "2024-03-19T14:30:00+09:00"
+}

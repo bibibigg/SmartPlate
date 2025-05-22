@@ -47,11 +47,20 @@ app.post("/api/bodyinfo", async (req, res) => {
   }
 });
 
-// 모든 식사 조회
+// 음식 조회
 app.get("/api/meals", async (req, res) => {
   try {
+    const { search } = req.query;
     const mealsContent = await fs.readFile("./data/food_data.json", "utf-8");
-    const meals = JSON.parse(mealsContent);
+    let meals = JSON.parse(mealsContent);
+
+    if (search) {
+      meals = meals.filter((meal) => {
+        const searchableText = `${meal.name}`.toLowerCase();
+        return searchableText.includes(search.toLowerCase());
+      });
+    }
+
     res.json(meals);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -83,22 +92,22 @@ app.get("/api/meals/category/:category", async (req, res) => {
   }
 });
 
-// 식사 검색
-app.get("/api/meals/search", async (req, res) => {
-  try {
-    const { search_keyword } = req.query;
-    const mealsContent = await fs.readFile("./data/food_data.json", "utf-8");
-    const meals = JSON.parse(mealsContent);
+// // 식사 검색
+// app.get("/api/meals/search", async (req, res) => {
+//   try {
+//     const { search } = req.query;
+//     const mealsContent = await fs.readFile("./data/food_data.json", "utf-8");
+//     const meals = JSON.parse(mealsContent);
 
-    const searchResults = meals.filter((meal) =>
-      meal.name.toLowerCase().includes(search_keyword.toLowerCase())
-    );
+//     const searchResults = meals.filter((meal) =>
+//       meal.name.toLowerCase().includes(search.toLowerCase())
+//     );
 
-    res.json(searchResults);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+//     res.json(searchResults);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

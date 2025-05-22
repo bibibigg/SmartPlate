@@ -10,6 +10,7 @@ export default function SelectedFoodList({
     (sum, food) => sum + calculateCalories(food),
     0
   );
+  console.log(selectedFood);
   function handleSubmit(e) {
     e.preventDefault();
     const mealsRecord = {

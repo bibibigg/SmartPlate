@@ -56,6 +56,8 @@ export default function BodyInfoForm({ handleSubmit, bodyData }) {
             <label className="font-semibold">성별</label>
             <select
               name="gender"
+              key={bodyData.gender || ""}
+              defaultValue={bodyData.gender || ""}
               className="border p-2 rounded w-full"
               required
             >
