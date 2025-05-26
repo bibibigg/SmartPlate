@@ -1,7 +1,44 @@
-// import { useDispatch } from "react-redux";
-// import { updateBodyData } from "../../store/bodyInfo/bodyInfoActions";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { updateBodyData } from "../../utils/http";
+import { koreanDateTime } from "../../utils/formatDate";
+import ErrorBlock from "../UI/ErrorBlock";
 
-export default function BodyInfoForm({ handleSubmit, bodyData }) {
+export default function BodyInfoForm({ bodyData }) {
+  const navigate = useNavigate();
+
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: updateBodyData,
+    onSuccess: () => {
+      navigate("/");
+    },
+  });
+  const lastEntryDate = bodyData.updatedAt.split("T")[0];
+  const today = koreanDateTime.split("T")[0];
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const bodyInfoFormData = Object.fromEntries(formData.entries());
+
+    // try {
+    if (lastEntryDate === today) {
+      const confirmOverwrite = window.confirm(
+        "오늘 이미 입력한 데이터가 있습니다. 덮어쓸까요?"
+      );
+      if (!confirmOverwrite) {
+        return;
+      }
+    }
+
+    mutate(bodyInfoFormData);
+
+    // } catch (error) {
+    //   console.error("데이터 저장 중 오류 발생:", error);
+    //   alert("데이터 저장에 실패했습니다. 다시 시도해주세요.");
+    // }
+  }
+
   // const dispatch = useDispatch();
   console.log(bodyData);
   // 상수 데이터 분리
@@ -144,9 +181,29 @@ export default function BodyInfoForm({ handleSubmit, bodyData }) {
                 </option>
               ))}
             </select>
-            <button className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600">
-              저장하고 홈으로 이동
-            </button>
+
+            {isError && (
+              // <ErrorBlock
+              //   title="전송 실패"
+              //   message={error.info?.message || "다시 시도해 주세요."}
+              // />
+              <div className="bg-red-100 text-center text-2xl ">
+                {error.info?.message || "데이터 저장에 실패했습니다."}
+              </div>
+            )}
+            {isPending && (
+              <button
+                disabled
+                className="bg-gray-500 text-gray-200 p-2 rounded w-full cursor-not-allowed"
+              >
+                데이터 전송중...
+              </button>
+            )}
+            {!isPending && (
+              <button className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600 ">
+                저장하고 홈으로 이동
+              </button>
+            )}
           </form>
         </div>
       )}

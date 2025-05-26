@@ -12,7 +12,10 @@ export function fetchBodyData() {
       })
     );
     function fetchData() {
+      // 이 부분에 fetch파일에 들어있는 리액트 쿼리 함수를 사용
+
       const savedData = localStorage.getItem("bodyInfo");
+
       const parsedData = savedData ? JSON.parse(savedData) : [];
       return parsedData;
     }

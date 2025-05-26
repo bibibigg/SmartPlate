@@ -8,7 +8,8 @@ export default function SearchResults({ onFoodSelect, searchTerm }) {
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["foodData", { search: searchTerm }],
-    queryFn: () => fetchData("meals", searchTerm),
+    queryFn: ({ signal }) =>
+      fetchData({ signal: signal, params: "meals", searchTerm }),
     enabled: searchTerm.trim().length > 0,
   });
 

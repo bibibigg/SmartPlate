@@ -19,6 +19,25 @@ app.get("/api/bodyinfo", async (req, res) => {
   }
 });
 
+// app.get("/api/bodyInfo/check", async (req, res) => {
+//   try {
+//     const bodyInfoContent = await fs.readFile("./data/bodyInfo.json", "utf-8");
+//     const bodyInfo = JSON.parse(bodyInfoContent);
+
+//     const today = new Date(new Date().getTime() + 9 * 60 * 60 * 1000)
+//       .toISOString()
+//       .split("T")[0];
+
+//     const exists = bodyInfo.some(
+//       (data) => data.updatedAt.split("T")[0] === today
+//     );
+
+//     res.json({ exists });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
+
 // BodyInfo 업데이트
 app.post("/api/bodyinfo", async (req, res) => {
   try {
@@ -39,8 +58,19 @@ app.post("/api/bodyinfo", async (req, res) => {
         .status(400)
         .json({ message: "post요청 오류: 필수 데이터가 누락되었습니다." });
     }
+    const bodyInfoContent = await fs.readFile("./data/bodyInfo.json", "utf-8");
+    const bodyInfo = JSON.parse(bodyInfoContent);
 
-    await fs.writeFile("./data/bodyInfo.json", JSON.stringify(bodyInfoData));
+    const koreanDateTime = new Date(
+      new Date().getTime() + 9 * 60 * 60 * 1000
+    ).toISOString();
+
+    const newData = {
+      ...req.body,
+      updatedAt: koreanDateTime,
+    };
+    bodyInfo.push(newData);
+    await fs.writeFile("./data/bodyInfo.json", JSON.stringify(bodyInfo));
     res.json(bodyInfoData);
   } catch (error) {
     res.status(500).json({ message: error.message });

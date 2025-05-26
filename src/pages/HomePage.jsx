@@ -9,66 +9,92 @@ import {
   todayTotalCalories,
 } from "../utils/calorieCalculator";
 import CalorieStats from "../components/Dashboard/CalorieStats";
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "../utils/http";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
+import ErrorBlock from "../components/UI/ErrorBlock";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [calorieStats, setCalorieStats] = useState({
-    BMR: 0,
-    TDEE: 0,
-    targetCalories: 0,
-  });
+
   const [todayCalories, setTodayCalories] = useState(0);
 
-  const bodyData = useSelector((state) => state.bodyInfo.info);
-  const uiNotification = useSelector((state) => state.ui.notification) || "";
-  const currentData = bodyData[bodyData.length - 1];
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["bodyInfo"],
+    queryFn: ({ signal }) => fetchData({ signal, params: "bodyinfo" }),
+  });
 
-  useEffect(() => {
-    dispatch(fetchBodyData());
-  }, [dispatch]);
+  if (isPending) {
+    return <LoadingSpinner />;
+  }
 
-  useEffect(() => {
-    if (uiNotification.status === "success" && bodyData.length === 0) {
-      navigate("/bodyInfo");
-    }
-  }, [navigate, bodyData, uiNotification]);
+  if (isError) {
+    return <ErrorBlock title="fail" message={error.info?.message || "fail"} />;
+  }
 
-  useEffect(() => {
-    if (!currentData) return;
-    const MealsData = JSON.parse(localStorage.getItem("mealsHistory") || "[]");
+  if (!data) {
+    return navigate('"/bodyInfo"');
+  }
 
-    if (currentData) {
-      const { weight, height, age, gender, exerciseFrequency, goal } =
-        currentData;
+  if (data) {
+    const currentData = data[data.length - 1];
+    const { weight, height, age, gender, exerciseFrequency, goal } =
+      currentData;
 
-      //BMR 계산
-      const bmr = calculateBMR(weight, height, age, gender);
-      // TDEE
-      const calculatedTDEE = calculateTDEE(bmr, exerciseFrequency);
-      // 목표 칼로리
-      const calculatedTarget = calculateTargetCalories(calculatedTDEE, goal);
+    // BMR 계산
+    const bmr = calculateBMR(weight, height, age, gender);
+    console.log(bmr);
+    // TDEE
+    const calculatedTDEE = calculateTDEE(bmr, exerciseFrequency);
+    console.log(calculatedTDEE);
+    // // 목표 칼로리
+    const calculatedTarget = calculateTargetCalories(calculatedTDEE, goal);
+    console.log(calculatedTarget);
 
-      setCalorieStats({
-        BMR: Math.round(bmr),
-        TDEE: Math.round(calculatedTDEE),
-        targetCalories: Math.round(calculatedTarget),
-      });
+    const calorieStats = {
+      BMR: Math.round(bmr),
+      TDEE: Math.round(calculatedTDEE),
+      targetCalories: Math.round(calculatedTarget),
+    };
+    return <CalorieStats calorieStats={calorieStats} bodyData={currentData} />;
+  }
 
-      const totalCalories = todayTotalCalories(MealsData);
-      setTodayCalories(totalCalories);
-    }
-  }, [navigate, currentData]);
+  // useEffect(() => {
+  //   if (!currentData) return;
+  //   const MealsData = JSON.parse(localStorage.getItem("mealsHistory") || "[]");
 
-  return (
-    <>
-      {currentData && (
-        <CalorieStats
-          calorieStats={calorieStats}
-          bodyData={currentData}
-          todayCalories={todayCalories}
-        />
-      )}
-    </>
-  );
+  //   if (currentData) {
+  //     const { weight, height, age, gender, exerciseFrequency, goal } =
+  //       currentData;
+
+  //     //BMR 계산
+  //     const bmr = calculateBMR(weight, height, age, gender);
+  //     // TDEE
+  //     const calculatedTDEE = calculateTDEE(bmr, exerciseFrequency);
+  //     // 목표 칼로리
+  //     const calculatedTarget = calculateTargetCalories(calculatedTDEE, goal);
+
+  //     setCalorieStats({
+  //       BMR: Math.round(bmr),
+  //       TDEE: Math.round(calculatedTDEE),
+  //       targetCalories: Math.round(calculatedTarget),
+  //     });
+
+  //     const totalCalories = todayTotalCalories(MealsData);
+  //     setTodayCalories(totalCalories);
+  //   }
+  // }, [navigate, currentData]);
+
+  // return (
+  //   <>
+  //     {currentData && (
+  //       <CalorieStats
+  //         calorieStats={calorieStats}
+  //         bodyData={currentData}
+  //         todayCalories={todayCalories}
+  //       />
+  //     )}
+  //   </>
+  // );
 }
