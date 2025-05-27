@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { updateBodyData } from "../../utils/http";
 import { koreanDateTime } from "../../utils/formatDate";
+import { queryClient } from "../../utils/http";
 import ErrorBlock from "../UI/ErrorBlock";
 
 export default function BodyInfoForm({ bodyData }) {
@@ -10,6 +11,7 @@ export default function BodyInfoForm({ bodyData }) {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: updateBodyData,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bodyInfo"] });
       navigate("/");
     },
   });

@@ -122,6 +122,53 @@ app.get("/api/meals/category/:category", async (req, res) => {
   }
 });
 
+//식단 저장
+app.post("/api/meals", async (req, res) => {
+  try {
+    const mealsData = req.body;
+
+    // 데이터 유효성 검사
+    if (!mealsData) {
+      return res
+        .status(400)
+        .json({ message: "post요청 오류: 필수 데이터가 누락되었습니다." });
+    }
+
+    // 기존 데이터 읽기
+    let existingData = [];
+    try {
+      const mealsContent = await fs.readFile(
+        "./data/my_food_data.json",
+        "utf-8"
+      );
+      existingData = JSON.parse(mealsContent);
+    } catch (error) {
+      // 파일이 없거나 비어있는 경우 빈 배열로 시작
+      existingData = [];
+    }
+
+    // 새로운 데이터를 배열에 추가
+    existingData.push(mealsData);
+
+    // 파일에 저장
+    await fs.writeFile(
+      "./data/my_food_data.json",
+      JSON.stringify(existingData, null, 2)
+    );
+
+    res.status(201).json({
+      message: "식사가 저장되었습니다.",
+      data: mealsData,
+    });
+  } catch (error) {
+    console.error("식사 저장 중 오류:", error);
+    res.status(500).json({
+      message: "식사 저장에 실패했습니다.",
+      error: error.message,
+    });
+  }
+});
+
 // // 식사 검색
 // app.get("/api/meals/search", async (req, res) => {
 //   try {

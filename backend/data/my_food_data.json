@@ -1,0 +1,109 @@
+[
+  {
+    "id": 1709123456789,
+    "date": "2024-02-28T12:00:00.000Z",
+    "mealItems": [
+      {
+        "brandName": "해당없음",
+        "calcium": 9,
+        "calories": 137,
+        "carbohydrates": 15.94,
+        "cholesterol": 23.82,
+        "currentServing": 900,
+        "fat": 5.16,
+        "fiber": 0.7,
+        "id": "D101-004160000-0001",
+        "iron": 0.24,
+        "mainCategory": "밥류",
+        "name": "국밥_돼지머리",
+        "niacin": 0,
+        "phosphorus": 24,
+        "potassium": 47,
+        "protein": 6.7,
+        "saturatedFat": 1.47,
+        "servingSize": "100",
+        "sodium": 181,
+        "subCategory": "국밥",
+        "sugar": 0.16,
+        "totalWeight": 900,
+        "vitaminA": 5,
+        "vitaminC": 0.04,
+        "vitaminD": 0,
+        "water": 71.6
+      }
+    ],
+    "totalCalories": 1233,
+    "mealType": "test2"
+  },
+  {
+    "id": 1709123456789,
+    "date": "2024-02-28T12:00:00.000Z",
+    "mealItems": [
+      {
+        "brandName": "해당없음",
+        "calcium": 9,
+        "calories": 137,
+        "carbohydrates": 15.94,
+        "cholesterol": 23.82,
+        "currentServing": 900,
+        "fat": 5.16,
+        "fiber": 0.7,
+        "id": "D101-004160000-0001",
+        "iron": 0.24,
+        "mainCategory": "밥류",
+        "name": "국밥_돼지머리",
+        "niacin": 0,
+        "phosphorus": 24,
+        "potassium": 47,
+        "protein": 6.7,
+        "saturatedFat": 1.47,
+        "servingSize": "100",
+        "sodium": 181,
+        "subCategory": "국밥",
+        "sugar": 0.16,
+        "totalWeight": 900,
+        "vitaminA": 5,
+        "vitaminC": 0.04,
+        "vitaminD": 0,
+        "water": 71.6
+      }
+    ],
+    "totalCalories": 1233,
+    "mealType": "test3"
+  },
+  {
+    "id": 1748331233811,
+    "date": "2025-05-27T16:33:53.811Z",
+    "mealItems": [
+      {
+        "id": "D101-004160000-0001",
+        "name": "국밥_돼지머리",
+        "mainCategory": "밥류",
+        "subCategory": "국밥",
+        "servingSize": "100",
+        "calories": 137,
+        "water": 71.6,
+        "protein": 6.7,
+        "fat": 5.16,
+        "carbohydrates": 15.94,
+        "sugar": 0.16,
+        "fiber": 0.7,
+        "calcium": 9,
+        "iron": 0.24,
+        "phosphorus": 24,
+        "potassium": 47,
+        "sodium": 181,
+        "vitaminA": 5,
+        "niacin": 0,
+        "vitaminC": 0.04,
+        "vitaminD": 0,
+        "cholesterol": 23.82,
+        "saturatedFat": 1.47,
+        "totalWeight": 900,
+        "brandName": "해당없음",
+        "currentServing": 900
+      }
+    ],
+    "totalCalories": 1233
+  }
+]

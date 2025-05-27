@@ -1,15 +1,28 @@
+import { useMutation } from "@tanstack/react-query";
 import { getKoreanDate } from "../../utils/formatDate";
+import { updateMealsData } from "../../utils/http";
+import { useNavigate } from "react-router-dom";
+// // 서빙사이즈 변경
 
 export default function SelectedFoodList({
   selectedFood,
   onFoodDelete,
-  onServingSizeChange,
   calculateCalories,
+  onServingSizeChange,
 }) {
+  const navigate = useNavigate();
   const totalCalories = selectedFood.reduce(
     (sum, food) => sum + calculateCalories(food),
     0
   );
+
+  const { mutate } = useMutation({
+    mutationFn: updateMealsData,
+    onSuccess: () => {
+      navigate("/");
+    },
+  });
+
   console.log(selectedFood);
   function handleSubmit(e) {
     e.preventDefault();
@@ -20,10 +33,11 @@ export default function SelectedFoodList({
       totalCalories: totalCalories,
       // mealType : "breakfast" // 예시로 아침으로 설정
     };
-    const existingRecords = localStorage.getItem("mealsHistory");
-    const records = existingRecords ? JSON.parse(existingRecords) : [];
-    records.push(mealsRecord);
-    localStorage.setItem("mealsHistory", JSON.stringify(records));
+    mutate(mealsRecord);
+    // const existingRecords = localStorage.getItem("mealsHistory");
+    // const records = existingRecords ? JSON.parse(existingRecords) : [];
+    // records.push(mealsRecord);
+    // localStorage.setItem("mealsHistory", JSON.stringify(records));
   }
   // mb-4 p-2 h-[42px] flex justify-center bg-blue-500 rounded text-white
   return (

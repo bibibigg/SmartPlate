@@ -1,3 +1,7 @@
+import { QueryClient } from "@tanstack/react-query";
+
+export const queryClient = new QueryClient();
+
 export async function fetchData({ signal, params, searchTerm }) {
   let url = "http://localhost:5000/api/" + params;
   if (searchTerm) {
@@ -18,6 +22,36 @@ export async function fetchData({ signal, params, searchTerm }) {
 export async function updateBodyData(data) {
   try {
     const response = await fetch("http://localhost:5000/api/bodyInfo", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      const error = new Error("test");
+      error.code = response.status;
+      error.info = responseData;
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    const customError = new Error("서버 연결에 실패했습니다.");
+    customError.code = 500;
+    customError.info = {
+      title: "연결 오류",
+      message: "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.",
+    };
+    throw customError;
+  }
+}
+
+export async function updateMealsData(data) {
+  try {
+    const response = await fetch("http://localhost:5000/api/meals", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import SearchForm from "./SearchForm";
 import SearchResults from "./SearchResults";
 import SelectedFoodList from "./SelectedFoodList";
-import { mealActions } from "../../store/meals/mealSlice";
-import { useSelector, useDispatch } from "react-redux";
+// import { mealActions } from "../../store/meals/mealSlice";
+// import { useSelector, useDispatch } from "react-redux";
 
 export default function MealBuilder() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFood, setSelectedFood] = useState([]);
   // const { selectedFood } = useSelector((state) => state.meal);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   function handleSearch(term) {
     setSearchTerm(term);
@@ -32,7 +32,12 @@ export default function MealBuilder() {
 
   // // 서빙사이즈 변경
   function handleServingChange(food, newSize) {
-    dispatch(mealActions.ChangeServingSize({ id: food.id, newSize }));
+    setSelectedFood((prev) =>
+      prev.map((item) =>
+        item.id === food.id ? { ...item, currentServing: newSize } : item
+      )
+    );
+    // dispatch(mealActions.ChangeServingSize({ id: food.id, newSize }));
   }
   // 칼로리 계산
   function calculateCalories(food) {
@@ -49,7 +54,8 @@ export default function MealBuilder() {
   }
 
   function handleDeleteFood(foodId) {
-    dispatch(mealActions.removeSelectedFood(foodId));
+    setSelectedFood((prev) => prev.filter((item) => item.id !== foodId));
+    // dispatch(mealActions.removeSelectedFood(foodId));
   }
 
   return (
