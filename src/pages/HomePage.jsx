@@ -13,32 +13,46 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../utils/http";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorBlock from "../components/UI/ErrorBlock";
+import { koreanDateTime } from "../utils/formatDate";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [todayCalories, setTodayCalories] = useState(0);
+  const {
+    data: mealsData,
+    isPending: isMealsPending,
+    isError: isMealsError,
+    error: mealsError,
+  } = useQuery({
+    queryKey: ["myMeals"],
+    queryFn: ({ signal }) => fetchData({ signal, params: "myMeals" }),
+  });
 
-  const { data, isPending, isError, error } = useQuery({
+  const {
+    data: bodyData,
+    isPending,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["bodyInfo"],
     queryFn: ({ signal }) => fetchData({ signal, params: "bodyinfo" }),
   });
 
-  if (isPending) {
+  if (isPending || isMealsPending) {
     return <LoadingSpinner />;
   }
 
-  if (isError) {
+  if (isError || isMealsError) {
     return <ErrorBlock title="fail" message={error.info?.message || "fail"} />;
   }
 
-  if (!data) {
-    return navigate('"/bodyInfo"');
+  if (!bodyData) {
+    return navigate("/bodyInfo");
   }
 
-  if (data) {
-    const currentData = data[data.length - 1];
+  if (bodyData && mealsData) {
+    const currentData = bodyData[bodyData.length - 1];
     const { weight, height, age, gender, exerciseFrequency, goal } =
       currentData;
 
@@ -57,7 +71,15 @@ export default function HomePage() {
       TDEE: Math.round(calculatedTDEE),
       targetCalories: Math.round(calculatedTarget),
     };
-    return <CalorieStats calorieStats={calorieStats} bodyData={currentData} />;
+    const totalCalories = todayTotalCalories(mealsData);
+
+    return (
+      <CalorieStats
+        calorieStats={calorieStats}
+        bodyData={currentData}
+        todayCalories={totalCalories}
+      />
+    );
   }
 
   // useEffect(() => {

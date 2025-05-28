@@ -1,10 +1,10 @@
 export default function ErrorBlock({ title, message }) {
   return (
-    <div>
-      <div className="bg-white p-4 my-4 rounded flex text-red-900 gap-8 items-center text-left ">
+    <div className="bg-[#f0d9e5] my-4 p-4 rounded text-red-900 flex gap-8 items-center text-left">
+      <div className="text-3xl w-12 h-12 text-white bg-red-900 rounded-full flex justify-center items-center">
         !
       </div>
-      <div className="text-3xl w-12 h-12 text-white bg-red-900 flex justify-center items-center">
+      <div>
         <h2 className="text-xl m-0 text-inherit">{title}</h2>
         <p className="m-0">{message}</p>
       </div>

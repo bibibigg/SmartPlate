@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../utils/http";
-import BodyInfoForm from "../components/bodyInfo/bodyInfoForm";
+import BodyInfoForm from "../components/bodyInfo/BodyInfoForm";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorBlock from "../components/UI/ErrorBlock";
 
@@ -15,10 +15,12 @@ export default function BodyInfoPage() {
   }
 
   if (isError) {
-    <ErrorBlock
-      title="에러!"
-      message={error.info?.message || "fail to fetch"}
-    />;
+    return (
+      <ErrorBlock
+        title="에러!"
+        message={error.info?.message || "fail to fetch"}
+      />
+    );
   }
 
   if (data) {

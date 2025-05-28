@@ -1,7 +1,7 @@
 [
   {
     "id": 1709123456789,
-    "date": "2024-02-28T12:00:00.000Z",
+    "date": "2025-05-27T12:00:00.000Z",
     "mealItems": [
       {
         "brandName": "해당없음",
@@ -37,7 +37,7 @@
   },
   {
     "id": 1709123456789,
-    "date": "2024-02-28T12:00:00.000Z",
+    "date": "2025-05-27T12:00:00.000Z",
     "mealItems": [
       {
         "brandName": "해당없음",
@@ -105,5 +105,68 @@
       }
     ],
     "totalCalories": 1233
+  },
+  {
+    "id": 1748405360820,
+    "date": "2025-05-28T13:09:20.820Z",
+    "mealItems": [
+      {
+        "id": "D102-123000000-0001",
+        "name": "햄버거",
+        "mainCategory": "빵 및 과자류",
+        "subCategory": "햄버거",
+        "servingSize": "100",
+        "calories": 264,
+        "water": 49.8,
+        "protein": 12.85,
+        "fat": 13.98,
+        "carbohydrates": 21.67,
+        "sugar": 3.13,
+        "fiber": 2.8,
+        "calcium": 16,
+        "iron": 1.36,
+        "phosphorus": 116,
+        "potassium": 203,
+        "sodium": 450,
+        "vitaminA": 9,
+        "niacin": 2.815,
+        "vitaminC": 0,
+        "vitaminD": 0,
+        "cholesterol": 45.2,
+        "saturatedFat": 4.42,
+        "totalWeight": 200,
+        "brandName": "해당없음",
+        "currentServing": 200
+      },
+      {
+        "id": "D202-082000000-0047",
+        "name": "도넛_베이크드 헤이즐넛 쇼콜라넛",
+        "mainCategory": "빵 및 과자류",
+        "subCategory": "도넛",
+        "servingSize": "100",
+        "calories": 435,
+        "water": null,
+        "protein": 6.92,
+        "fat": null,
+        "carbohydrates": null,
+        "sugar": 21.54,
+        "fiber": null,
+        "calcium": null,
+        "iron": null,
+        "phosphorus": null,
+        "potassium": null,
+        "sodium": 356,
+        "vitaminA": null,
+        "niacin": null,
+        "vitaminC": null,
+        "vitaminD": null,
+        "cholesterol": null,
+        "saturatedFat": 6.15,
+        "totalWeight": 130,
+        "brandName": "스타벅스",
+        "currentServing": 130
+      }
+    ],
+    "totalCalories": 1094
   }
 ]

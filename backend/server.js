@@ -77,26 +77,6 @@ app.post("/api/bodyinfo", async (req, res) => {
   }
 });
 
-// 음식 조회
-app.get("/api/meals", async (req, res) => {
-  try {
-    const { search } = req.query;
-    const mealsContent = await fs.readFile("./data/food_data.json", "utf-8");
-    let meals = JSON.parse(mealsContent);
-
-    if (search) {
-      meals = meals.filter((meal) => {
-        const searchableText = `${meal.name}`.toLowerCase();
-        return searchableText.includes(search.toLowerCase());
-      });
-    }
-
-    res.json(meals);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
 // 카테고리별 식사 조회 (검색어 포함)
 app.get("/api/meals/category/:category", async (req, res) => {
   try {
@@ -122,6 +102,26 @@ app.get("/api/meals/category/:category", async (req, res) => {
   }
 });
 
+//식단 조회
+app.get("/api/meals", async (req, res) => {
+  try {
+    const { search } = req.query;
+    const mealsContent = await fs.readFile("./data/food_data.json", "utf-8");
+    let meals = JSON.parse(mealsContent);
+
+    if (search) {
+      meals = meals.filter((meal) => {
+        const searchableText = `${meal.name}`.toLowerCase();
+        return searchableText.includes(search.toLowerCase());
+      });
+      console.log("음식조회");
+    }
+
+    res.json(meals);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 //식단 저장
 app.post("/api/meals", async (req, res) => {
   try {
@@ -166,6 +166,21 @@ app.post("/api/meals", async (req, res) => {
       message: "식사 저장에 실패했습니다.",
       error: error.message,
     });
+  }
+});
+
+// 음식 조회
+app.get("/api/myMeals", async (req, res) => {
+  try {
+    const myMealsContent = await fs.readFile(
+      "./data/my_food_data.json",
+      "utf-8"
+    );
+    const myMeals = JSON.parse(myMealsContent);
+    res.json(myMeals);
+    console.log("식단조회");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
