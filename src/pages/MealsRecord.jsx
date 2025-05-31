@@ -1,12 +1,28 @@
 // import MealTemplateSlider from "../components/MealTemplateSlider";
+import { useDispatch, useSelector } from "react-redux";
 import MealBuilder from "../components/Meals/MealBuilder";
+import AddMealModal from "../components/Meals/AddMealModal";
+import { uiActions } from "../store/UI/uiSlice";
 
 export default function MealsRecordPage() {
+  const isShowModal = useSelector((state) => state.ui.isShowModal);
+  const dispatch = useDispatch();
+
+  function handleDone() {
+    dispatch(uiActions.closeModal());
+  }
+
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">내 식단 템플릿</h1>
-      <MealBuilder />
-      {/* <MealTemplateSlider templates={dummyTemplates} onRecord={handleRecord} /> */}
-    </div>
+    <>
+      {isShowModal && <AddMealModal onDone={handleDone} />}
+      <div className="p-4">
+        <h1 className="text-xl font-bold mb-4">내 식단 템플릿</h1>
+        <h2 className="text-sm font-bold text-gray-500 mb-4">
+          추가하려는 음식이 없을경우 + 버튼을 눌러주세요
+        </h2>
+        <MealBuilder />
+        {/* <MealTemplateSlider templates={dummyTemplates} onRecord={handleRecord} /> */}
+      </div>
+    </>
   );
 }

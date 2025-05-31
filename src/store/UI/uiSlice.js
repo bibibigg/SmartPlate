@@ -4,6 +4,7 @@ const uiSlice = createSlice({
   name: "ui",
   initialState: {
     notification: null,
+    isShowModal: false,
   },
   reducers: {
     showNotification(state, action) {
@@ -12,6 +13,12 @@ const uiSlice = createSlice({
         title: action.payload.title,
         message: action.payload.message,
       };
+    },
+    openModal(state, action) {
+      state.isShowModal = true;
+    },
+    closeModal(state, action) {
+      state.isShowModal = false;
     },
   },
 });

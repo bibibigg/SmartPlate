@@ -1,5 +1,5 @@
 import { bodyInfoActions } from "./bodyInfoSlice";
-import { uiActions } from "./uiSlice";
+import { uiActions } from "../UI/uiSlice";
 import { getKoreanDate } from "../../utils/formatDate";
 
 export function fetchBodyData() {

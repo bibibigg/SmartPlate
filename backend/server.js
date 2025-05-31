@@ -178,7 +178,6 @@ app.get("/api/myMeals", async (req, res) => {
     );
     const myMeals = JSON.parse(myMealsContent);
     res.json(myMeals);
-    console.log("식단조회");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

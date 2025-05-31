@@ -1,7 +1,4 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchBodyData } from "../store/bodyInfo/bodyInfoActions";
 import {
   calculateBMR,
   calculateTDEE,
@@ -13,11 +10,9 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../utils/http";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorBlock from "../components/UI/ErrorBlock";
-import { koreanDateTime } from "../utils/formatDate";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const {
     data: mealsData,
@@ -74,11 +69,13 @@ export default function HomePage() {
     const totalCalories = todayTotalCalories(mealsData);
 
     return (
-      <CalorieStats
-        calorieStats={calorieStats}
-        bodyData={currentData}
-        todayCalories={totalCalories}
-      />
+      <>
+        <CalorieStats
+          calorieStats={calorieStats}
+          bodyData={currentData}
+          todayCalories={totalCalories}
+        />
+      </>
     );
   }
 
