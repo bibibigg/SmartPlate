@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MealBuilder from "../components/Meals/MealBuilder";
 import AddMealModal from "../components/Meals/AddMealModal";
 import { uiActions } from "../store/UI/uiSlice";
+import { AnimatePresence } from "framer-motion";
 
 export default function MealsRecordPage() {
   const isShowModal = useSelector((state) => state.ui.isShowModal);
@@ -14,7 +15,9 @@ export default function MealsRecordPage() {
 
   return (
     <>
-      {isShowModal && <AddMealModal onDone={handleDone} />}
+      <AnimatePresence>
+        {isShowModal && <AddMealModal onDone={handleDone} />}
+      </AnimatePresence>
       <div className="p-4">
         <h1 className="text-xl font-bold mb-4">내 식단 템플릿</h1>
         <h2 className="text-sm font-bold text-gray-500 mb-4">

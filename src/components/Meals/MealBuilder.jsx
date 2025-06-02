@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import SearchForm from "./SearchForm";
 import SearchResults from "./SearchResults";
 import SelectedFoodList from "./SelectedFoodList";
-// import { mealActions } from "../../store/meals/mealSlice";
-// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { mealActions } from "../../store/meals/mealSlice";
 
 export default function MealBuilder() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFood, setSelectedFood] = useState([]);
-  // const { selectedFood } = useSelector((state) => state.meal);
-  // const dispatch = useDispatch();
+  // const [selectedFood, setSelectedFood] = useState([]);
+  const { selectedFood } = useSelector((state) => state.meal);
+  const dispatch = useDispatch();
 
   function handleSearch(term) {
     setSearchTerm(term);
@@ -22,22 +22,23 @@ export default function MealBuilder() {
       alert("이미 선택된 음식입니다.");
       return;
     }
-    const foodWithCurrentServing = {
-      ...food,
-      currentServing: food.totalWeight,
-    };
-    setSelectedFood([...selectedFood, foodWithCurrentServing]);
-    console.log(selectedFood);
+    dispatch(mealActions.addSelectedFood(food));
+    // const foodWithCurrentServing = {
+    //   ...food,
+    //   currentServing: food.totalWeight,
+    // };
+    // setSelectedFood([...selectedFood, foodWithCurrentServing]);
+    // console.log(selectedFood);
   }
 
   // // 서빙사이즈 변경
   function handleServingChange(food, newSize) {
-    setSelectedFood((prev) =>
-      prev.map((item) =>
-        item.id === food.id ? { ...item, currentServing: newSize } : item
-      )
-    );
-    // dispatch(mealActions.ChangeServingSize({ id: food.id, newSize }));
+    // setSelectedFood((prev) =>
+    //   prev.map((item) =>
+    //     item.id === food.id ? { ...item, currentServing: newSize } : item
+    //   )
+    // );
+    dispatch(mealActions.ChangeServingSize({ id: food.id, newSize }));
   }
   // 칼로리 계산
   function calculateCalories(food) {
@@ -47,6 +48,12 @@ export default function MealBuilder() {
       return 0; // 기본 서빙 사이즈가 유효하지 않은 경우
     }
 
+    if (food.mainCategory === "직접입력") {
+      const inputCalories = parseInt(food.calories);
+      const inputWeight = parseInt(food.totalWeight);
+      return Math.round((inputCalories * currentGram) / inputWeight);
+    }
+
     const calculatedCalories = Math.round(
       (food.calories * currentGram) / baseGram
     );
@@ -54,8 +61,8 @@ export default function MealBuilder() {
   }
 
   function handleDeleteFood(foodId) {
-    setSelectedFood((prev) => prev.filter((item) => item.id !== foodId));
-    // dispatch(mealActions.removeSelectedFood(foodId));
+    // setSelectedFood((prev) => prev.filter((item) => item.id !== foodId));
+    dispatch(mealActions.removeSelectedFood(foodId));
   }
 
   return (

@@ -17,7 +17,6 @@ const mealSlice = createSlice({
         currentServing: food.totalWeight,
       };
       state.selectedFood.push(foodWithCurrentServing);
-      state.hasDuplicate = false;
     },
     removeSelectedFood(state, action) {
       state.selectedFood = state.selectedFood.filter(
