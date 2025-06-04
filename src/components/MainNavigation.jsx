@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function MainNavigation() {
   return (
-    <header className="flex justify-between items-center p-4">
-      <nav className="flex gap-4 mb-6 font-semibold text-blue-600">
+    <header className="flex justify-between items-center p-4 bg-[#00BCD4]">
+      <nav className="flex gap-4 mb-6 font-semibold text-white">
         <ul className="flex gap-4">
           <li>
             <Link to="/">홈</Link>

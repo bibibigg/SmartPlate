@@ -3,6 +3,7 @@ import { fetchData } from "../utils/http";
 import BodyInfoForm from "../components/bodyInfo/BodyInfoForm";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorBlock from "../components/UI/ErrorBlock";
+import { queryClient } from "../utils/http";
 
 export default function BodyInfoPage() {
   const { data, isPending, isError, error } = useQuery({
@@ -10,9 +11,9 @@ export default function BodyInfoPage() {
     queryFn: ({ signal }) => fetchData({ signal, params: "bodyinfo" }),
   });
 
-  if (isPending) {
-    return <LoadingSpinner />;
-  }
+  // if (isPending) {
+  //   return <LoadingSpinner />;
+  // }
 
   if (isError) {
     return (
@@ -27,4 +28,10 @@ export default function BodyInfoPage() {
     const latestData = data[data.length - 1];
     return <BodyInfoForm bodyData={latestData} />;
   }
+}
+export function loader() {
+  queryClient.fetchQuery({
+    queryKey: ["bodyInfo"],
+    queryFn: ({ signal }) => fetchData({ signal, params: "bodyinfo" }),
+  });
 }

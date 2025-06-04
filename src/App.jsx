@@ -3,7 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./utils/http";
 import RootLayout from "./layouts/Roots";
 import HomePage from "./pages/HomePage";
-import BodyInfoPage from "./pages/BodyInfo";
+import BodyInfoPage, { loader as bodyInfoLoader } from "./pages/BodyInfo";
 import MealsRerordPage from "./pages/MealsRecord";
 
 const router = createBrowserRouter([
@@ -18,6 +18,7 @@ const router = createBrowserRouter([
       {
         path: "bodyInfo",
         element: <BodyInfoPage />,
+        loader: bodyInfoLoader,
       },
       {
         path: "record",

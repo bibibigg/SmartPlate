@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { uiActions } from "../../store/UI/uiSlice";
+import { motion } from "framer-motion";
 
 export default function SearchForm({ onSearch }) {
   const searchRef = useRef();
@@ -27,17 +28,22 @@ export default function SearchForm({ onSearch }) {
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-[#00BCD4] text-white px-4 py-2 rounded"
           >
             검색
           </button>
-          <button
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              background: "linear-gradient(45deg, #FF9800, #F44336)",
+              transition: { type: "spring", stiffness: 400 },
+            }}
             type="button"
             onClick={handleShow}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-[#00BCD4] text-white px-4 py-2 rounded font-bold"
           >
             +
-          </button>
+          </motion.button>
         </div>
       </form>
       {/* {content} */}
