@@ -95,11 +95,11 @@ export default function SelectedFoodList({
             {selectedFood.map((food) => (
               <li
                 key={food.id}
-                className="flex justify-between items-center bg-white p-3 rounded shadow-sm"
+                className="flex justify-between items-center bg-white dark:bg-gray-800 p-3 rounded shadow-sm"
               >
                 <div>
                   <p className="font-medium">{food.name}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-300">
                     {food.currentServing}g 당 {calculateCalories(food)}
                     kcal
                   </p>

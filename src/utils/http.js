@@ -4,7 +4,7 @@ export const queryClient = new QueryClient();
 
 export async function fetchData({ signal, params, searchTerm }) {
   try {
-    let url = "http://localhost:5000/api/" + params;
+    let url = "http://localhost:5001/api/" + params;
     if (searchTerm) {
       url += "?search=" + searchTerm;
     }
@@ -31,7 +31,7 @@ export async function fetchData({ signal, params, searchTerm }) {
 
 export async function updateBodyData(data) {
   try {
-    const response = await fetch("http://localhost:5000/api/bodyInfo", {
+    const response = await fetch("http://localhost:5001/api/bodyInfo", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -61,7 +61,7 @@ export async function updateBodyData(data) {
 
 export async function updateMealsData(data) {
   try {
-    const response = await fetch("http://localhost:5000/api/meals", {
+    const response = await fetch("http://localhost:5001/api/meals", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
