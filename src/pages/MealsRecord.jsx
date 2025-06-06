@@ -19,7 +19,9 @@ export default function MealsRecordPage() {
         {isShowModal && <AddMealModal onDone={handleDone} />}
       </AnimatePresence>
       <div className="p-4">
-        <h1 className="text-xl font-bold mb-4">내 식단 템플릿</h1>
+        <h1 className="text-xl font-bold mb-4 dark:text-white">
+          내 식단 템플릿
+        </h1>
         <h2 className="text-sm font-bold text-gray-500 dark:text-gray-300 mb-4">
           추가하려는 음식이 없을경우 + 버튼을 눌러주세요
         </h2>

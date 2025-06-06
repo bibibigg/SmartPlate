@@ -92,72 +92,72 @@ export default function BodyInfoForm({ bodyData }) {
         <div className="space-y-4">
           <h2 className="text-xl font-bold">신체 정보 입력</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <label className="font-semibold">성별</label>
+            <label className="font-semibold dark:text-white">성별</label>
             <select
               name="gender"
               key={bodyData.gender || ""}
               defaultValue={bodyData.gender || ""}
-              className="border p-2 rounded w-full"
+              className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
               required
             >
               <option value="male">남자</option>
               <option value="female">여자</option>
             </select>
-            <label className="font-semibold">나이</label>
+            <label className="font-semibold dark:text-white">나이</label>
             <input
               type="number"
               name="age"
               placeholder="나이"
               defaultValue={bodyData.age || ""}
-              className="border p-2 rounded w-full"
+              className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
               required
             />
-            <label className="font-semibold">키</label>
+            <label className="font-semibold dark:text-white">키</label>
             <input
               type="number"
               name="height"
               step="0.1"
               placeholder="신장 (cm)"
               defaultValue={bodyData.height || ""}
-              className="border p-2 rounded w-full"
+              className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
               required
             />
-            <label className="font-semibold">체중</label>
+            <label className="font-semibold dark:text-white">체중</label>
             <input
               type="number"
               step="0.1"
               name="weight"
               placeholder="체중 (kg)"
               defaultValue={bodyData.weight || ""}
-              className="border p-2 rounded w-full"
+              className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
               required
             />
-            <label className="font-semibold">골격근량</label>
+            <label className="font-semibold dark:text-white">골격근량</label>
             <input
               type="number"
               step="0.1"
               name="muscle"
               placeholder="골격근량 (kg)"
               defaultValue={bodyData.muscle || ""}
-              className="border p-2 rounded w-full"
+              className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
               required
             />
-            <label className="font-semibold">체지방량</label>
+            <label className="font-semibold dark:text-white">체지방량</label>
             <input
               type="number"
               step="0.1"
               name="fatMass"
               placeholder="체지방량 (kg)"
               defaultValue={bodyData.fatMass || ""}
-              className="border p-2 rounded w-full"
+              className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
               required
             />
 
             {/* TDEE계산을 위한 활동지수 */}
-            <label className="font-semibold">운동 빈도</label>
+            <label className="font-semibold dark:text-white">운동 빈도</label>
             <select
               name="exerciseFrequency"
-              className="border p-2 rounded w-full"
+              className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
               key={bodyData.exerciseFrequency}
               defaultValue={bodyData.exerciseFrequency || ""}
               // onChange={handleChange}
@@ -169,12 +169,12 @@ export default function BodyInfoForm({ bodyData }) {
                 </option>
               ))}
             </select>
-            <label className="font-semibold">목표</label>
+            <label className="font-semibold dark:text-white">목표</label>
             <select
               name="goal"
               key={bodyData.goal}
               defaultValue={bodyData.goal || ""}
-              className="border p-2 rounded w-full"
+              className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
               required
             >
               {GOAL_OPTIONS.map(({ value, label }) => (

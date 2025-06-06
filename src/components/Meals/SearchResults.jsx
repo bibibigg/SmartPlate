@@ -15,7 +15,7 @@ export default function SearchResults({ onFoodSelect, searchTerm }) {
 
   if (!searchTerm) {
     content = (
-      <li className="h-full flex items-center justify-center text-gray-500-gray-500 text-center ">
+      <li className="h-full flex items-center justify-center text-gray-500 dark:text-white text-center ">
         검색어를 입력해주세요.
       </li>
     );
@@ -38,12 +38,12 @@ export default function SearchResults({ onFoodSelect, searchTerm }) {
   if (data) {
     content =
       data.length === 0 ? (
-        <li className="h-full flex items-center justify-center text-gray-500-gray-500 text-center ">
+        <li className="h-full flex items-center justify-center text-gray-500 dark:text-white text-center ">
           검색 결과가 없습니다.
         </li>
       ) : (
         data.map((food) => (
-          <li key={food.id} className="border-b py-2">
+          <li key={food.id} className="border-b py-2 dark:text-white">
             <div className="flex justify-between items-center">
               <span
                 className="cursor-pointer hover:text-blue-500"
@@ -58,8 +58,8 @@ export default function SearchResults({ onFoodSelect, searchTerm }) {
   }
 
   return (
-    <div className="mb-4 h-[400px] overflow-y-auto border rounded flex">
-      <ul className="w-full flex-1">{content}</ul>
+    <div className="mb-4 h-[400px] overflow-y-auto border dark:bg-gray-800 dark:border-white rounded flex">
+      <ul className="w-full flex-1 ">{content}</ul>
     </div>
   );
 }

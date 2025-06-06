@@ -5,6 +5,7 @@ const uiSlice = createSlice({
   initialState: {
     notification: null,
     isShowModal: false,
+    isDark: false,
   },
   reducers: {
     showNotification(state, action) {
@@ -19,6 +20,9 @@ const uiSlice = createSlice({
     },
     closeModal(state, action) {
       state.isShowModal = false;
+    },
+    toggleTheme(state, action) {
+      state.isDark = !state.isDark;
     },
   },
 });

@@ -84,10 +84,10 @@ export default function SelectedFoodList({
           </motion.button>
         )}
       </div>
-      <div className="mb-4 h-[400px] overflow-y-auto border rounded ">
+      <div className="mb-4 h-[400px] overflow-y-auto border dark:bg-gray-900 dark:border-white rounded ">
         {/* <h3 className="font-bold mb-4">선택된 음식 목록</h3> */}
         {selectedFood.length === 0 ? (
-          <p className="h-full flex items-center justify-center text-gray-500-gray-500 text-center">
+          <p className="h-full flex items-center justify-center text-gray-500 dark:text-white text-center">
             선택된 음식이 없습니다.
           </p>
         ) : (
@@ -98,7 +98,7 @@ export default function SelectedFoodList({
                 className="flex justify-between items-center bg-white dark:bg-gray-800 p-3 rounded shadow-sm"
               >
                 <div>
-                  <p className="font-medium">{food.name}</p>
+                  <p className="font-medium dark:text-white">{food.name}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-300">
                     {food.currentServing}g 당 {calculateCalories(food)}
                     kcal
@@ -107,6 +107,7 @@ export default function SelectedFoodList({
                 <input
                   type="number"
                   value={food.currentServing}
+                  className="dark:text-white"
                   onChange={(event) =>
                     onServingSizeChange(food, event.target.value)
                   }

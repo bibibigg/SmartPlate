@@ -24,7 +24,7 @@ export default function SearchForm({ onSearch }) {
             type="text"
             ref={searchRef}
             placeholder="음식명 검색"
-            className="border p-2 flex-grow"
+            className="border p-2 flex-grow dark:border-white dark:text-white"
           />
           <button
             type="submit"
