@@ -3,10 +3,27 @@ import { MoonIcon, SunIcon } from "./UI/DarkModeIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { uiActions } from "../store/UI/uiSlice";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 
 export default function MainNavigation() {
   const isDark = useSelector((state) => state.ui.isDark);
+  console.log(isDark);
   const dispatch = useDispatch();
+
+  // 초기 렌더링 시 다크모드 상태 세팅팅
+  useEffect(() => {
+    const isDark = localStorage.getItem("isDark") === "true";
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+      dispatch(uiActions.setInitialTheme(true));
+    }
+  }, [dispatch]);
+
+  // isDark상태 변경 시 로컬스토리지 업데이트트
+  useEffect(() => {
+    localStorage.setItem("isDark", isDark);
+  }, [isDark]);
+
   function handleThemeToggle() {
     document.documentElement.classList.toggle("dark");
     dispatch(uiActions.toggleTheme());
@@ -55,16 +72,6 @@ export default function MainNavigation() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* <button onClick={handleThemeToggle}>
-        {!isDark ? (
-          <SunIcon size="30" strokeWidth="2" />
-        ) : (
-          <MoonIcon size="30" strokeWidth="2" />
-        )}
-      </button> */}
-
-      {/* <p onClick={handleThemeToggle}>다크모드 버튼</p> */}
     </header>
   );
 }

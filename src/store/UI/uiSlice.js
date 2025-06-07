@@ -21,6 +21,9 @@ const uiSlice = createSlice({
     closeModal(state, action) {
       state.isShowModal = false;
     },
+    setInitialTheme(state, action) {
+      state.isDark = action.payload;
+    },
     toggleTheme(state, action) {
       state.isDark = !state.isDark;
     },
