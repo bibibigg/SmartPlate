@@ -33,6 +33,7 @@
 
 ## 프로젝트 구조
 
+```
 SmartPlate/
 ├── frontend (루트)
 │ ├── public/ # 정적 파일
@@ -65,6 +66,7 @@ SmartPlate/
 │ ├── data/ # 데이터 파일
 │ ├── server.js # Express 서버
 │ └── package.json # 백엔드 의존성
+```
 
 ## 주요 기능
 
