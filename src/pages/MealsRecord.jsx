@@ -6,7 +6,7 @@ import { uiActions } from "../store/UI/uiSlice";
 import { AnimatePresence } from "framer-motion";
 
 export default function MealsRecordPage() {
-  const isShowModal = useSelector((state) => state.ui.isShowModal);
+  const { isShowModal } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
 
   function handleDone() {

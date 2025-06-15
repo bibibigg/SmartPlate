@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { updateBodyData } from "../../utils/http";
 import { koreanDateTime } from "../../utils/formatDate";
 import { queryClient } from "../../utils/http";
-import ErrorBlock from "../UI/ErrorBlock";
 
 export default function BodyInfoForm({ bodyData }) {
   const navigate = useNavigate();

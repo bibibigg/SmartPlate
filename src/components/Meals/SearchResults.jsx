@@ -58,7 +58,7 @@ export default function SearchResults({ onFoodSelect, searchTerm }) {
   }
 
   return (
-    <div className="mb-4 h-[400px] overflow-y-auto border dark:bg-gray-800 dark:border-white rounded flex">
+    <div className="mb-4 h-[400px] overflow-y-auto border dark:bg-gray-900 dark:border-white rounded flex">
       <ul className="w-full flex-1 ">{content}</ul>
     </div>
   );

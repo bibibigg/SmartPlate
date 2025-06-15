@@ -5,6 +5,7 @@ import RootLayout from "./layouts/Roots";
 import HomePage from "./pages/HomePage";
 import BodyInfoPage, { loader as bodyInfoLoader } from "./pages/BodyInfo";
 import MealsRerordPage from "./pages/MealsRecord";
+import AnalysisPage from "./pages/Analysis";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         element: <BodyInfoPage />,
         loader: bodyInfoLoader,
       },
+      { path: "analyze", element: <AnalysisPage /> },
       {
         path: "record",
         element: <MealsRerordPage />,
