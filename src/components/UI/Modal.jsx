@@ -17,7 +17,7 @@ export default function Modal({ title, children, onClose }) {
         animate="visible"
         exit="hidden"
         open
-        className="top-1/12 rounded-md p-5 w-96 max-w-11/12 z-20 m-auto"
+        className="top-1/12 rounded-md p-5 w-96 max-w-11/12 z-20 m-auto text-shadow-gray-900 dark:text-white bg-white dark:bg-gray-700 dark:border dark:border-white"
       >
         <h2 className="text-xl text-center font-semibold">{title}</h2>
         {children}

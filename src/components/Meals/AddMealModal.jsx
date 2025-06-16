@@ -120,7 +120,7 @@ export default function AddMealModal({ onDone }) {
         <button
           type="button"
           onClick={() => setShowNutrition(!showNutrition)}
-          className="w-full flex items-center justify-between mt-4 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 rounded-md hover:bg-gray-100"
+          className="w-full flex items-center justify-between mt-4 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 dark:border-gray-300 dark:border rounded-md hover:bg-gray-100 dark:hover:bg-gray-600"
         >
           <span>영양소 정보 입력</span>
           <motion.svg
@@ -262,19 +262,17 @@ export default function AddMealModal({ onDone }) {
           )}
         </AnimatePresence>
 
-        {/* 영양소 입력 란*/}
-
         <div className="flex justify-end gap-3 pt-4">
           <button
             type="button"
             onClick={onDone}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
             취소
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="px-4 py-2 text-sm font-medium text-white bg-[#00BCD4] rounded-md hover:bg-[#0097a7] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             확인
           </button>
