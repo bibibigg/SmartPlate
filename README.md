@@ -19,20 +19,21 @@
 
 ## 데이터 정보
 
-- 식품의약안전처 식품영양성분 데이터베이스
+- <a href='https://various.foodsafetykorea.go.kr/nutrient/'>식품의약안전처 식품영양성분 데이터베이스</a>
 
 ## 기술 스택
 
 - **프레임워크**: React 19.0
 - **빌드 도구**: Vite
 - **상태 관리**: Redux toolkit 2.8.2
-- **데이터 패칭**:  React Query 5.76.1
+- **데이터 패칭**: Tanstack Query 5.76.1
 - **라우팅**: React Router 7.5.3
 - **스타일링**: Tailwind CSS 4.1.8
 - **애니메이션**: framer-motion 12.15.0
 
 ## 프로젝트 구조
 
+```
 SmartPlate/
 ├── frontend (루트)
 │ ├── public/ # 정적 파일
@@ -43,7 +44,7 @@ SmartPlate/
 │ │ │ ├── Meals/ # 식사 관련 컴포넌트
 │ │ │ ├── UI/ # 공통 UI 컴포넌트
 │ │ │ └── MainNavigation.jsx # 네비게이션 바
-│ │ │  
+│ │ │
 │ │ ├── pages/ # 페이지 컴포넌트
 │ │ │ ├── Analysis.jsx # 분석 페이지 (준비중 페이지)
 │ │ │ ├── BodyInfo.jsx # 신체정보 입력 페이지
@@ -65,6 +66,7 @@ SmartPlate/
 │ ├── data/ # 데이터 파일
 │ ├── server.js # Express 서버
 │ └── package.json # 백엔드 의존성
+```
 
 ## 주요 기능
 
