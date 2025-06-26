@@ -14,6 +14,7 @@ export default function BodyInfoPage() {
   // if (isPending) {
   //   return <LoadingSpinner />;
   // }
+  let latestData;
 
   if (isError) {
     return (
@@ -23,9 +24,14 @@ export default function BodyInfoPage() {
       />
     );
   }
+  console.log(data);
+  if (!data || data.length === 0) {
+    latestData = null;
+    return <BodyInfoForm bodyData={latestData} />;
+  }
 
   if (data) {
-    const latestData = data[data.length - 1];
+    latestData = data[data.length - 1];
     return <BodyInfoForm bodyData={latestData} />;
   }
 }

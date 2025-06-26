@@ -3,6 +3,13 @@ export default function CalorieStats({
   todayCalories,
   bodyData,
 }) {
+  const goal = {
+    maintain: "체중 유지",
+    lose: "체중 감량",
+    gain: "근육 증량",
+  };
+  const mygoal = goal[bodyData?.goal] || "정보없음";
+
   return (
     <>
       {/*기초대사량량 */}
@@ -58,13 +65,7 @@ export default function CalorieStats({
           kcal
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          나의 목표 :{" "}
-          {bodyData &&
-            (bodyData.goal === "maintain"
-              ? "체중 유지"
-              : bodyData.goal === "lose"
-              ? "체중 감량"
-              : "근육 증량")}
+          나의 목표 : {mygoal}
         </p>
       </div>
     </>
