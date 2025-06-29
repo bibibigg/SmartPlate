@@ -36,6 +36,9 @@ export default function HomePage() {
   if (isError || isMealsError) {
     return <ErrorBlock title="fail" message={error.info?.message || "fail"} />;
   }
+  {
+    /* 데이터를 정상적으로 받아올 시 값 추출  */
+  }
   const {
     calorieStats,
     bodyData: currentBodyData,
