@@ -73,7 +73,6 @@ SmartPlate/
 ### 1. 신체 정보 관리
 
 <img src="https://raw.githubusercontent.com/bibibigg/SmartPlate/main/public/bodyinfo.png" alt="신체정보입력"/>
-<img src="https://github.com/bibibigg/SmartPlate/tree/main/public/bodyinfo.png" alt="신체정보입력"/>
 
 - **신체 정보 입력**: 신장, 체중, 체지방량, 나이, 성별 등 입력
 - **기초대사량 계산**: 입력된 정보를 바탕으로 개인별 기초대사량 자동 계산
@@ -82,21 +81,21 @@ SmartPlate/
 
 ### 2. 식사 기록 및 추적
 
-<img src="https://github.com/bibibigg/SmartPlate/tree/main/public/meals.png" alt="식단입력"/>
+<img src="https://raw.githubusercontent.com/bibibigg/SmartPlate/main/public/meals.png" alt="식단입력"/>
 
-- **식사 기록**: 아침, 점심, 저녁, 간식별 음식 섭취 기록
+- **식사 기록**: 음식 검색을 통한 간편한 식사 기록 저장
 - **영양 정보 제공**: 식품의약안전처 데이터 기반 정확한 영양 성분 정보
 - **칼로리 계산**: 섭취한 음식의 총 칼로리 자동 계산
 
-<img src="https://github.com/bibibigg/SmartPlate/tree/main/public/mealModal.png" alt="직접입력"/>
+<img src="https://raw.githubusercontent.com/bibibigg/SmartPlate/main/public/mealModal.png" alt="직접입력"/>
 
-- **식사 정보 직접 입력**: 검색을 통해 음식정보가 없을경우 직접 입력을 통한 음식 입력
+- **식사 정보 직접 입력**: 검색을 통해 음식정보가 없을경우 + 버튼을 클릭하여 직접 입력을 통한 음식 입력
 
 ### 3. 대시보드 및 시각화
 
-<img src="https://github.com/bibibigg/SmartPlate/tree/main/public/home.png" alt="대시보드"/>
+<img src="https://raw.githubusercontent.com/bibibigg/SmartPlate/main/public/home.png" alt="대시보드"/>
 
-- **일일 칼로리 현황**: 목표 대비 실제 섭취 칼로리 시각적 표시
+- **일일 칼로리 현황**: 오늘 하루 섭취한 음식정보를 토대로 목표 섭취 칼로리와 비교하여 섭취한 칼로리를 시각화
 
 ### 4. 데이터 관리
 
@@ -105,7 +104,9 @@ SmartPlate/
 
 ### 5. 사용자 경험
 
-- 다크모드/라이트모드 지원
+<img src="https://raw.githubusercontent.com/bibibigg/SmartPlate/main/public/darkmode.png" alt="대시보드"/>
+
+- 헤더의 우측 아이콘 클릭을 통해 다크모드/라이트모드 지원
 - 반응형 디자인
 
 ## 설치 및 실행
