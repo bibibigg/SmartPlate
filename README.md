@@ -72,6 +72,7 @@ SmartPlate/
 
 ### 1. 신체 정보 관리
 
+<img src="https://raw.githubusercontent.com/bibibigg/SmartPlate/main/public/bodyinfo.png" alt="신체정보입력"/>
 <img src="https://github.com/bibibigg/SmartPlate/tree/main/public/bodyinfo.png" alt="신체정보입력"/>
 
 - **신체 정보 입력**: 신장, 체중, 체지방량, 나이, 성별 등 입력
