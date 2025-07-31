@@ -95,30 +95,35 @@ export default function SelectedFoodList({
             {selectedFood.map((food) => (
               <li
                 key={food.id}
-                className="flex justify-between items-center bg-white dark:bg-gray-800 p-3 rounded shadow-sm"
+                className="flex items-center bg-white dark:bg-gray-800 p-3 rounded shadow-sm"
               >
-                <div>
+                <div className="flex-grow">
                   <p className="font-medium dark:text-white">{food.name}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-300">
                     {food.currentServing}g 당 {calculateCalories(food)}
                     kcal
                   </p>
                 </div>
-                <input
-                  type="number"
-                  value={food.currentServing}
-                  className="dark:text-white"
-                  onChange={(event) =>
-                    onServingSizeChange(food, event.target.value)
-                  }
-                />
-                <button
-                  type="button"
-                  className="text-red-500 hover:text-red-700"
-                  onClick={() => onFoodDelete(food.id)}
-                >
-                  삭제
-                </button>
+                <div className="flex items-center gap-15">
+                  <div>
+                    <input
+                      type="number"
+                      value={food.currentServing}
+                      className="dark:text-white border rounded w-24"
+                      onChange={(event) =>
+                        onServingSizeChange(food, event.target.value)
+                      }
+                    />
+                    <label className="ml-2 dark:text-white">(g)</label>
+                  </div>
+                  <button
+                    type="button"
+                    className="text-red-500 font-bold hover:text-red-700"
+                    onClick={() => onFoodDelete(food.id)}
+                  >
+                    삭제
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

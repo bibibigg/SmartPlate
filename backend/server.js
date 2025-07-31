@@ -2,16 +2,30 @@ import fs from "node:fs/promises";
 import bodyParser from "body-parser";
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const bodyInfoPath = path.join(__dirname, "data", "bodyInfo.json");
+const foodDataPath = path.join(__dirname, "data", "food_data.json");
+const myFoodDataPath = path.join(__dirname, "data", "my_food_data.json");
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
+// 서버 상태 확인
+app.get("/", (req, res) => {
+  res.json({ message: "서버가 정상 작동 중입니다!" });
+});
+
 // BodyInfo 조회
 app.get("/api/bodyinfo", async (req, res) => {
   try {
-    const bodyInfoContent = await fs.readFile("./data/bodyInfo.json", "utf-8");
+    const bodyInfoContent = await fs.readFile(bodyInfoPath, "utf-8");
     const bodyInfo = JSON.parse(bodyInfoContent);
     res.json(bodyInfo);
   } catch (error) {
@@ -58,7 +72,7 @@ app.post("/api/bodyinfo", async (req, res) => {
         .status(400)
         .json({ message: "post요청 오류: 필수 데이터가 누락되었습니다." });
     }
-    const bodyInfoContent = await fs.readFile("./data/bodyInfo.json", "utf-8");
+    const bodyInfoContent = await fs.readFile(bodyInfoPath, "utf-8");
     const bodyInfo = JSON.parse(bodyInfoContent);
 
     const koreanDateTime = new Date(
@@ -70,7 +84,7 @@ app.post("/api/bodyinfo", async (req, res) => {
       updatedAt: koreanDateTime,
     };
     bodyInfo.push(newData);
-    await fs.writeFile("./data/bodyInfo.json", JSON.stringify(bodyInfo));
+    await fs.writeFile(bodyInfoPath, JSON.stringify(bodyInfo));
     res.json(bodyInfoData);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -83,7 +97,7 @@ app.get("/api/meals/category/:category", async (req, res) => {
     const { category } = req.params;
     const { search } = req.query;
 
-    const mealsContent = await fs.readFile("./data/food_data.json", "utf-8");
+    const mealsContent = await fs.readFile(foodDataPath, "utf-8");
     const meals = JSON.parse(mealsContent);
 
     let filteredMeals = meals.filter((meal) => meal.category === category);
@@ -106,7 +120,7 @@ app.get("/api/meals/category/:category", async (req, res) => {
 app.get("/api/meals", async (req, res) => {
   try {
     const { search } = req.query;
-    const mealsContent = await fs.readFile("./data/food_data.json", "utf-8");
+    const mealsContent = await fs.readFile(foodDataPath, "utf-8");
     let meals = JSON.parse(mealsContent);
 
     if (search) {
@@ -137,10 +151,7 @@ app.post("/api/meals", async (req, res) => {
     // 기존 데이터 읽기
     let existingData = [];
     try {
-      const mealsContent = await fs.readFile(
-        "./data/my_food_data.json",
-        "utf-8"
-      );
+      const mealsContent = await fs.readFile(myFoodDataPath, "utf-8");
       existingData = JSON.parse(mealsContent);
     } catch (error) {
       // 파일이 없거나 비어있는 경우 빈 배열로 시작
@@ -151,10 +162,7 @@ app.post("/api/meals", async (req, res) => {
     existingData.push(mealsData);
 
     // 파일에 저장
-    await fs.writeFile(
-      "./data/my_food_data.json",
-      JSON.stringify(existingData, null, 2)
-    );
+    await fs.writeFile(myFoodDataPath, JSON.stringify(existingData, null, 2));
 
     res.status(201).json({
       message: "식사가 저장되었습니다.",
@@ -172,10 +180,7 @@ app.post("/api/meals", async (req, res) => {
 // 음식 조회
 app.get("/api/myMeals", async (req, res) => {
   try {
-    const myMealsContent = await fs.readFile(
-      "./data/my_food_data.json",
-      "utf-8"
-    );
+    const myMealsContent = await fs.readFile(myFoodDataPath, "utf-8");
     const myMeals = JSON.parse(myMealsContent);
     res.json(myMeals);
   } catch (error) {
