@@ -48,7 +48,7 @@ export default function BodyInfoForm({ bodyData }) {
   }
 
   // const dispatch = useDispatch();
-  console.log(bodyData);
+  // console.log(bodyData);
   // 상수 데이터 분리
   const EXERCISE_OPTIONS = [
     { value: "1.2", label: "거의 활동 없음" },

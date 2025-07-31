@@ -24,12 +24,12 @@ export default function SelectedFoodList({
     },
   });
 
-  console.log(selectedFood);
+  // console.log(selectedFood);
   function handleSubmit(e) {
     e.preventDefault();
     if (!selectedFood || selectedFood.length === 0) {
       // 조건 수정
-      console.log("음식없음");
+      // console.log("음식없음");
       return;
     }
 

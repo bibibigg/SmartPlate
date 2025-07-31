@@ -28,7 +28,7 @@ export function fetchBodyData() {
       //   })
       // );
       const bodydata = fetchData();
-      console.log("로드데이터", bodydata);
+      // console.log("로드데이터", bodydata);
       dispatch(bodyInfoActions.loadBodyInfo(bodydata));
       dispatch(
         uiActions.showNotification({
@@ -85,9 +85,9 @@ export function sendBodyData(bodyData) {
       localStorage.setItem("bodyInfo", JSON.stringify(updateData));
 
       dispatch(bodyInfoActions.addBodyInfo(updateBodyInfo));
-      console.log("추가 완료", bodyData);
+      // console.log("추가 완료", bodyData);
     } catch (error) {
-      console.error("데이터 저장 중 오류:", error);
+      // console.error("데이터 저장 중 오류:", error);
     }
   };
 }

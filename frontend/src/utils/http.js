@@ -10,7 +10,6 @@ export async function fetchData({ signal, params, searchTerm }) {
       url += "?search=" + searchTerm;
     }
     const response = await fetch(url, { signal: signal });
-    console.log("확인");
     if (!response.ok) {
       const error = new Error("Failed to body data");
       error.code = response.status;

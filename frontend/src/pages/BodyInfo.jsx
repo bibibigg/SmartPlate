@@ -24,7 +24,7 @@ export default function BodyInfoPage() {
       />
     );
   }
-  console.log(data);
+  // console.log(data);
   if (!data || data.length === 0) {
     latestData = null;
     return <BodyInfoForm bodyData={latestData} />;
