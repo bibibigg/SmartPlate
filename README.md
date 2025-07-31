@@ -3,6 +3,8 @@
 - 목적 : 사용자의 신체 정보와 식사 정보를 기반으로 식사 칼로리를 관리하는 웹 애플리케이션
 - 기간 : 2025.05.14 ~ 06.07
 
+# 링크 : https://smart-plate-kappa.vercel.app/
+
 ## 프로젝트 목적 및 배경
 
 - 신체 정보 입력 기반 개인별 소비 칼로리 안내 서비스
@@ -30,43 +32,7 @@
 - **라우팅**: React Router 7.5.3
 - **스타일링**: Tailwind CSS 4.1.8
 - **애니메이션**: framer-motion 12.15.0
-
-## 프로젝트 구조
-
-```
-SmartPlate/
-├── frontend (루트)
-│ ├── public/ # 정적 파일
-│ ├── src/
-│ │ ├── components/ # 컴포넌트
-│ │ │ ├── bodyInfo/ # 신체정보 관련 컴포넌트
-│ │ │ ├── Dashboard/ # 대시보드 컴포넌트
-│ │ │ ├── Meals/ # 식사 관련 컴포넌트
-│ │ │ ├── UI/ # 공통 UI 컴포넌트
-│ │ │ └── MainNavigation.jsx # 네비게이션 바
-│ │ │
-│ │ ├── pages/ # 페이지 컴포넌트
-│ │ │ ├── Analysis.jsx # 분석 페이지 (준비중 페이지)
-│ │ │ ├── BodyInfo.jsx # 신체정보 입력 페이지
-│ │ │ ├── HomePage.jsx # 홈 페이지
-│ │ │ └── MealsRecord.jsx # 식사 기록 페이지
-│ │ ├── layouts/ # 레이아웃 컴포넌트
-│ │ ├── store/ # Redux 상태 관리
-│ │ ├── utils/ # 유틸리티 함수
-│ │ ├── assets/ # 이미지, 아이콘 등
-│ │ ├── App.jsx # 메인 앱 컴포넌트
-│ │ ├── main.jsx # 앱 진입점
-│ │ └── index.css # 글로벌 스타일
-│ ├── index.html # HTML 템플릿
-│ ├── package.json # 프론트엔드 의존성
-│ ├── vite.config.js # Vite 설정
-│ └── eslint.config.js # ESLint 설정
-│
-├── backend/ # 백엔드 서버
-│ ├── data/ # 데이터 파일
-│ ├── server.js # Express 서버
-│ └── package.json # 백엔드 의존성
-```
+- **배포**: railway, vercel
 
 ## 주요 기능
 
@@ -108,20 +74,3 @@ SmartPlate/
 
 - 헤더의 우측 아이콘 클릭을 통해 다크모드/라이트모드 지원
 - 반응형 디자인
-
-## 설치 및 실행
-
-### Frontend
-
-```bash
-npm install
-npm run dev
-```
-
-### Backend
-
-```bash
-cd backend
-npm install
-npm start
-```
