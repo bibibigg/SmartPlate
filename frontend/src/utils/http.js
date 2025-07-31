@@ -2,9 +2,11 @@ import { QueryClient } from "@tanstack/react-query";
 
 export const queryClient = new QueryClient();
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export async function fetchData({ signal, params, searchTerm }) {
   try {
-    let url = "http://localhost:5001/api/" + params;
+    let url = `${BASE_URL}/api/` + params;
     if (searchTerm) {
       url += "?search=" + searchTerm;
     }
@@ -31,7 +33,7 @@ export async function fetchData({ signal, params, searchTerm }) {
 
 export async function updateBodyData(data) {
   try {
-    const response = await fetch("http://localhost:5001/api/bodyInfo", {
+    const response = await fetch(`${BASE_URL}/api/bodyInfo`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -61,7 +63,7 @@ export async function updateBodyData(data) {
 
 export async function updateMealsData(data) {
   try {
-    const response = await fetch("http://localhost:5001/api/meals", {
+    const response = await fetch(`${BASE_URL}/api/meals`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
