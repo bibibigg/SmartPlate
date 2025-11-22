@@ -28,10 +28,15 @@ jobs:
           script: |
             echo "🚀 Deploying SmartPlate backend to GCP VM..."
             # -------------------------------------------------
-            # PATH 환경 변수 설정
-            export PATH=$PATH:/home/aerl0077/.nvm/versions/node/v24.11.1/bin
+            export NVM_DIR="$HOME/.nvm"
+            # NVM을 로드합니다.
+            -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            # 프로젝트에서 사용하는 Node.js 버전을 활성화합니다. (v24.11.1 기준)
+            nvm use 24.11.1
+            # -------------------------------------------------
+
             # 1) 프로젝트 루트 이동 (★ 실제 경로로 수정)
-            cd /home/aerl0077/SmartPlate || { echo "❌ ERROR: Failed to enter SmartPlate directory. Deployment aborted."; exit 1; }
+            cd ~/SmartPlate || exit 1
             echo "✅ Successfully moved to SmartPlate directory."
 
             # 2) 최신 코드 가져오기
@@ -60,5 +65,3 @@ jobs:
             pm2 startup | tail -n 1 | sudo bash
 
             echo "✅ Deployment finished successfully!"
-
-#ci/cd테스트2
