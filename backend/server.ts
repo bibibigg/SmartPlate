@@ -1,16 +1,20 @@
 import fs from "node:fs/promises";
 import bodyParser from "body-parser";
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import { BodyInfo, BodyInfoRequest, Meal, MealRequest, ApiResponse } from "./types.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const bodyInfoPath = path.join(__dirname, "data", "bodyInfo.json");
-const foodDataPath = path.join(__dirname, "data", "food_data.json");
-const myFoodDataPath = path.join(__dirname, "data", "my_food_data.json");
+// 프로젝트 루트 디렉토리 (dist 폴더가 있든 없든 상관없이)
+const rootDir = __dirname.endsWith('dist') ? path.dirname(__dirname) : __dirname;
+
+const bodyInfoPath = path.join(rootDir, "data", "bodyInfo.json");
+const foodDataPath = path.join(rootDir, "data", "food_data.json");
+const myFoodDataPath = path.join(rootDir, "data", "my_food_data.json");
 
 const app = express();
 
@@ -18,42 +22,24 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // 서버 상태 확인
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.json({ message: "서버가 정상 작동 중입니다!" });
 });
 
 // BodyInfo 조회
-app.get("/api/bodyinfo", async (req, res) => {
+app.get("/api/bodyinfo", async (req: Request, res: Response) => {
   try {
     const bodyInfoContent = await fs.readFile(bodyInfoPath, "utf-8");
-    const bodyInfo = JSON.parse(bodyInfoContent);
+    const bodyInfo: BodyInfo[] = JSON.parse(bodyInfoContent);
     res.json(bodyInfo);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    res.status(500).json({ message: errorMessage });
   }
 });
 
-// app.get("/api/bodyInfo/check", async (req, res) => {
-//   try {
-//     const bodyInfoContent = await fs.readFile("./data/bodyInfo.json", "utf-8");
-//     const bodyInfo = JSON.parse(bodyInfoContent);
-
-//     const today = new Date(new Date().getTime() + 9 * 60 * 60 * 1000)
-//       .toISOString()
-//       .split("T")[0];
-
-//     const exists = bodyInfo.some(
-//       (data) => data.updatedAt.split("T")[0] === today
-//     );
-
-//     res.json({ exists });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// });
-
 // BodyInfo 업데이트
-app.post("/api/bodyinfo", async (req, res) => {
+app.post("/api/bodyinfo", async (req: Request<{}, {}, BodyInfoRequest>, res: Response) => {
   try {
     const bodyInfoData = req.body;
 
@@ -73,13 +59,13 @@ app.post("/api/bodyinfo", async (req, res) => {
         .json({ message: "post요청 오류: 필수 데이터가 누락되었습니다." });
     }
     const bodyInfoContent = await fs.readFile(bodyInfoPath, "utf-8");
-    const bodyInfo = JSON.parse(bodyInfoContent);
+    const bodyInfo: BodyInfo[] = JSON.parse(bodyInfoContent);
 
     const koreanDateTime = new Date(
       new Date().getTime() + 9 * 60 * 60 * 1000
     ).toISOString();
 
-    const newData = {
+    const newData: BodyInfo = {
       ...req.body,
       updatedAt: koreanDateTime,
     };
@@ -87,43 +73,45 @@ app.post("/api/bodyinfo", async (req, res) => {
     await fs.writeFile(bodyInfoPath, JSON.stringify(bodyInfo));
     res.json(bodyInfoData);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    res.status(500).json({ message: errorMessage });
   }
 });
 
 // 카테고리별 식사 조회 (검색어 포함)
-app.get("/api/meals/category/:category", async (req, res) => {
+app.get("/api/meals/category/:category", async (req: Request, res: Response) => {
   try {
     const { category } = req.params;
     const { search } = req.query;
 
     const mealsContent = await fs.readFile(foodDataPath, "utf-8");
-    const meals = JSON.parse(mealsContent);
+    const meals: Meal[] = JSON.parse(mealsContent);
 
     let filteredMeals = meals.filter((meal) => meal.category === category);
 
     // 검색어가 있는 경우 추가 필터링
-    if (search) {
+    if (search && typeof search === "string") {
       filteredMeals = filteredMeals.filter((meal) => {
-        const searchableText = `${meal.name} ${meal.description}`.toLowerCase();
+        const searchableText = `${meal.name} ${meal.description || ""}`.toLowerCase();
         return searchableText.includes(search.toLowerCase());
       });
     }
 
     res.json(filteredMeals);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    res.status(500).json({ message: errorMessage });
   }
 });
 
-//식단 조회
-app.get("/api/meals", async (req, res) => {
+// 식단 조회
+app.get("/api/meals", async (req: Request, res: Response) => {
   try {
     const { search } = req.query;
     const mealsContent = await fs.readFile(foodDataPath, "utf-8");
-    let meals = JSON.parse(mealsContent);
+    let meals: Meal[] = JSON.parse(mealsContent);
 
-    if (search) {
+    if (search && typeof search === "string") {
       meals = meals.filter((meal) => {
         const searchableText = `${meal.name}`.toLowerCase();
         return searchableText.includes(search.toLowerCase());
@@ -133,11 +121,13 @@ app.get("/api/meals", async (req, res) => {
 
     res.json(meals);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    res.status(500).json({ message: errorMessage });
   }
 });
-//식단 저장
-app.post("/api/meals", async (req, res) => {
+
+// 식단 저장
+app.post("/api/meals", async (req: Request<{}, {}, MealRequest>, res: Response) => {
   try {
     const mealsData = req.body;
 
@@ -149,7 +139,7 @@ app.post("/api/meals", async (req, res) => {
     }
 
     // 기존 데이터 읽기
-    let existingData = [];
+    let existingData: MealRequest[] = [];
     try {
       const mealsContent = await fs.readFile(myFoodDataPath, "utf-8");
       existingData = JSON.parse(mealsContent);
@@ -170,42 +160,27 @@ app.post("/api/meals", async (req, res) => {
     });
   } catch (error) {
     console.error("식사 저장 중 오류:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     res.status(500).json({
       message: "식사 저장에 실패했습니다.",
-      error: error.message,
+      error: errorMessage,
     });
   }
 });
 
 // 음식 조회
-app.get("/api/myMeals", async (req, res) => {
+app.get("/api/myMeals", async (req: Request, res: Response) => {
   try {
     const myMealsContent = await fs.readFile(myFoodDataPath, "utf-8");
-    const myMeals = JSON.parse(myMealsContent);
+    const myMeals: Meal[] = JSON.parse(myMealsContent);
     res.json(myMeals);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    res.status(500).json({ message: errorMessage });
   }
 });
 
-// // 식사 검색
-// app.get("/api/meals/search", async (req, res) => {
-//   try {
-//     const { search } = req.query;
-//     const mealsContent = await fs.readFile("./data/food_data.json", "utf-8");
-//     const meals = JSON.parse(mealsContent);
-
-//     const searchResults = meals.filter((meal) =>
-//       meal.name.toLowerCase().includes(search.toLowerCase())
-//     );
-
-//     res.json(searchResults);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// });
-
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 5001;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`);
 });
