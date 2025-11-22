@@ -24,46 +24,65 @@ jobs:
           host: ${{ secrets.GCP_HOST }}
           username: ${{ secrets.GCP_SSH_USER }}
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          script_stop: true # 에러 발생 시 즉시 중단
 
           script: |
+            #!/bin/bash -l
+            set -e
+
             echo "🚀 Deploying SmartPlate backend to GCP VM..."
-            # -------------------------------------------------
-            export NVM_DIR="$HOME/.nvm"
-            # NVM을 로드합니다.
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            # 프로젝트에서 사용하는 Node.js 버전을 활성화합니다. (v24.11.1 기준)
-            nvm use 24.11.1
-            # -------------------------------------------------
 
-            # 1) 프로젝트 루트 이동 (★ 실제 경로로 수정)
-            cd ~/SmartPlate || exit 1
-            echo "✅ Successfully moved to SmartPlate directory."
+            # 환경 파일 로드
+            [ -f "$HOME/.bash_profile" ] && source "$HOME/.bash_profile"
+            [ -f "$HOME/.profile" ] && source "$HOME/.profile"
+            [ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"
 
-            # 2) 최신 코드 가져오기
+            # 프로젝트 디렉토리 찾기
+            if [ -d "SmartPlate" ]; then
+              PROJECT_DIR="$(pwd)/SmartPlate"
+            elif [ -d "$HOME/SmartPlate" ]; then
+              PROJECT_DIR="$HOME/SmartPlate"
+            else
+              echo "❌ SmartPlate directory not found!"
+              ls -la
+              exit 1
+            fi
+
+            cd "$PROJECT_DIR"
+            echo "✅ Project directory: $(pwd)"
+
+            # 최신 코드 가져오기
             git pull origin main
 
-            # 3) backend 폴더 이동
+            # NVM 로드 및 Node.js 설정
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+
+            if command -v nvm &> /dev/null; then
+              nvm use 24.11.1 || nvm install 24.11.1
+            fi
+
+            echo "Node: $(node --version) | NPM: $(npm --version)"
+
+            # Backend 폴더로 이동
             cd backend
 
-            # 4) 의존성 설치 (package-lock.json 기반)
+            # 의존성 설치
             npm ci --no-audit --no-fund
 
-            # 5) TypeScript 빌드
+            # TypeScript 빌드
             npm run build
 
-            # 6) PM2에 애플리케이션 등록되어 있지 않으면 실행
-            if ! pm2 describe smart-plate-backend > /dev/null; then
-              echo "PM2 프로세스가 없어 새로 시작합니다."
+            # PM2로 배포
+            if ! pm2 describe smart-plate-backend > /dev/null 2>&1; then
+              echo "Starting new PM2 process..."
               pm2 start dist/server.js --name smart-plate-backend
             else
-              echo "PM2 프로세스가 있어 재시작합니다."
+              echo "Restarting PM2 process..."
               pm2 restart smart-plate-backend
             fi
 
-            # 7) PM2 프로세스 자동 재시작 & 부팅 등록
+            # PM2 설정 저장
             pm2 save
-            pm2 startup | tail -n 1 | sudo bash
 
-            echo "✅ Deployment finished successfully!"
-
-#test555
+            echo "✅ Deployment finished successfully!!"
