@@ -27,7 +27,11 @@ jobs:
 
           script: |
             echo "🚀 Deploying SmartPlate backend to GCP VM..."
-
+            # -------------------------------------------------
+            # PATH 환경 변수 설정
+            export PATH=$PATH:/usr/local/bin:/usr/bin
+            export PATH=$PATH:$(npm prefix -g)/bin
+            # -------------------------------------------------
             # 1) 프로젝트 루트 이동 (★ 실제 경로로 수정)
             cd ~/SmartPlate
 
