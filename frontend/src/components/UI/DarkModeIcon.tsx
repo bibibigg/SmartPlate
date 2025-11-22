@@ -1,4 +1,10 @@
-export const SunIcon = ({ size, className, strokeWidth }) => (
+interface IconProps {
+  size: string;
+  className?: string;
+  strokeWidth: string;
+}
+
+export const SunIcon = ({ size, className, strokeWidth }: IconProps) => (
   <svg
     width={size}
     height={size}
@@ -25,7 +31,7 @@ export const SunIcon = ({ size, className, strokeWidth }) => (
 );
 
 // 달 아이콘 컴포넌트
-export const MoonIcon = ({ size, className, strokeWidth }) => (
+export const MoonIcon = ({ size, className, strokeWidth }: IconProps) => (
   <svg
     width={size}
     height={size}

@@ -1,5 +1,5 @@
-//ISO시간대로 저장된 시간을 한국시간대로 변환
-export function formatDate(isoString) {
+// ISO시간대로 저장된 시간을 한국시간대로 변환
+export function formatDate(isoString: string): string {
   return new Date(isoString).toLocaleString("ko-KR", {
     year: "2-digit",
     month: "2-digit",
@@ -10,7 +10,7 @@ export function formatDate(isoString) {
   });
 }
 
-export function getKoreanDate(date = new Date()) {
+export function getKoreanDate(date: Date = new Date()): Date {
   return new Date(date.getTime() + 9 * 60 * 60 * 1000);
 }
 

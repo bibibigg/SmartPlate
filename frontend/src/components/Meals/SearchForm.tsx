@@ -2,18 +2,26 @@ import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { uiActions } from "../../store/UI/uiSlice";
 import { motion } from "framer-motion";
+import React from "react";
+import { AppDispatch } from "../../store";
 
-export default function SearchForm({ onSearch }) {
-  const searchRef = useRef();
-  const dispatch = useDispatch();
+interface SearchFormProps {
+  onSearch: (term: string) => void;
+}
+
+export default function SearchForm({ onSearch }: SearchFormProps) {
+  const searchRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   function handleShow() {
     dispatch(uiActions.openModal());
   }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onSearch(searchRef.current.value);
+    if (searchRef.current) {
+      onSearch(searchRef.current.value);
+    }
   }
 
   return (
@@ -46,7 +54,6 @@ export default function SearchForm({ onSearch }) {
           </motion.button>
         </div>
       </form>
-      {/* {content} */}
     </>
   );
 }

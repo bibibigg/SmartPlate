@@ -1,14 +1,28 @@
+interface CalorieStatsProps {
+  calorieStats: {
+    BMR: number;
+    TDEE: number;
+    targetCalories: number;
+  };
+  todayCalories: number;
+  bodyData: {
+    goal: "maintain" | "lose" | "gain";
+  } | null;
+}
+
+type GoalType = "maintain" | "lose" | "gain";
+
 export default function CalorieStats({
   calorieStats,
   todayCalories,
   bodyData,
-}) {
-  const goal = {
+}: CalorieStatsProps) {
+  const goal: Record<GoalType, string> = {
     maintain: "체중 유지",
     lose: "체중 감량",
     gain: "근육 증량",
   };
-  const mygoal = goal[bodyData?.goal] || "정보없음";
+  const mygoal = bodyData?.goal ? goal[bodyData.goal] : "정보없음";
 
   return (
     <>

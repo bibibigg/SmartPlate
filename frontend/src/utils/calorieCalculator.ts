@@ -1,18 +1,50 @@
 import { getKoreanDate } from "./formatDate";
 
+// 타입 정의
+export interface BodyData {
+  weight: number;
+  height: number;
+  age: number;
+  gender: "male" | "female";
+  exerciseFrequency: number;
+  goal: "maintain" | "lose" | "gain";
+}
+
+export interface MealData {
+  date: string;
+  totalCalories: number;
+}
+
+export interface CalorieStats {
+  BMR: number;
+  TDEE: number;
+  targetCalories: number;
+}
+
+export interface CalorieStatsResult {
+  calorieStats: CalorieStats;
+  bodyData: BodyData | null;
+  totalCalories: number;
+}
+
 // BMR 계산
-export function calculateBMR(weight, height, age, gender) {
+export function calculateBMR(
+  weight: number,
+  height: number,
+  age: number,
+  gender: string
+): number {
   const base = 10 * weight + 6.25 * height - 5 * age;
   return gender === "male" ? base + 5 : base - 161;
 }
 
 // TDEE 계산
-export function calculateTDEE(BMR, exerciseFrequency) {
+export function calculateTDEE(BMR: number, exerciseFrequency: number): number {
   return exerciseFrequency * BMR;
 }
 
-//목표 칼로리 계산
-export function calculateTargetCalories(TDEE, goal) {
+// 목표 칼로리 계산
+export function calculateTargetCalories(TDEE: number, goal: string): number {
   switch (goal) {
     case "maintain":
       return TDEE;
@@ -25,7 +57,7 @@ export function calculateTargetCalories(TDEE, goal) {
   }
 }
 
-export function todayTotalCalories(MealsData) {
+export function todayTotalCalories(MealsData: MealData[]): number {
   const today = getKoreanDate().toISOString().split("T")[0];
   const mealsToday = MealsData.filter(
     (meal) => meal.date.split("T")[0] === today
@@ -37,7 +69,10 @@ export function todayTotalCalories(MealsData) {
   return totalCalories;
 }
 
-export function calculateCalorieStats(bodyData, mealsData) {
+export function calculateCalorieStats(
+  bodyData: BodyData[],
+  mealsData: MealData[]
+): CalorieStatsResult {
   const totalCalories = todayTotalCalories(mealsData);
 
   // bodyData가 없거나 빈 배열인 경우 기본값 반환

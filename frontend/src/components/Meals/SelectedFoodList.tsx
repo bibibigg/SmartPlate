@@ -3,14 +3,22 @@ import { getKoreanDate } from "../../utils/formatDate";
 import { updateMealsData } from "../../utils/http";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-// // 서빙사이즈 변경
+import React from "react";
+import { SelectedFood } from "../../store/meals/mealSlice";
+
+interface SelectedFoodListProps {
+  selectedFood: SelectedFood[];
+  onFoodDelete: (foodId: string) => void;
+  calculateCalories: (food: SelectedFood) => number;
+  onServingSizeChange: (food: SelectedFood, newServingSize: number) => void;
+}
 
 export default function SelectedFoodList({
   selectedFood,
   onFoodDelete,
   calculateCalories,
   onServingSizeChange,
-}) {
+}: SelectedFoodListProps) {
   const navigate = useNavigate();
   const totalCalories = selectedFood.reduce(
     (sum, food) => sum + calculateCalories(food),
@@ -24,12 +32,9 @@ export default function SelectedFoodList({
     },
   });
 
-  // console.log(selectedFood);
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!selectedFood || selectedFood.length === 0) {
-      // 조건 수정
-      // console.log("음식없음");
       return;
     }
 
@@ -38,13 +43,8 @@ export default function SelectedFoodList({
       date: getKoreanDate().toISOString(),
       mealItems: selectedFood,
       totalCalories: totalCalories,
-      // mealType : "breakfast" // 예시로 아침으로 설정
     };
     mutate(mealsRecord);
-    // const existingRecords = localStorage.getItem("mealsHistory");
-    // const records = existingRecords ? JSON.parse(existingRecords) : [];
-    // records.push(mealsRecord);
-    // localStorage.setItem("mealsHistory", JSON.stringify(records));
   }
   // mb-4 p-2 h-[42px] flex justify-center bg-blue-500 rounded text-white
   return (
@@ -56,7 +56,7 @@ export default function SelectedFoodList({
         {isPending && (
           <button
             type="submit"
-            on
+            disabled
             className="px-4 py-1 w-40 bg-gray-500 text-white rounded"
           >
             제출 중...
@@ -85,7 +85,6 @@ export default function SelectedFoodList({
         )}
       </div>
       <div className="mb-4 h-[400px] overflow-y-auto border dark:bg-gray-900 dark:border-white rounded ">
-        {/* <h3 className="font-bold mb-4">선택된 음식 목록</h3> */}
         {selectedFood.length === 0 ? (
           <p className="h-full flex items-center justify-center text-gray-500 dark:text-white text-center">
             선택된 음식이 없습니다.
@@ -111,7 +110,7 @@ export default function SelectedFoodList({
                       value={food.currentServing}
                       className="dark:text-white border rounded w-24"
                       onChange={(event) =>
-                        onServingSizeChange(food, event.target.value)
+                        onServingSizeChange(food, Number(event.target.value))
                       }
                     />
                     <label className="ml-2 dark:text-white">(g)</label>

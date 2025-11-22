@@ -1,4 +1,10 @@
-export default function ErrorBlock({ title, message }) {
+interface ErrorBlockProps {
+  title: string;
+  message: string;
+}
+
+
+export default function ErrorBlock({ title, message }: ErrorBlockProps) {
   return (
     <div className="bg-[#f0d9e5] my-4 p-4 rounded text-red-900 flex gap-8 items-center text-left">
       <div className="text-3xl w-12 h-12 text-white bg-red-900 rounded-full flex justify-center items-center">

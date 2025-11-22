@@ -1,9 +1,10 @@
-import { bodyInfoActions } from "./bodyInfoSlice";
+import { bodyInfoActions, BodyInfo } from "./bodyInfoSlice";
 import { uiActions } from "../UI/uiSlice";
 import { getKoreanDate } from "../../utils/formatDate";
+import { AppDispatch } from "../index";
 
 export function fetchBodyData() {
-  return function (dispatch) {
+  return function (dispatch: AppDispatch) {
     dispatch(
       uiActions.showNotification({
         status: "pending",
@@ -11,7 +12,7 @@ export function fetchBodyData() {
         message: "pending body data",
       })
     );
-    function fetchData() {
+    function fetchData(): BodyInfo[] {
       // 이 부분에 fetch파일에 들어있는 리액트 쿼리 함수를 사용
 
       const savedData = localStorage.getItem("bodyInfo");
@@ -49,21 +50,21 @@ export function fetchBodyData() {
   };
 }
 
-export function sendBodyData(bodyData) {
-  return function (dispatch) {
+export function sendBodyData(bodyData: Omit<BodyInfo, "updatedAt">) {
+  return function (dispatch: AppDispatch) {
     try {
       const koreanDateTime = getKoreanDate().toISOString();
       const savedData = localStorage.getItem("bodyInfo");
-      const parsedData = savedData ? JSON.parse(savedData) : [];
+      const parsedData: BodyInfo[] = savedData ? JSON.parse(savedData) : [];
 
-      const updateBodyInfo = {
+      const updateBodyInfo: BodyInfo = {
         ...bodyData,
         updatedAt: koreanDateTime,
       };
 
       const today = koreanDateTime.split("T")[0];
       const alreadyExists = parsedData.some(
-        (data) => data.updatedAt.split("T")[0] === today
+        (data: BodyInfo) => data.updatedAt.split("T")[0] === today
       );
 
       if (alreadyExists) {
@@ -77,7 +78,7 @@ export function sendBodyData(bodyData) {
       }
 
       const filteredData = alreadyExists
-        ? parsedData.filter((data) => data.updatedAt.split("T")[0] !== today)
+        ? parsedData.filter((data: BodyInfo) => data.updatedAt.split("T")[0] !== today)
         : parsedData;
 
       const updateData = [...filteredData, updateBodyInfo];
