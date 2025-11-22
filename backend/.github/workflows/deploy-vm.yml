@@ -57,3 +57,5 @@ jobs:
             pm2 startup | tail -n 1 | sudo bash
 
             echo "✅ Deployment finished successfully!"
+
+#ci/cd테스트
