@@ -1,0 +1,89 @@
+name: Deploy Backend to GCP VM
+
+on:
+  push:
+    branches:
+      - main
+      - chore/backend-githubAction # 테스트용 브랜치 추가
+    # paths:
+    #   - "backend/**"  # 임시로 비활성화 (테스트용)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # -------------------------------------
+      # 🚀 SSH로 GCP VM 접속 후 배포 (appleboy/ssh-action)
+      # -------------------------------------
+      - name: Deploy to GCP VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.GCP_HOST }}
+          username: ${{ secrets.GCP_SSH_USER }}
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          script_stop: true # 에러 발생 시 즉시 중단
+
+          script: |
+            #!/bin/bash -l
+            set -e
+
+            echo "🚀 Deploying SmartPlate backend to GCP VM..."
+
+            # 환경 파일 로드
+            [ -f "$HOME/.bash_profile" ] && source "$HOME/.bash_profile"
+            [ -f "$HOME/.profile" ] && source "$HOME/.profile"
+            [ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"
+
+            # 프로젝트 디렉토리 찾기
+            if [ -d "SmartPlate" ]; then
+              PROJECT_DIR="$(pwd)/SmartPlate"
+            elif [ -d "$HOME/SmartPlate" ]; then
+              PROJECT_DIR="$HOME/SmartPlate"
+            else
+              echo "❌ SmartPlate directory not found!"
+              ls -la
+              exit 1
+            fi
+
+            cd "$PROJECT_DIR"
+            echo "✅ Project directory: $(pwd)"
+
+            # 최신 코드 가져오기
+            git pull origin main
+
+            # NVM 로드 및 Node.js 설정
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+
+            if command -v nvm &> /dev/null; then
+              nvm use 24.11.1 || nvm install 24.11.1
+            fi
+
+            echo "Node: $(node --version) | NPM: $(npm --version)"
+
+            # Backend 폴더로 이동
+            cd backend
+
+            # 의존성 설치
+            npm ci --no-audit --no-fund
+
+            # TypeScript 빌드
+            npm run build
+
+            # PM2로 배포
+            if ! pm2 describe smart-plate-backend > /dev/null 2>&1; then
+              echo "Starting new PM2 process..."
+              pm2 start dist/server.js --name smart-plate-backend
+            else
+              echo "Restarting PM2 process..."
+              pm2 restart smart-plate-backend
+            fi
+
+            # PM2 설정 저장
+            pm2 save
+
+            echo "✅ Deployment finished successfully!!"
