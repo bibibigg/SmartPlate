@@ -1,7 +1,13 @@
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
-export default function Modal({ title, children, onClose }) {
+interface ModalProps {
+  title: string;
+  children: React.ReactNode;
+  onClose: () => void;
+}
+
+export default function Modal({ title, children, onClose }: ModalProps) {
   return createPortal(
     <>
       <div
@@ -23,6 +29,6 @@ export default function Modal({ title, children, onClose }) {
         {children}
       </motion.dialog>
     </>,
-    document.getElementById("modal")
+    document.getElementById("modal")!
   );
 }

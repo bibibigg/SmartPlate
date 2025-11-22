@@ -1,10 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { updateBodyData } from "../../utils/http";
+import { updateBodyData, BodyData, HttpError } from "../../utils/http";
 import { koreanDateTime } from "../../utils/formatDate";
 import { queryClient } from "../../utils/http";
+import React from "react";
+import { BodyInfo } from "../../store/bodyInfo/bodyInfoSlice";
 
-export default function BodyInfoForm({ bodyData }) {
+interface BodyInfoFormProps {
+  bodyData?: BodyInfo;
+}
+
+export default function BodyInfoForm({ bodyData }: BodyInfoFormProps) {
   const navigate = useNavigate();
 
   const { mutate, isPending, isError, error } = useMutation({
@@ -16,7 +22,7 @@ export default function BodyInfoForm({ bodyData }) {
   });
 
   const today = koreanDateTime.split("T")[0];
-  let lastEntryDate;
+  let lastEntryDate: string | null;
 
   if (!bodyData) {
     lastEntryDate = null;
@@ -24,12 +30,11 @@ export default function BodyInfoForm({ bodyData }) {
     lastEntryDate = bodyData.updatedAt.split("T")[0];
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const bodyInfoFormData = Object.fromEntries(formData.entries());
+    const formData = new FormData(event.currentTarget);
+    const bodyInfoFormData = Object.fromEntries(formData.entries()) as unknown as BodyData;
 
-    // try {
     if (lastEntryDate === today) {
       const confirmOverwrite = window.confirm(
         "오늘 이미 입력한 데이터가 있습니다. 덮어쓸까요?"
@@ -40,15 +45,8 @@ export default function BodyInfoForm({ bodyData }) {
     }
 
     mutate(bodyInfoFormData);
-
-    // } catch (error) {
-    //   console.error("데이터 저장 중 오류 발생:", error);
-    //   alert("데이터 저장에 실패했습니다. 다시 시도해주세요.");
-    // }
   }
 
-  // const dispatch = useDispatch();
-  // console.log(bodyData);
   // 상수 데이터 분리
   const EXERCISE_OPTIONS = [
     { value: "1.2", label: "거의 활동 없음" },
@@ -62,35 +60,6 @@ export default function BodyInfoForm({ bodyData }) {
     { value: "lose", label: "체중 감량" },
     { value: "gain", label: "근육 증량" },
   ];
-
-  // function handleChange(event) {
-  //   const { name, value } = event.target;
-  //   const updatedBodyData = {
-  //     ...bodyData,
-  //     [name]: value,
-  //   };
-  //   dispatch(updateBodyData(updatedBodyData));
-  // }
-
-  // function getFieldLabel(field) {
-  //   const fieldLabel = {
-  //     age: "나이",
-  //     height: "키",
-  //     weight: "체중",
-  //     muscle: "골격근량",
-  //     fatMass: "체지방량",
-  //   };
-  //   return fieldLabel[field];
-  // }
-
-  // const getPlaceholder = (field) =>
-  //   ({
-  //     age: "나이",
-  //     height: "신장 (cm)",
-  //     weight: "체중 (kg)",
-  //     muscle: "골격근량 (kg)",
-  //     fatMass: "체지방량 (kg)",
-  //   }[field]);
 
   return (
     <>
@@ -165,7 +134,6 @@ export default function BodyInfoForm({ bodyData }) {
             className="border p-2 dark:bg-gray-800  dark:border-white dark:text-white rounded w-full"
             key={bodyData?.exerciseFrequency}
             defaultValue={bodyData?.exerciseFrequency || ""}
-            // onChange={handleChange}
             required
           >
             {EXERCISE_OPTIONS.map(({ value, label }) => (
@@ -190,12 +158,8 @@ export default function BodyInfoForm({ bodyData }) {
           </select>
 
           {isError && (
-            // <ErrorBlock
-            //   title="전송 실패"
-            //   message={error.info?.message || "다시 시도해 주세요."}
-            // />
             <div className="bg-red-100 text-center text-2xl ">
-              {error.info?.message || "데이터 저장에 실패했습니다."}
+              {error instanceof HttpError ? error.info.message : "데이터 저장에 실패했습니다."}
             </div>
           )}
           {isPending && (

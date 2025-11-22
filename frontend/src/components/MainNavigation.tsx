@@ -4,13 +4,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { uiActions } from "../store/UI/uiSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
+import { RootState, AppDispatch } from "../store";
 
 export default function MainNavigation() {
-  const isDark = useSelector((state) => state.ui.isDark);
+  const isDark = useSelector((state: RootState) => state.ui.isDark);
   console.log(isDark);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  // 초기 렌더링 시 다크모드 상태 세팅팅
+  // 초기 렌더링 시 다크모드 상태 세팅
   useEffect(() => {
     const isDark = localStorage.getItem("isDark") === "true";
     if (isDark) {
@@ -19,9 +20,9 @@ export default function MainNavigation() {
     }
   }, [dispatch]);
 
-  // isDark상태 변경 시 로컬스토리지 업데이트트
+  // isDark상태 변경 시 로컬스토리지 업데이트
   useEffect(() => {
-    localStorage.setItem("isDark", isDark);
+    localStorage.setItem("isDark", isDark.toString());
   }, [isDark]);
 
   function handleThemeToggle() {

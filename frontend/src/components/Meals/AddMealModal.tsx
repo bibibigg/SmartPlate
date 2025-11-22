@@ -3,38 +3,46 @@ import { useDispatch } from "react-redux";
 import { mealActions } from "../../store/meals/mealSlice";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import React from "react";
+import { AppDispatch } from "../../store";
 
-export default function AddMealModal({ onDone }) {
+interface AddMealModalProps {
+  onDone: () => void;
+}
+
+export default function AddMealModal({ onDone }: AddMealModalProps) {
   const [showNutrition, setShowNutrition] = useState(false);
-  const dispatch = useDispatch();
-  function handleSubmit(event) {
+  const dispatch = useDispatch<AppDispatch>();
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const id = Math.random();
-    const name = formData.get("name");
-    const mainCategory = formData.get("mainCategory") || "직접입력";
-    const subCategory = formData.get("subCategory") || "직접입력";
+    const formData = new FormData(event.currentTarget);
+    const id = Math.random().toString();
+    const name = formData.get("name") as string;
+    const mainCategory = (formData.get("mainCategory") as string) || "직접입력";
+    const subCategory = (formData.get("subCategory") as string) || "직접입력";
     const servingSize = "100";
-    const calories = formData.get("calories");
-    const water = formData.get("water") || 0;
-    const protein = formData.get("protein") || 0;
-    const fat = formData.get("fat") || 0;
-    const carbohydrates = formData.get("carbohydrates") || 0;
-    const sugar = formData.get("sugar") || 0;
-    const fiber = formData.get("fiber") || 0;
-    const calcium = formData.get("calcium") || 0;
-    const iron = formData.get("iron") || 0;
-    const phosphorus = formData.get("phosphorus") || 0;
-    const potassium = formData.get("potassium") || 0;
-    const sodium = formData.get("sodium") || 0;
-    const vitaminA = formData.get("vitaminA") || 0;
-    const niacin = formData.get("niacin") || 0;
-    const vitaminC = formData.get("vitaminC") || 0;
-    const vitaminD = formData.get("vitaminD") || 0;
-    const cholesterol = formData.get("cholesterol") || 0;
-    const saturatedFat = formData.get("saturatedFat") || 0;
-    const brandName = formData.get("brandName") || "해당없음";
-    const totalWeight = formData.get("totalWeight");
+    const calories = Number(formData.get("calories"));
+    const water = Number(formData.get("water")) || 0;
+    const protein = Number(formData.get("protein")) || 0;
+    const fat = Number(formData.get("fat")) || 0;
+    const carbohydrates = Number(formData.get("carbohydrates")) || 0;
+    const sugar = Number(formData.get("sugar")) || 0;
+    const fiber = Number(formData.get("fiber")) || 0;
+    const calcium = Number(formData.get("calcium")) || 0;
+    const iron = Number(formData.get("iron")) || 0;
+    const phosphorus = Number(formData.get("phosphorus")) || 0;
+    const potassium = Number(formData.get("potassium")) || 0;
+    const sodium = Number(formData.get("sodium")) || 0;
+    const vitaminA = Number(formData.get("vitaminA")) || 0;
+    const niacin = Number(formData.get("niacin")) || 0;
+    const vitaminC = Number(formData.get("vitaminC")) || 0;
+    const vitaminD = Number(formData.get("vitaminD")) || 0;
+    const cholesterol = Number(formData.get("cholesterol")) || 0;
+    const saturatedFat = Number(formData.get("saturatedFat")) || 0;
+    const brandName = (formData.get("brandName") as string) || "해당없음";
+    const totalWeight = Number(formData.get("totalWeight"));
+
     const newFood = {
       id,
       name,
@@ -63,11 +71,8 @@ export default function AddMealModal({ onDone }) {
       totalWeight,
       currentServing: totalWeight,
     };
-    // const test = formData.get('servingSize');
-    // const MealData = Object.fromEntries(formData.entries());
 
     dispatch(mealActions.addSelectedFood(newFood));
-    // console.log(MealData);
     onDone();
   }
 
