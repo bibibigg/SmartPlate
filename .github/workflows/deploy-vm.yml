@@ -29,11 +29,10 @@ jobs:
             echo "🚀 Deploying SmartPlate backend to GCP VM..."
             # -------------------------------------------------
             # PATH 환경 변수 설정
-            export PATH=$PATH:/usr/local/bin:/usr/bin
-            export PATH=$PATH:$(npm prefix -g)/bin
-            # -------------------------------------------------
+            export PATH=$PATH:/home/aerl0077/.nvm/versions/node/v24.11.1/bin
             # 1) 프로젝트 루트 이동 (★ 실제 경로로 수정)
-            cd ~/SmartPlate
+            cd /home/aerl0077/SmartPlate || { echo "❌ ERROR: Failed to enter SmartPlate directory. Deployment aborted."; exit 1; }
+            echo "✅ Successfully moved to SmartPlate directory."
 
             # 2) 최신 코드 가져오기
             git pull origin main
