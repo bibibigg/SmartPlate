@@ -1,26 +1,13 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
+<<<<<<< HEAD
 *.sw?
 
 # Environment Variables
@@ -41,3 +28,6 @@ coverage/
 build/
 out/
 .vercel
+=======
+*.sw?
+>>>>>>> 21cc4e7 (feat: 프로젝트를 모노레포 구조로 변경)
