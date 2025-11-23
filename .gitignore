@@ -7,7 +7,6 @@
 *.ntvs*
 *.njsproj
 *.sln
-<<<<<<< HEAD
 *.sw?
 
 # Environment Variables
@@ -28,6 +27,3 @@ coverage/
 build/
 out/
 .vercel
-=======
-*.sw?
->>>>>>> 21cc4e7 (feat: 프로젝트를 모노레포 구조로 변경)
