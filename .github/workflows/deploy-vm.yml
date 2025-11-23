@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "backend/**"
+      - ".github/workflows/deploy-vm.yml"
 
 jobs:
   deploy:
@@ -16,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       # -------------------------------------
-      # 🚀 SSH로 GCP VM 접속 후 배포 (appleboy/ssh-action)
+      # 🚀 SSH로 GCP VM 접속 후 배포
       # -------------------------------------
       - name: Deploy to GCP VM
         uses: appleboy/ssh-action@master
@@ -24,7 +25,7 @@ jobs:
           host: ${{ secrets.GCP_HOST }}
           username: ${{ secrets.GCP_SSH_USER }}
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
-          script_stop: true # 에러 발생 시 즉시 중단
+          script_stop: true
 
           script: |
             #!/bin/bash -l
@@ -37,43 +38,44 @@ jobs:
             [ -f "$HOME/.profile" ] && source "$HOME/.profile"
             [ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"
 
-            # 프로젝트 디렉토리 찾기
-            if [ -d "SmartPlate" ]; then
-              PROJECT_DIR="$(pwd)/SmartPlate"
-            elif [ -d "$HOME/SmartPlate" ]; then
-              PROJECT_DIR="$HOME/SmartPlate"
-            else
-              echo "❌ SmartPlate directory not found!"
-              ls -la
-              exit 1
-            fi
-
-            cd "$PROJECT_DIR"
-            echo "✅ Project directory: $(pwd)"
-
-            # 최신 코드 가져오기
-            git pull origin main
-
-            # NVM 로드 및 Node.js 설정
+            # NVM 로드
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 
+            # 프로젝트 디렉토리로 이동 (없으면 clone)
+            if [ ! -d "$HOME/SmartPlate" ]; then
+              echo "📦 Cloning repository..."
+              cd $HOME
+              git clone https://github.com/${{ github.repository }}.git
+            fi
+
+            cd $HOME/SmartPlate
+
+            # 최신 코드 가져오기
+            echo "📥 Pulling latest code..."
+            git fetch origin
+            git reset --hard origin/main
+
+            # Backend 폴더로 이동
+            cd backend
+
+            # Node.js 버전 확인 및 설정
             if command -v nvm &> /dev/null; then
               nvm use 24.11.1 || nvm install 24.11.1
             fi
 
             echo "Node: $(node --version) | NPM: $(npm --version)"
 
-            # Backend 폴더로 이동
-            cd backend
-
             # 의존성 설치
+            echo "📦 Installing dependencies..."
             npm ci --no-audit --no-fund
 
             # TypeScript 빌드
+            echo "🏗️ Building TypeScript..."
             npm run build
 
             # PM2로 배포
+            echo "🚀 Deploying with PM2..."
             if ! pm2 describe smart-plate-backend > /dev/null 2>&1; then
               echo "Starting new PM2 process..."
               pm2 start dist/server.js --name smart-plate-backend
@@ -85,4 +87,4 @@ jobs:
             # PM2 설정 저장
             pm2 save
 
-            echo "✅ Deployment finished successfully!!"
+            echo "✅ Deployment finished successfully!"
