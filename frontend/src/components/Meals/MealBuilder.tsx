@@ -6,11 +6,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { mealActions } from "../../store/meals/mealSlice";
 import { RootState, AppDispatch } from "../../store";
 import { Food, SelectedFood } from "../../store/meals/mealSlice";
+import { useToast } from "../../hooks/useToast";
+import Toast from "../UI/Toast";
 
 export default function MealBuilder() {
   const [searchTerm, setSearchTerm] = useState("");
   const { selectedFood } = useSelector((state: RootState) => state.meal);
   const dispatch = useDispatch<AppDispatch>();
+  const { toast, showToast, hideToast } = useToast();
 
   function handleSearch(term: string) {
     setSearchTerm(term);
@@ -20,10 +23,11 @@ export default function MealBuilder() {
   // 중복 체크 후 추가
   function handleFoodClick(food: Food) {
     if (selectedFood.some((item) => item.id === food.id)) {
-      alert("이미 선택된 음식입니다.");
+      showToast("이미 선택된 음식입니다.", "warning");
       return;
     }
     dispatch(mealActions.addSelectedFood(food));
+    showToast(`${food.name}이(가) 추가되었습니다.`, "success");
   }
 
   // 서빙사이즈 변경
@@ -57,6 +61,12 @@ export default function MealBuilder() {
 
   return (
     <>
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={hideToast}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <SearchForm onSearch={handleSearch} />
