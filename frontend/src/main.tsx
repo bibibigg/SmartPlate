@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App.tsx";
 import store from "./store/index";
+import "./utils/chartSetup";
 
 const rootElement = document.getElementById("root");
 
