@@ -16,7 +16,7 @@ function CalorieProgressChart({
   goal,
 }: CalorieProgressChartProps) {
   const isDark = useSelector((state: RootState) => state.ui.isDark);
-  const percentage = Math.min(100, Math.round((current / target) * 100));
+  const percentage = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
   const isOver = current > target;
 
   // 목표에 따른 색상 (useMemo로 최적화)
