@@ -1,38 +1,16 @@
 import { getKoreanDate } from "./formatDate";
+import { BodyData, MealData, CalorieStats, CalorieStatsResult } from "../types";
 
-// 타입 정의
-export interface BodyData {
-  weight: number;
-  height: number;
-  age: number;
-  gender: "male" | "female";
-  exerciseFrequency: number;
-  goal: "maintain" | "lose" | "gain";
-}
+// 칼로리 조정 상수
+const CALORIE_DEFICIT_FOR_WEIGHT_LOSS = 500; // 체중 감량 시 일일 칼로리 감소량 (kcal)
+const CALORIE_SURPLUS_FOR_MUSCLE_GAIN = 300; // 근육 증량 시 일일 칼로리 증가량 (kcal)
 
-export interface MealData {
-  date: string;
-  totalCalories: number;
-}
-
-export interface CalorieStats {
-  BMR: number;
-  TDEE: number;
-  targetCalories: number;
-}
-
-export interface CalorieStatsResult {
-  calorieStats: CalorieStats;
-  bodyData: BodyData | null;
-  totalCalories: number;
-}
-
-// BMR 계산
+// BMR 계산 (Mifflin-St Jeor 공식)
 export function calculateBMR(
   weight: number,
   height: number,
   age: number,
-  gender: string
+  gender: "male" | "female"
 ): number {
   const base = 10 * weight + 6.25 * height - 5 * age;
   return gender === "male" ? base + 5 : base - 161;
@@ -44,14 +22,14 @@ export function calculateTDEE(BMR: number, exerciseFrequency: number): number {
 }
 
 // 목표 칼로리 계산
-export function calculateTargetCalories(TDEE: number, goal: string): number {
+export function calculateTargetCalories(TDEE: number, goal: "maintain" | "lose" | "gain"): number {
   switch (goal) {
     case "maintain":
       return TDEE;
     case "lose":
-      return TDEE - 500;
+      return TDEE - CALORIE_DEFICIT_FOR_WEIGHT_LOSS;
     case "gain":
-      return TDEE + 300;
+      return TDEE + CALORIE_SURPLUS_FOR_MUSCLE_GAIN;
     default:
       return TDEE; // 기본값으로 TDEE 반환
   }

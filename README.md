@@ -25,14 +25,14 @@
 
 ## 기술 스택
 
-- **프론트엔드**: React 19.0
+- **프론트엔드**: React 19.1.4
 - **빌드 도구**: Vite
 - **상태 관리**: Redux toolkit 2.8.2
 - **데이터 패칭**: Tanstack Query 5.76.1
 - **라우팅**: React Router 7.5.3
 - **스타일링**: Tailwind CSS 4.1.8
 - **애니메이션**: framer-motion 12.15.0
-- **배포**: railway, vercel
+- **배포**: GCP, vercel
 
 ## 주요 기능
 

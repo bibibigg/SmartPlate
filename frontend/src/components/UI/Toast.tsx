@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { MdCheckCircle, MdError, MdInfo, MdWarning } from "react-icons/md";
 
 export type ToastType = "success" | "error" | "warning" | "info";
@@ -12,6 +12,7 @@ interface ToastProps {
   duration?: number;
 }
 
+// 매 렌더링마다 재생성 방지를 위해 컴포넌트 외부로 이동
 const iconMap = {
   success: <MdCheckCircle size={24} />,
   error: <MdError size={24} />,
@@ -26,7 +27,7 @@ const colorMap = {
   info: "bg-blue-500",
 };
 
-export default function Toast({
+function Toast({
   message,
   type,
   isVisible,
@@ -70,3 +71,6 @@ export default function Toast({
     </AnimatePresence>
   );
 }
+
+// React.memo로 불필요한 리렌더링 방지
+export default memo(Toast);

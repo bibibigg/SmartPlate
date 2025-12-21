@@ -39,13 +39,28 @@ export default function MealBuilder() {
   function calculateCalories(food: SelectedFood): number {
     const baseGram = parseInt(food.servingSize || "100");
     const currentGram = parseInt(food.currentServing.toString());
-    if (isNaN(currentGram) || currentGram <= 0) {
+
+    if (isNaN(baseGram) || baseGram <= 0) {
       return 0; // 기본 서빙 사이즈가 유효하지 않은 경우
+    }
+
+    if (isNaN(currentGram) || currentGram <= 0) {
+      return 0; // 현재 서빙 사이즈가 유효하지 않은 경우
     }
 
     if (food.mainCategory === "직접입력") {
       const inputCalories = parseInt(food.calories.toString());
       const inputWeight = parseInt(food.totalWeight.toString());
+
+      // 직접입력 데이터 유효성 검사
+      if (isNaN(inputCalories) || inputCalories < 0) {
+        return 0; // 칼로리 값이 유효하지 않은 경우
+      }
+
+      if (isNaN(inputWeight) || inputWeight <= 0) {
+        return 0; // 중량 값이 유효하지 않은 경우 (division by zero 방지)
+      }
+
       return Math.round((inputCalories * currentGram) / inputWeight);
     }
 

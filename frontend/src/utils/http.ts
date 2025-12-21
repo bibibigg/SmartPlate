@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { SelectedFood } from "../store/meals/mealSlice";
+import { BodyData } from "../types";
 
 export const queryClient = new QueryClient();
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -51,17 +52,7 @@ export async function fetchData<T = unknown>({ signal, params, searchTerm }: Fet
   }
 }
 
-// Body Data Types
-export interface BodyData {
-  gender: string;
-  age: number;
-  height: number;
-  weight: number;
-  muscle: number;
-  fatMass: number;
-  exerciseFrequency: string;
-  goal: string;
-}
+// Body Data는 types/index.ts에서 import
 
 export async function updateBodyData(data: BodyData): Promise<BodyData> {
   try {
@@ -78,7 +69,7 @@ export async function updateBodyData(data: BodyData): Promise<BodyData> {
     if (!response.ok) {
       throw new HttpError("Failed to update body data", response.status, responseData);
     }
-    return data;
+    return responseData;
   } catch (error) {
     if (error instanceof HttpError) {
       throw error;
@@ -103,7 +94,7 @@ export interface MealData {
 
 // Meal Record Type (for saving meal history)
 export interface MealRecord {
-  id: number;
+  id?: number;
   date: string;
   mealItems: SelectedFood[];
   totalCalories: number;

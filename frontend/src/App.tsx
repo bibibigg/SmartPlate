@@ -2,11 +2,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./utils/http";
 import RootLayout from "./layouts/Roots";
-import HomePage from "./pages/HomePage";
-import BodyInfoPage, { loader as bodyInfoLoader } from "./pages/BodyInfo";
-import MealsRerordPage from "./pages/MealsRecord";
-import AnalysisPage from "./pages/Analysis";
-import InfoPage from "./pages/info";
+import HomePage from "./pages/HomePage.tsx";
+import BodyInfoPage, { loader as bodyInfoLoader } from "./pages/BodyInfo.tsx";
+import MealsRecordPage from "./pages/MealsRecord.tsx";
+import AnalysisPage from "./pages/Analysis.tsx";
+import InfoPage from "./pages/info.tsx";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path: "analyze", element: <AnalysisPage /> },
       {
         path: "record",
-        element: <MealsRerordPage />,
+        element: <MealsRecordPage />,
       },
     ],
   },

@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import { MdLocalFireDepartment, MdFitnessCenter, MdFlag } from "react-icons/md";
 import CalorieProgressChart from "./CalorieProgressChart";
@@ -17,21 +18,27 @@ interface CalorieStatsProps {
 
 type GoalType = "maintain" | "lose" | "gain";
 
-export default function CalorieStats({
+// 매 렌더링마다 재생성 방지를 위해 컴포넌트 외부로 이동
+const GOAL_LABELS: Record<GoalType, string> = {
+  maintain: "체중 유지",
+  lose: "체중 감량",
+  gain: "근육 증량",
+};
+
+function CalorieStats({
   calorieStats,
   todayCalories,
   bodyData,
 }: CalorieStatsProps) {
-  const goal: Record<GoalType, string> = {
-    maintain: "체중 유지",
-    lose: "체중 감량",
-    gain: "근육 증량",
-  };
-  const mygoal = bodyData?.goal ? goal[bodyData.goal] : "정보없음";
-  const goalType = bodyData?.goal || "maintain";
+  // 파생 상태를 useMemo로 최적화
+  const { mygoal, goalType, remaining, isOver } = useMemo(() => {
+    const goalType = bodyData?.goal || "maintain";
+    const mygoal = bodyData?.goal ? GOAL_LABELS[bodyData.goal] : "정보없음";
+    const remaining = calorieStats.targetCalories - todayCalories;
+    const isOver = remaining < 0;
 
-  const remaining = calorieStats.targetCalories - todayCalories;
-  const isOver = remaining < 0;
+    return { mygoal, goalType, remaining, isOver };
+  }, [bodyData?.goal, calorieStats.targetCalories, todayCalories]);
 
   return (
     <div className="space-y-6">
@@ -168,3 +175,6 @@ export default function CalorieStats({
     </div>
   );
 }
+
+// React.memo로 불필요한 리렌더링 방지
+export default memo(CalorieStats);

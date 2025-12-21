@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
@@ -7,7 +8,7 @@ interface ModalProps {
   onClose: () => void;
 }
 
-export default function Modal({ title, children, onClose }: ModalProps) {
+function Modal({ title, children, onClose }: ModalProps) {
   return createPortal(
     <>
       <div
@@ -32,3 +33,6 @@ export default function Modal({ title, children, onClose }: ModalProps) {
     document.getElementById("modal")!
   );
 }
+
+// React.memo로 불필요한 리렌더링 방지
+export default memo(Modal);

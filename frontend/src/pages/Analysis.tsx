@@ -3,7 +3,7 @@ import { FaChartLine, FaRobot, FaBrain } from "react-icons/fa";
 
 export default function AnalysisPage() {
   return (
-    <div className={"min-h-screen dark:text-white text-gray-900"}>
+    <div className="min-h-screen dark:text-white text-gray-900">
       <div className="container mx-auto px-4 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

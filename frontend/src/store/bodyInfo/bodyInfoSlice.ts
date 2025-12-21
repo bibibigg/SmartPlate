@@ -1,17 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { koreanDateTime } from "../../utils/formatDate";
-
-export interface BodyInfo {
-  gender: string;
-  age: number;
-  height: number;
-  weight: number;
-  muscle: number;
-  fatMass: number;
-  exerciseFrequency: number;
-  goal: string;
-  updatedAt: string;
-}
+import { BodyInfo } from "../../types";
 
 interface BodyInfoState {
   info: BodyInfo[];
@@ -34,8 +23,10 @@ const bodyInfoSlice = createSlice({
         (data) => data.updatedAt.split("T")[0] === today
       );
       if (idx >= 0) {
-        state.info = [action.payload];
+        // 오늘 날짜 데이터가 이미 존재하면 해당 항목만 업데이트
+        state.info[idx] = action.payload;
       } else {
+        // 새로운 날짜 데이터 추가
         state.info.push(action.payload);
       }
     },
