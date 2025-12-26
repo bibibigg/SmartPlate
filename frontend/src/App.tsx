@@ -7,8 +7,6 @@ import BodyInfoPage, { loader as bodyInfoLoader } from "./pages/BodyInfo.tsx";
 import MealsRecordPage from "./pages/MealsRecord.tsx";
 import AnalysisPage from "./pages/Analysis.tsx";
 import InfoPage from "./pages/info.tsx";
-import Snowfall from "react-snowfall";
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,17 +37,6 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Snowfall
-        color="#fff"
-        snowflakeCount={200}
-        style={{
-          position: "fixed",
-          width: "100vw",
-          height: "100vh",
-          zIndex: 9999,
-          pointerEvents: "none",
-        }}
-      />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
