@@ -27,12 +27,13 @@
 
 - **프론트엔드**: React 19.1.4
 - **빌드 도구**: Vite
-- **상태 관리**: Redux toolkit 2.8.2
+- **상태 관리**: Redux Toolkit 2.8.2, Zustand
 - **데이터 패칭**: Tanstack Query 5.76.1
 - **라우팅**: React Router 7.5.3
 - **스타일링**: Tailwind CSS 4.1.8
 - **애니메이션**: framer-motion 12.15.0
-- **배포**: GCP, vercel
+- **AI**: OpenAI GPT-5.2 (Vision API), Zod
+- **배포**: GCP, Vercel
 
 ## 주요 기능
 
@@ -56,6 +57,13 @@
 <img src="https://raw.githubusercontent.com/bibibigg/SmartPlate/main/frontend/public/mealModal.png" alt="직접입력"/>
 
 - **식사 정보 직접 입력**: 검색을 통해 음식정보가 없을경우 + 버튼을 클릭하여 직접 입력을 통한 음식 입력
+
+<img src="https://raw.githubusercontent.com/bibibigg/SmartPlate/main/frontend/public/ImageAnalysis.png" alt="ai이미지분석"/>
+
+- **AI 이미지 분석**: OpenAI GPT-5.2 Vision API를 통한 음식 사진 자동 인식 및 칼로리 추정
+  - 음식 사진 업로드만으로 자동으로 음식 이름, 칼로리, 영양소 분석
+  - Structured Outputs(Zod)를 통한 타입 안전한 데이터 처리
+  - 확신도 제공으로 분석 신뢰도 확인 가능
 
 ### 3. 대시보드 및 시각화
 
