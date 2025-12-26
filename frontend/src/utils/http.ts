@@ -126,3 +126,45 @@ export async function updateMealsData(data: MealRecord): Promise<MealRecord> {
     });
   }
 }
+
+// AI Image Analysis Types
+export interface AnalyzedFood {
+  name: string;
+  calories: number;
+  weight: number;
+  protein: number;
+  carbohydrates: number;
+  fat: number;
+  confidence: number;
+}
+
+export interface FoodAnalysisResponse {
+  foods: AnalyzedFood[];
+}
+
+export async function analyzeFoodImage(base64Image: string): Promise<FoodAnalysisResponse> {
+  try {
+    const response = await fetch(`${BASE_URL}/api/analyze-food-image`, {
+      method: "POST",
+      body: JSON.stringify({ image: base64Image }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new HttpError("Failed to analyze food image", response.status, responseData);
+    }
+    return responseData;
+  } catch (error) {
+    if (error instanceof HttpError) {
+      throw error;
+    }
+    throw new HttpError("이미지 분석에 실패했습니다.", 500, {
+      title: "분석 오류",
+      message: "이미지 분석 중 오류가 발생했습니다. 다시 시도해주세요.",
+    });
+  }
+}
