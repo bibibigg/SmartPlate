@@ -16,7 +16,7 @@ import {
   MealRequest,
   ApiResponse,
 } from "./types";
-import { supabase } from "./config/supabase";
+import { supabase } from "./config/supabase.js";
 
 // 환경 변수 로드
 dotenv.config();
