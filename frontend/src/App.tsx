@@ -7,6 +7,8 @@ import BodyInfoPage, { loader as bodyInfoLoader } from "./pages/BodyInfo.tsx";
 import MealsRecordPage from "./pages/MealsRecord.tsx";
 import AnalysisPage from "./pages/Analysis.tsx";
 import InfoPage from "./pages/info.tsx";
+import SignUpPage from "./pages/SignUp.tsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "record",
         element: <MealsRecordPage />,
+      },
+      {
+        path: "signup",
+        element: <SignUpPage />,
       },
     ],
   },

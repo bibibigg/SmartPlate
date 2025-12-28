@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 import {
   BodyInfo,
   BodyInfoRequest,
@@ -15,6 +16,7 @@ import {
   MealRequest,
   ApiResponse,
 } from "./types";
+import { supabase } from "./config/supabase";
 
 // 환경 변수 로드
 dotenv.config();
@@ -46,6 +48,95 @@ app.use(cors());
 // 서버 상태 확인
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "서버가 정상 작동 중입니다!" });
+});
+
+// 회원가입 API
+app.post("/api/auth/signup", async (req: Request, res: Response) => {
+  try {
+    const { userId, username, password } = req.body;
+
+    // 입력 검증
+    if (!userId || !username || !password) {
+      return res.status(400).json({
+        message: "아이디, 닉네임, 비밀번호를 모두 입력해주세요.",
+      });
+    }
+
+    // 아이디 길이 검증 (최소 4자)
+    if (userId.length < 4) {
+      return res.status(400).json({
+        message: "아이디는 최소 4자 이상이어야 합니다.",
+      });
+    }
+
+    // 닉네임 길이 검증 (최소 2자)
+    if (username.length < 2) {
+      return res.status(400).json({
+        message: "닉네임은 최소 2자 이상이어야 합니다.",
+      });
+    }
+
+    // 비밀번호 길이 검증 (최소 6자)
+    if (password.length < 6) {
+      return res.status(400).json({
+        message: "비밀번호는 최소 6자 이상이어야 합니다.",
+      });
+    }
+
+    // 중복 아이디 체크
+    const { data: existingUser } = await supabase
+      .from("users")
+      .select("id")
+      .eq("user_id", userId)
+      .single();
+
+    if (existingUser) {
+      return res.status(409).json({
+        message: "이미 존재하는 아이디입니다.",
+      });
+    }
+
+    // 비밀번호 해싱
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // 사용자 생성
+    const { data: newUser, error: insertError } = await supabase
+      .from("users")
+      .insert([
+        {
+          user_id: userId,
+          username: username,
+          password: hashedPassword,
+        },
+      ])
+      .select()
+      .single();
+
+    if (insertError) {
+      console.error("사용자 생성 오류:", insertError);
+      return res.status(500).json({
+        message: "회원가입 중 오류가 발생했습니다.",
+      });
+    }
+
+    res.status(201).json({
+      message: "회원가입이 완료되었습니다.",
+      user: {
+        id: newUser.id,
+        userId: newUser.user_id,
+        username: newUser.username,
+      },
+    });
+  } catch (error) {
+    console.error("회원가입 오류:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    res.status(500).json({
+      message: "회원가입에 실패했습니다.",
+      error: errorMessage,
+    });
+  }
 });
 
 // BodyInfo 조회

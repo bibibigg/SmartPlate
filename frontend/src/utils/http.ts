@@ -127,6 +127,51 @@ export async function updateMealsData(data: MealRecord): Promise<MealRecord> {
   }
 }
 
+// Auth Types
+export interface SignUpData {
+  userId: string;
+  username: string;
+  password: string;
+}
+
+export interface SignUpResponse {
+  message: string;
+  user: {
+    id: string;
+    userId: string;
+    username: string;
+  };
+}
+
+export async function signUp(data: SignUpData): Promise<SignUpResponse> {
+  try {
+    const response = await fetch(`${BASE_URL}/api/auth/signup`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new HttpError("Failed to sign up", response.status, {
+        message: responseData.message || "회원가입에 실패했습니다.",
+      });
+    }
+    return responseData;
+  } catch (error) {
+    if (error instanceof HttpError) {
+      throw error;
+    }
+    throw new HttpError("서버 연결에 실패했습니다.", 500, {
+      title: "연결 오류",
+      message: "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.",
+    });
+  }
+}
+
 // AI Image Analysis Types
 export interface AnalyzedFood {
   name: string;
