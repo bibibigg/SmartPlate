@@ -32,6 +32,7 @@
 - **라우팅**: React Router 7.5.3
 - **스타일링**: Tailwind CSS 4.1.8
 - **애니메이션**: framer-motion 12.15.0
+- **데이터베이스**: Supabase (PostgreSQL)
 - **AI**: OpenAI GPT-5.2 (Vision API), Zod
 - **배포**: GCP, Vercel
 
