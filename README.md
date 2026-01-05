@@ -25,16 +25,32 @@
 
 ## 기술 스택
 
-- **프론트엔드**: React 19.1.4
+### 프론트엔드
+
+- **React**: 19.1.4
 - **빌드 도구**: Vite
+- **언어**: TypeScript 5.9.3
 - **상태 관리**: Redux Toolkit 2.8.2, Zustand
 - **데이터 패칭**: Tanstack Query 5.76.1
 - **라우팅**: React Router 7.5.3
 - **스타일링**: Tailwind CSS 4.1.8
 - **애니메이션**: framer-motion 12.15.0
+- **검증**: Zod 4.2.1
+
+### 백엔드
+
+- **런타임**: Node.js
+- **Express**: 4.18.2
+- **언어**: TypeScript 5.9.3
 - **데이터베이스**: Supabase (PostgreSQL)
-- **AI**: OpenAI GPT-5.2 (Vision API), Zod
-- **배포**: GCP, Vercel
+- **AI API**: OpenAI GPT-5.2
+- **인증**: bcrypt 6.0.0
+- **검증**: Zod 4.2.1
+
+### 배포 및 인프라
+
+- **프론트엔드 배포**: Vercel
+- **백엔드 배포**: GCP
 
 ## 주요 기능
 
