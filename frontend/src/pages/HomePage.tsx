@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import CalorieStats from "../components/Dashboard/CalorieStats";
 import { useQuery } from "@tanstack/react-query";
-import { fetchData, HttpError } from "../utils/http";
+import { fetchData, HttpError, queryClient } from "../utils/http";
 import { BodyData, MealData } from "../types";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorBlock from "../components/UI/ErrorBlock";
@@ -147,4 +147,20 @@ export default function HomePage() {
       />
     </>
   );
+}
+
+// Loader: 페이지 진입 전에 필요한 데이터를 병렬로 prefetch
+export function loader() {
+  return Promise.all([
+    queryClient.ensureQueryData({
+      queryKey: QUERY_KEYS.BODY_INFO,
+      queryFn: ({ signal }) =>
+        fetchData<BodyData[]>({ signal, params: "bodyinfo" }),
+    }),
+    queryClient.ensureQueryData({
+      queryKey: QUERY_KEYS.MY_MEALS,
+      queryFn: ({ signal }) =>
+        fetchData<MealData[]>({ signal, params: "myMeals" }),
+    }),
+  ]);
 }

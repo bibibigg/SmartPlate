@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./utils/http";
 import RootLayout from "./layouts/Roots";
-import HomePage from "./pages/HomePage.tsx";
+import HomePage, { loader as homeLoader } from "./pages/HomePage.tsx";
 import BodyInfoPage, { loader as bodyInfoLoader } from "./pages/BodyInfo.tsx";
 import MealsRecordPage from "./pages/MealsRecord.tsx";
 import AnalysisPage from "./pages/Analysis.tsx";
@@ -17,6 +17,7 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <HomePage />,
+        loader: homeLoader,
       },
       {
         path: "info",
