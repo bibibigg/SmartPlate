@@ -44,22 +44,28 @@ export default function HomePage() {
 
   // 온보딩 모달 표시 로직 (localStorage 기반)
   useEffect(() => {
-    // 로딩 중이거나 신체 정보가 있으면 모달 표시 안 함
-    if (isPending || (bodyData && bodyData.length > 0)) {
+    // 1. 신체 정보가 있으면 즉시 모달 닫기 (캐시 업데이트 반영)
+    if (bodyData && bodyData.length > 0) {
+      setShowOnboarding(false);
       return;
     }
 
-    // 사용자가 "다음에 입력"을 선택한 적이 있는지 확인
+    // 2. 로딩 중이면 대기
+    if (isPending) {
+      return;
+    }
+
+    // 3. 사용자가 "다음에 입력"을 선택한 적이 있는지 확인
     const dismissed = localStorage.getItem(ONBOARDING_DISMISSED_KEY);
     if (dismissed) {
       const daysPassed =
         (Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24);
       if (daysPassed < ONBOARDING_DISMISS_DAYS) {
-        return; // 7일 이내면 표시 안 함
+        return; // 1일 이내면 표시 안 함
       }
     }
 
-    // 신체 정보가 없으면 모달 표시
+    // 4. 신체 정보가 없으면 모달 표시
     if (!bodyData || bodyData.length === 0) {
       setShowOnboarding(true);
     }
