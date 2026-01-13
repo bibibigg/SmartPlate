@@ -30,7 +30,7 @@
 - **React**: 19.1.4
 - **빌드 도구**: Vite
 - **언어**: TypeScript 5.9.3
-- **상태 관리**: Redux Toolkit 2.8.2, Zustand
+- **상태 관리**: Zustand
 - **데이터 패칭**: Tanstack Query 5.76.1
 - **라우팅**: React Router 7.5.3
 - **스타일링**: Tailwind CSS 4.1.8
