@@ -1,8 +1,7 @@
 import { useMemo, memo } from "react";
 import { Bar } from "react-chartjs-2";
 import { ChartOptions } from "chart.js";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useUIStore } from "../../store/UI/uiSlice";
 
 interface NutrientBarChartProps {
   bmr: number;
@@ -15,7 +14,7 @@ function NutrientBarChart({
   tdee,
   target,
 }: NutrientBarChartProps) {
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useUIStore((state) => state.isDark);
   // 차트 데이터 객체 (useMemo로 최적화)
   const data = useMemo(
     () => ({

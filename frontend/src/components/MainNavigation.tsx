@@ -1,24 +1,24 @@
 import { Link } from "react-router-dom";
 import { MoonIcon, SunIcon } from "./UI/DarkModeIcon";
-import { useSelector, useDispatch } from "react-redux";
-import { uiActions } from "../store/UI/uiSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { RootState, AppDispatch } from "../store";
+import { useUIStore } from "../store/UI/uiSlice";
 
 export default function MainNavigation() {
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useUIStore((state) => state.isDark);
+  const setInitialTheme = useUIStore((state) => state.setInitialTheme);
+  const toggleTheme = useUIStore((state) => state.toggleTheme);
+
   console.log(isDark);
-  const dispatch = useDispatch<AppDispatch>();
 
   // 초기 렌더링 시 다크모드 상태 세팅
   useEffect(() => {
     const isDark = localStorage.getItem("isDark") === "true";
     if (isDark) {
       document.documentElement.classList.add("dark");
-      dispatch(uiActions.setInitialTheme(true));
+      setInitialTheme(true);
     }
-  }, [dispatch]);
+  }, [setInitialTheme]);
 
   // isDark상태 변경 시 로컬스토리지 업데이트
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function MainNavigation() {
 
   function handleThemeToggle() {
     document.documentElement.classList.toggle("dark");
-    dispatch(uiActions.toggleTheme());
+    toggleTheme();
   }
 
   return (

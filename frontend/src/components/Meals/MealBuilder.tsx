@@ -2,17 +2,16 @@ import { useState } from "react";
 import SearchForm from "./SearchForm";
 import SearchResults from "./SearchResults";
 import SelectedFoodList from "./SelectedFoodList";
-import { useSelector, useDispatch } from "react-redux";
-import { mealActions } from "../../store/meals/mealSlice";
-import { RootState, AppDispatch } from "../../store";
-import { Food, SelectedFood } from "../../store/meals/mealSlice";
+import { Food, SelectedFood, useMealStore } from "../../store/meals/mealSlice";
 import { useToast } from "../../hooks/useToast";
 import Toast from "../UI/Toast";
 
 export default function MealBuilder() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { selectedFood } = useSelector((state: RootState) => state.meal);
-  const dispatch = useDispatch<AppDispatch>();
+  const selectedFood = useMealStore((state) => state.selectedFood);
+  const addSelectedFood = useMealStore((state) => state.addSelectedFood);
+  const changeServingSize = useMealStore((state) => state.changeServingSize);
+  const removeSelectedFood = useMealStore((state) => state.removeSelectedFood);
   const { toast, showToast, hideToast } = useToast();
 
   function handleSearch(term: string) {
@@ -26,13 +25,13 @@ export default function MealBuilder() {
       showToast("이미 선택된 음식입니다.", "warning");
       return;
     }
-    dispatch(mealActions.addSelectedFood(food));
+    addSelectedFood(food);
     showToast(`${food.name}이(가) 추가되었습니다.`, "success");
   }
 
   // 서빙사이즈 변경
   function handleServingChange(food: SelectedFood, newSize: number) {
-    dispatch(mealActions.ChangeServingSize({ id: food.id, newSize }));
+    changeServingSize(food.id, newSize);
   }
 
   // 칼로리 계산
@@ -71,7 +70,7 @@ export default function MealBuilder() {
   }
 
   function handleDeleteFood(foodId: string) {
-    dispatch(mealActions.removeSelectedFood(foodId));
+    removeSelectedFood(foodId);
   }
 
   return (

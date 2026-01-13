@@ -1,8 +1,7 @@
 import { useMemo, memo } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { ChartOptions } from "chart.js";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useUIStore } from "../../store/UI/uiSlice";
 
 interface CalorieProgressChartProps {
   current: number;
@@ -15,7 +14,7 @@ function CalorieProgressChart({
   target,
   goal,
 }: CalorieProgressChartProps) {
-  const isDark = useSelector((state: RootState) => state.ui.isDark);
+  const isDark = useUIStore((state) => state.isDark);
   const percentage = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
   const isOver = current > target;
 

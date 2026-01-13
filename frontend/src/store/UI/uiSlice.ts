@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { create } from "zustand";
 
 interface Notification {
   status: string;
@@ -10,40 +10,41 @@ interface UIState {
   notification: Notification | null;
   isShowModal: boolean;
   isDark: boolean;
+
+  // Actions
+  showNotification: (notification: Notification) => void;
+  openModal: () => void;
+  closeModal: () => void;
+  setInitialTheme: (isDark: boolean) => void;
+  toggleTheme: () => void;
 }
 
-const initialState: UIState = {
+const initialState = {
   notification: null,
   isShowModal: false,
   isDark: false,
 };
 
-const uiSlice = createSlice({
-  name: "ui",
-  initialState,
-  reducers: {
-    showNotification(state, action: PayloadAction<Notification>) {
-      state.notification = {
-        status: action.payload.status,
-        title: action.payload.title,
-        message: action.payload.message,
-      };
-    },
-    openModal(state) {
-      state.isShowModal = true;
-    },
-    closeModal(state) {
-      state.isShowModal = false;
-    },
-    setInitialTheme(state, action: PayloadAction<boolean>) {
-      state.isDark = action.payload;
-    },
-    toggleTheme(state) {
-      state.isDark = !state.isDark;
-    },
+export const useUIStore = create<UIState>((set) => ({
+  ...initialState,
+
+  showNotification: (notification) => {
+    set({ notification });
   },
-});
 
-export const uiActions = uiSlice.actions;
+  openModal: () => {
+    set({ isShowModal: true });
+  },
 
-export default uiSlice;
+  closeModal: () => {
+    set({ isShowModal: false });
+  },
+
+  setInitialTheme: (isDark) => {
+    set({ isDark });
+  },
+
+  toggleTheme: () => {
+    set((state) => ({ isDark: !state.isDark }));
+  },
+}));

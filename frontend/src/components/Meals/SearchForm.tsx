@@ -1,9 +1,7 @@
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { uiActions } from "../../store/UI/uiSlice";
 import { motion } from "framer-motion";
 import React from "react";
-import { AppDispatch } from "../../store";
+import { useUIStore } from "../../store/UI/uiSlice";
 
 interface SearchFormProps {
   onSearch: (term: string) => void;
@@ -11,10 +9,10 @@ interface SearchFormProps {
 
 export default function SearchForm({ onSearch }: SearchFormProps) {
   const searchRef = useRef<HTMLInputElement>(null);
-  const dispatch = useDispatch<AppDispatch>();
+  const openModal = useUIStore((state) => state.openModal);
 
   function handleShow() {
-    dispatch(uiActions.openModal());
+    openModal();
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

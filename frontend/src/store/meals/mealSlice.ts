@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { create } from "zustand";
 
 export interface Food {
   id: string;
@@ -37,42 +37,47 @@ export interface SelectedFood extends Food {
 interface MealState {
   foodData: Food[];
   selectedFood: SelectedFood[];
+
+  // Actions
+  setFoodData: (foods: Food[]) => void;
+  addSelectedFood: (food: Food) => void;
+  removeSelectedFood: (id: string) => void;
+  changeServingSize: (id: string, newSize: number) => void;
 }
 
-const initialState: MealState = {
+const initialState = {
   foodData: [],
   selectedFood: [],
 };
 
-const mealSlice = createSlice({
-  name: "food",
-  initialState,
-  reducers: {
-    setFoodData(state, action: PayloadAction<Food[]>) {
-      state.foodData = action.payload;
-    },
-    addSelectedFood(state, action: PayloadAction<Food>) {
-      const food = action.payload;
-      const foodWithCurrentServing: SelectedFood = {
-        ...food,
-        currentServing: food.totalWeight,
-      };
-      state.selectedFood.push(foodWithCurrentServing);
-    },
-    removeSelectedFood(state, action: PayloadAction<string>) {
-      state.selectedFood = state.selectedFood.filter(
-        (food) => food.id !== action.payload
-      );
-    },
-    ChangeServingSize(state, action: PayloadAction<{ id: string; newSize: number }>) {
-      const { id, newSize } = action.payload;
-      state.selectedFood = state.selectedFood.map((item) =>
-        item.id === id ? { ...item, currentServing: newSize } : item
-      );
-    },
+export const useMealStore = create<MealState>((set) => ({
+  ...initialState,
+
+  setFoodData: (foods) => {
+    set({ foodData: foods });
   },
-});
 
-export const mealActions = mealSlice.actions;
+  addSelectedFood: (food) => {
+    const foodWithCurrentServing: SelectedFood = {
+      ...food,
+      currentServing: food.totalWeight,
+    };
+    set((state) => ({
+      selectedFood: [...state.selectedFood, foodWithCurrentServing],
+    }));
+  },
 
-export default mealSlice;
+  removeSelectedFood: (id) => {
+    set((state) => ({
+      selectedFood: state.selectedFood.filter((food) => food.id !== id),
+    }));
+  },
+
+  changeServingSize: (id, newSize) => {
+    set((state) => ({
+      selectedFood: state.selectedFood.map((item) =>
+        item.id === id ? { ...item, currentServing: newSize } : item
+      ),
+    }));
+  },
+}));

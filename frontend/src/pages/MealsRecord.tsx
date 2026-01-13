@@ -1,22 +1,21 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import MealBuilder from "../components/Meals/MealBuilder";
 import AddMealModal from "../components/Meals/AddMealModal";
 import ImageAnalysisModal from "../components/Meals/ImageAnalysisModal";
-import { uiActions } from "../store/UI/uiSlice";
-import { mealActions } from "../store/meals/mealSlice";
+import { useUIStore } from "../store/UI/uiSlice";
+import { useMealStore } from "../store/meals/mealSlice";
 import { AnimatePresence } from "framer-motion";
-import { RootState, AppDispatch } from "../store";
 import { FiCamera } from "react-icons/fi";
 import { AnalyzedFood } from "../utils/http";
 
 export default function MealsRecordPage() {
-  const { isShowModal } = useSelector((state: RootState) => state.ui);
-  const dispatch = useDispatch<AppDispatch>();
+  const isShowModal = useUIStore((state) => state.isShowModal);
+  const closeModal = useUIStore((state) => state.closeModal);
+  const addSelectedFood = useMealStore((state) => state.addSelectedFood);
   const [showImageAnalysis, setShowImageAnalysis] = useState(false);
 
   function handleDone() {
-    dispatch(uiActions.closeModal());
+    closeModal();
   }
 
   function handleOpenImageAnalysis() {
@@ -43,7 +42,7 @@ export default function MealsRecordPage() {
         fat: food.fat,
         currentServing: food.weight,
       };
-      dispatch(mealActions.addSelectedFood(newFood));
+      addSelectedFood(newFood);
     });
   }
 

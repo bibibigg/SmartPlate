@@ -1,10 +1,8 @@
 import Modal from "../UI/Modal";
-import { useDispatch } from "react-redux";
-import { mealActions } from "../../store/meals/mealSlice";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import { AppDispatch } from "../../store";
+import { useMealStore } from "../../store/meals/mealSlice";
 
 interface AddMealModalProps {
   onDone: () => void;
@@ -12,7 +10,7 @@ interface AddMealModalProps {
 
 export default function AddMealModal({ onDone }: AddMealModalProps) {
   const [showNutrition, setShowNutrition] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
+  const addSelectedFood = useMealStore((state) => state.addSelectedFood);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -72,7 +70,7 @@ export default function AddMealModal({ onDone }: AddMealModalProps) {
       currentServing: totalWeight,
     };
 
-    dispatch(mealActions.addSelectedFood(newFood));
+    addSelectedFood(newFood);
     onDone();
   }
 
