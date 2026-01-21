@@ -89,88 +89,91 @@ function CalorieStats({
         </div>
       </motion.div>
 
-      {/* 차트 섹션 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
-      >
-        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-          <MdFitnessCenter className="text-[#00BCD4]" />
-          칼로리 비교
-        </h2>
-        <NutrientBarChart
-          bmr={calorieStats.BMR}
-          tdee={calorieStats.TDEE}
-          target={calorieStats.targetCalories}
-        />
-      </motion.div>
-
-      {/* 상세 정보 카드 */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* 차트 섹션 + 상세 정보 카드 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* 차트 섹션 */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 border-l-4 border-blue-500"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
         >
-          <div className="flex items-center gap-3 mb-2">
-            <MdLocalFireDepartment size={28} className="text-blue-500" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              기초 대사량 (BMR)
-            </h3>
-          </div>
-          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-            {calorieStats.BMR}
-            <span className="text-lg font-normal text-gray-500 ml-1">kcal</span>
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            기본적으로 소모되는 에너지
-          </p>
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+            <MdFitnessCenter className="text-[#00BCD4]" />
+            칼로리 비교
+          </h2>
+          <NutrientBarChart
+            bmr={calorieStats.BMR}
+            tdee={calorieStats.TDEE}
+            target={calorieStats.targetCalories}
+          />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 border-l-4 border-purple-500"
-        >
-          <div className="flex items-center gap-3 mb-2">
-            <MdFitnessCenter size={28} className="text-purple-500" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              총 소비량 (TDEE)
-            </h3>
-          </div>
-          <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-            {calorieStats.TDEE}
-            <span className="text-lg font-normal text-gray-500 ml-1">kcal</span>
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            활동량 포함 하루 소모 에너지
-          </p>
-        </motion.div>
+        {/* 상세 정보 카드 */}
+        <div className="flex flex-col gap-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 border-l-4 border-blue-500 flex-1"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <MdLocalFireDepartment size={28} className="text-blue-500" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                기초 대사량 (BMR)
+              </h3>
+            </div>
+            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+              {calorieStats.BMR}
+              <span className="text-lg font-normal text-gray-500 ml-1">kcal</span>
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              기본적으로 소모되는 에너지
+            </p>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 border-l-4 border-[#00BCD4]"
-        >
-          <div className="flex items-center gap-3 mb-2">
-            <MdFlag size={28} className="text-[#00BCD4]" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              목표 칼로리
-            </h3>
-          </div>
-          <p className="text-3xl font-bold text-[#00BCD4]">
-            {calorieStats.targetCalories}
-            <span className="text-lg font-normal text-gray-500 ml-1">kcal</span>
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            {mygoal} 기준
-          </p>
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 border-l-4 border-purple-500 flex-1"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <MdFitnessCenter size={28} className="text-purple-500" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                총 소비량 (TDEE)
+              </h3>
+            </div>
+            <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+              {calorieStats.TDEE}
+              <span className="text-lg font-normal text-gray-500 ml-1">kcal</span>
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              활동량 포함 하루 소모 에너지
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 border-l-4 border-[#00BCD4] flex-1"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <MdFlag size={28} className="text-[#00BCD4]" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                목표 칼로리
+              </h3>
+            </div>
+            <p className="text-3xl font-bold text-[#00BCD4]">
+              {calorieStats.targetCalories}
+              <span className="text-lg font-normal text-gray-500 ml-1">kcal</span>
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              {mygoal} 기준
+            </p>
+          </motion.div>
+        </div>
       </div>
     </div>
   );

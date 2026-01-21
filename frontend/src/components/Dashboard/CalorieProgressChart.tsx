@@ -15,37 +15,36 @@ function CalorieProgressChart({
   goal,
 }: CalorieProgressChartProps) {
   const isDark = useUIStore((state) => state.isDark);
-  const percentage = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
+  const percentage =
+    target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
   const isOver = current > target;
 
   // 목표에 따른 색상 (useMemo로 최적화)
   const colors = useMemo(() => {
     if (isOver && goal === "lose") return { main: "#ef4444", light: "#fca5a5" };
-    if (!isOver && goal === "lose") return { main: "#22c55e", light: "#86efac" };
+    if (!isOver && goal === "lose")
+      return { main: "#22c55e", light: "#86efac" };
     if (isOver && goal === "gain") return { main: "#22c55e", light: "#86efac" };
     return { main: "#00BCD4", light: "#67e8f9" };
   }, [isOver, goal]);
 
   // 차트 데이터 객체 (useMemo로 최적화)
   const data = useMemo(() => {
-    // 목표 초과 시에도 차트가 제대로 표시되도록 수정
+    // 목표 초과 시에도 차트가 제대로 표시
     const consumed = Math.min(current, target);
     const remaining = Math.max(0, target - current);
+
+    // 0%일 때 border가 보이지 않도록 설정
+    const isZero = consumed === 0;
 
     return {
       labels: ["섭취", "남음"],
       datasets: [
         {
           data: [consumed, remaining],
-          backgroundColor: [
-            colors.main,
-            isDark ? "#374151" : "#e5e7eb",
-          ],
-          borderColor: [
-            colors.main,
-            isDark ? "#4b5563" : "#d1d5db",
-          ],
-          borderWidth: 2,
+          backgroundColor: [colors.main, isDark ? "#374151" : "#ffffff"],
+          borderColor: [colors.main, isDark ? "#4b5563" : "#e5e7eb"],
+          borderWidth: isZero ? 0 : 2,
           cutout: "75%",
         },
       ],
@@ -85,10 +84,10 @@ function CalorieProgressChart({
         <p className="text-3xl font-bold" style={{ color: colors.main }}>
           {percentage}%
         </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-white dark:text-gray-400">
           {current} / {target}
         </p>
-        <p className="text-xs text-gray-400 dark:text-gray-500">kcal</p>
+        <p className="text-xs text-white dark:text-gray-500">kcal</p>
       </div>
     </div>
   );

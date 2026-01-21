@@ -9,11 +9,7 @@ interface NutrientBarChartProps {
   target: number;
 }
 
-function NutrientBarChart({
-  bmr,
-  tdee,
-  target,
-}: NutrientBarChartProps) {
+function NutrientBarChart({ bmr, tdee, target }: NutrientBarChartProps) {
   const isDark = useUIStore((state) => state.isDark);
   // 차트 데이터 객체 (useMemo로 최적화)
   const data = useMemo(
@@ -44,7 +40,7 @@ function NutrientBarChart({
   const options: ChartOptions<"bar"> = useMemo(
     () => ({
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           display: false,
@@ -64,15 +60,21 @@ function NutrientBarChart({
             callback: function (value) {
               return value + " kcal";
             },
-            color: isDark ? "rgba(209, 213, 219, 0.8)" : "rgba(75, 85, 99, 0.8)",
+            color: isDark
+              ? "rgba(209, 213, 219, 0.8)"
+              : "rgba(75, 85, 99, 0.8)",
           },
           grid: {
-            color: isDark ? "rgba(75, 85, 99, 0.3)" : "rgba(156, 163, 175, 0.2)",
+            color: isDark
+              ? "rgba(75, 85, 99, 0.3)"
+              : "rgba(156, 163, 175, 0.2)",
           },
         },
         x: {
           ticks: {
-            color: isDark ? "rgba(209, 213, 219, 0.8)" : "rgba(75, 85, 99, 0.8)",
+            color: isDark
+              ? "rgba(209, 213, 219, 0.8)"
+              : "rgba(75, 85, 99, 0.8)",
           },
           grid: {
             display: false,
@@ -85,7 +87,7 @@ function NutrientBarChart({
 
   return (
     <div
-      className="w-full h-[250px]"
+      className="w-full h-48 lg:h-72"
       role="img"
       aria-label={`칼로리 비교 차트: 기초대사량 ${bmr}칼로리, 총 소비량 ${tdee}칼로리, 목표 ${target}칼로리`}
     >
