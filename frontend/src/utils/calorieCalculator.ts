@@ -1,5 +1,11 @@
 import { getKoreanDate } from "./formatDate";
-import { BodyData, MealData, CalorieStats, CalorieStatsResult } from "../types";
+import { BodyData, CalorieStatsResult } from "../types";
+
+// 칼로리 계산에 필요한 최소 식사 데이터 타입
+interface MealWithCalories {
+  date: string;
+  totalCalories: number;
+}
 
 // 칼로리 조정 상수
 const CALORIE_DEFICIT_FOR_WEIGHT_LOSS = 500; // 체중 감량 시 일일 칼로리 감소량 (kcal)
@@ -35,7 +41,7 @@ export function calculateTargetCalories(TDEE: number, goal: "maintain" | "lose" 
   }
 }
 
-export function todayTotalCalories(MealsData: MealData[]): number {
+export function todayTotalCalories(MealsData: MealWithCalories[]): number {
   const today = getKoreanDate().toISOString().split("T")[0];
   const mealsToday = MealsData.filter(
     (meal) => meal.date.split("T")[0] === today
@@ -49,7 +55,7 @@ export function todayTotalCalories(MealsData: MealData[]): number {
 
 export function calculateCalorieStats(
   bodyData: BodyData[],
-  mealsData: MealData[]
+  mealsData: MealWithCalories[]
 ): CalorieStatsResult {
   const totalCalories = todayTotalCalories(mealsData);
 

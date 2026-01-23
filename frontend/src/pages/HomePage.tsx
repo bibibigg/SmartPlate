@@ -2,13 +2,14 @@ import { useNavigate } from "react-router-dom";
 import CalorieStats from "../components/Dashboard/CalorieStats";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData, HttpError, queryClient } from "../utils/http";
-import { BodyData, MealData } from "../types";
+import { BodyData, MealRecord } from "../types";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import { calculateCalorieStats } from "../utils/calorieCalculator";
 import { useEffect, useState } from "react";
 import { QUERY_KEYS } from "../constants/queryKeys";
 import OnboardingModal from "../components/Onboarding/OnboardingModal";
+import { MealSummary } from "../components/MealSummary";
 
 // localStorage 키 상수
 const ONBOARDING_DISMISSED_KEY = "onboarding_dismissed";
@@ -24,10 +25,10 @@ export default function HomePage() {
     isError: isMealsError,
     error: mealsError,
     refetch: refetchMeals,
-  } = useQuery<MealData[]>({
+  } = useQuery<MealRecord[]>({
     queryKey: QUERY_KEYS.MY_MEALS,
     queryFn: ({ signal }) =>
-      fetchData<MealData[]>({ signal, params: "myMeals" }),
+      fetchData<MealRecord[]>({ signal, params: "myMeals" }),
   });
 
   const {
@@ -133,7 +134,7 @@ export default function HomePage() {
   } = calculateCalorieStats(bodyData, mealsData);
 
   return (
-    <>
+    <div className="space-y-6">
       {showOnboarding && (
         <OnboardingModal
           onConfirm={handleConfirmOnboarding}
@@ -145,7 +146,8 @@ export default function HomePage() {
         bodyData={currentBodyData}
         todayCalories={totalCalories}
       />
-    </>
+      <MealSummary mealRecords={mealsData || []} />
+    </div>
   );
 }
 
@@ -160,7 +162,7 @@ export function loader() {
     queryClient.ensureQueryData({
       queryKey: QUERY_KEYS.MY_MEALS,
       queryFn: ({ signal }) =>
-        fetchData<MealData[]>({ signal, params: "myMeals" }),
+        fetchData<MealRecord[]>({ signal, params: "myMeals" }),
     }),
   ]);
 }

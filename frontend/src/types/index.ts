@@ -32,3 +32,24 @@ export interface CalorieStatsResult {
   bodyData: BodyData | null;
   totalCalories: number;
 }
+
+// 식사 기록 아이템 (저장된 음식 정보)
+export interface MealItem {
+  id: string;
+  name: string;
+  calories: number;
+  totalWeight: number;
+  currentServing: number;
+  protein?: number;
+  carbs?: number;
+  carbohydrates?: number;
+  fat?: number;
+}
+
+// 식사 기록 (하루 단위)
+export interface MealRecord {
+  id: number;
+  date: string;
+  mealItems: MealItem[];
+  totalCalories: number;
+}
