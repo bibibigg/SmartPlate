@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { signUp, HttpError } from "../utils/http";
+import { AuthLayout, FormInput, FormError, Button } from "../components/UI";
 
 const SignUpPage = () => {
   const [userId, setUserId] = useState("");
@@ -26,7 +27,6 @@ const SignUpPage = () => {
     e.preventDefault();
     setError("");
 
-    // 입력 검증
     if (!userId || !username || !password || !passwordConfirm) {
       setError("모든 필드를 입력해주세요.");
       return;
@@ -56,116 +56,60 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="text-center text-3xl font-bold">
-            회원가입
-          </h2>
-          <p className="mt-2 text-center text-sm opacity-70">
-            SmartPlate에 오신 것을 환영합니다
-          </p>
+    <AuthLayout title="회원가입" subtitle="SmartPlate에 오신 것을 환영합니다">
+      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div className="space-y-4">
+          <FormInput
+            id="userId"
+            label="아이디"
+            value={userId}
+            onChange={setUserId}
+            placeholder="최소 4자 이상"
+            disabled={isPending}
+          />
+          <FormInput
+            id="username"
+            label="닉네임"
+            value={username}
+            onChange={setUsername}
+            placeholder="최소 2자 이상"
+            disabled={isPending}
+          />
+          <FormInput
+            id="password"
+            label="비밀번호"
+            type="password"
+            value={password}
+            onChange={setPassword}
+            placeholder="최소 6자 이상"
+            disabled={isPending}
+          />
+          <FormInput
+            id="passwordConfirm"
+            label="비밀번호 확인"
+            type="password"
+            value={passwordConfirm}
+            onChange={setPasswordConfirm}
+            placeholder="비밀번호를 다시 입력하세요"
+            disabled={isPending}
+          />
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="userId"
-                className="block text-sm font-medium mb-1"
-              >
-                아이디
-              </label>
-              <input
-                id="userId"
-                type="text"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="최소 4자 이상"
-                disabled={isPending}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium mb-1"
-              >
-                닉네임
-              </label>
-              <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="최소 2자 이상"
-                disabled={isPending}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium mb-1"
-              >
-                비밀번호
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="최소 6자 이상"
-                disabled={isPending}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="passwordConfirm"
-                className="block text-sm font-medium mb-1"
-              >
-                비밀번호 확인
-              </label>
-              <input
-                id="passwordConfirm"
-                type="password"
-                value={passwordConfirm}
-                onChange={(e) => setPasswordConfirm(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="비밀번호를 다시 입력하세요"
-                disabled={isPending}
-              />
-            </div>
-          </div>
 
-          {error && (
-            <div className="rounded-lg bg-red-100 dark:bg-red-900/30 p-3">
-              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-            </div>
-          )}
+        {error && <FormError message={error} />}
 
-          <div>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="w-full py-3 px-4 rounded-lg font-medium text-white bg-[#00BCD4] hover:bg-[#0097A7] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isPending ? "처리 중..." : "회원가입"}
-            </button>
-          </div>
+        <div>
+          <Button type="submit" variant="primary" disabled={isPending}>
+            {isPending ? "처리 중..." : "회원가입"}
+          </Button>
+        </div>
 
-          <div className="text-center">
-            <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="text-sm text-[#00BCD4] hover:text-[#0097A7] dark:text-[#00BCD4] dark:hover:text-[#4DD0E1] transition-colors"
-            >
-              이미 계정이 있으신가요? 로그인
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="text-center">
+          <Button variant="link" onClick={() => navigate("/login")}>
+            이미 계정이 있으신가요? 로그인
+          </Button>
+        </div>
+      </form>
+    </AuthLayout>
   );
 };
 

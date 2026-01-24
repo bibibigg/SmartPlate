@@ -265,7 +265,7 @@ router.post(
     } catch (error) {
       console.error("식사 저장 오류:", error);
 
-      // Supabase 오류 시 JSON 파일에 저장 (폴백)
+      // Supabase 오류 시 JSON 파일에 저장
       try {
         let existingData = [];
         try {
