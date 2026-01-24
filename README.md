@@ -5,6 +5,8 @@
 
 # 링크 : https://smart-plate-kappa.vercel.app/
 
+# 테스트 계정 : testuser / 123456
+
 ## 프로젝트 목적 및 배경
 
 - 신체 정보 입력 기반 개인별 소비 칼로리 안내 서비스
