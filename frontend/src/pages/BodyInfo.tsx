@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { redirect } from "react-router-dom";
 import { fetchData, HttpError } from "../utils/http";
 import { BodyInfo } from "../types";
 import BodyInfoForm from "../components/bodyInfo/BodyInfoForm";
@@ -6,6 +7,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import { queryClient } from "../utils/http";
 import { QUERY_KEYS } from "../constants/queryKeys";
+import { useAuthStore } from "../store/auth/authSlice";
 
 export default function BodyInfoPage() {
   const { data, isPending, isError, error } = useQuery<BodyInfo[]>({
@@ -37,6 +39,12 @@ export default function BodyInfoPage() {
 }
 
 export function loader() {
+  // 인증 상태 확인
+  const isAuthenticated = useAuthStore.getState().isAuthenticated;
+  if (!isAuthenticated) {
+    return redirect("/login");
+  }
+
   return queryClient.fetchQuery({
     queryKey: QUERY_KEYS.BODY_INFO,
     queryFn: ({ signal }) => fetchData({ signal, params: "bodyinfo" }),

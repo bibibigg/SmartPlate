@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, redirect } from "react-router-dom";
 import CalorieStats from "../components/Dashboard/CalorieStats";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData, HttpError, queryClient } from "../utils/http";
@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { QUERY_KEYS } from "../constants/queryKeys";
 import OnboardingModal from "../components/Onboarding/OnboardingModal";
 import { MealSummary } from "../components/MealSummary";
+import { useAuthStore } from "../store/auth/authSlice";
 
 // localStorage 키 상수
 const ONBOARDING_DISMISSED_KEY = "onboarding_dismissed";
@@ -28,7 +29,7 @@ export default function HomePage() {
   } = useQuery<MealRecord[]>({
     queryKey: QUERY_KEYS.MY_MEALS,
     queryFn: ({ signal }) =>
-      fetchData<MealRecord[]>({ signal, params: "myMeals" }),
+      fetchData<MealRecord[]>({ signal, params: "meals/my" }),
   });
 
   const {
@@ -151,8 +152,14 @@ export default function HomePage() {
   );
 }
 
-// Loader: 페이지 진입 전에 필요한 데이터를 병렬로 prefetch
+// Loader: 페이지 진입 전에 인증 확인 후 데이터 prefetch
 export function loader() {
+  // 인증 상태 확인
+  const isAuthenticated = useAuthStore.getState().isAuthenticated;
+  if (!isAuthenticated) {
+    return redirect("/login");
+  }
+
   return Promise.all([
     queryClient.ensureQueryData({
       queryKey: QUERY_KEYS.BODY_INFO,
@@ -162,7 +169,7 @@ export function loader() {
     queryClient.ensureQueryData({
       queryKey: QUERY_KEYS.MY_MEALS,
       queryFn: ({ signal }) =>
-        fetchData<MealRecord[]>({ signal, params: "myMeals" }),
+        fetchData<MealRecord[]>({ signal, params: "meals/my" }),
     }),
   ]);
 }

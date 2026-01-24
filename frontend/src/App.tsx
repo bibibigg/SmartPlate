@@ -8,34 +8,50 @@ import MealsRecordPage from "./pages/MealsRecord.tsx";
 import AnalysisPage from "./pages/Analysis.tsx";
 import InfoPage from "./pages/info.tsx";
 import SignUpPage from "./pages/SignUp.tsx";
+import LoginPage from "./pages/Login.tsx";
+import PrivateRoute from "./components/PrivateRoute.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [
+      // 공개 라우트
       {
-        path: "",
-        element: <HomePage />,
-        loader: homeLoader,
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "signup",
+        element: <SignUpPage />,
       },
       {
         path: "info",
         element: <InfoPage />,
       },
+      // 보호된 라우트
       {
-        path: "bodyInfo",
-        element: <BodyInfoPage />,
-        loader: bodyInfoLoader,
-      },
-      { path: "analyze", element: <AnalysisPage /> },
-      {
-        path: "record",
-        element: <MealsRecordPage />,
-      },
-      {
-        path: "signup",
-        element: <SignUpPage />,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: "",
+            element: <HomePage />,
+            loader: homeLoader,
+          },
+          {
+            path: "bodyInfo",
+            element: <BodyInfoPage />,
+            loader: bodyInfoLoader,
+          },
+          {
+            path: "analyze",
+            element: <AnalysisPage />,
+          },
+          {
+            path: "record",
+            element: <MealsRecordPage />,
+          },
+        ],
       },
     ],
   },

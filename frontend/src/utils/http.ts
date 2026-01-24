@@ -1,6 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { SelectedFood } from "../store/meals/mealSlice";
 import { BodyData } from "../types";
+import { useAuthStore } from "../store/auth/authSlice";
 
 export const queryClient = new QueryClient();
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -21,6 +22,25 @@ export class HttpError extends Error {
   }
 }
 
+// 토큰을 포함한 헤더 생성
+function getAuthHeaders(): HeadersInit {
+  const token = useAuthStore.getState().token;
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  return headers;
+}
+
+// 401 에러 처리 (토큰 만료 시 로그아웃)
+function handleUnauthorized() {
+  useAuthStore.getState().logout();
+}
+
 // Fetch Data Types
 export interface FetchDataParams {
   signal?: AbortSignal;
@@ -34,10 +54,22 @@ export async function fetchData<T = unknown>({ signal, params, searchTerm }: Fet
     if (searchTerm) {
       url += `?search=${searchTerm}`;
     }
-    const response = await fetch(url, { signal });
+    const response = await fetch(url, {
+      signal,
+      headers: getAuthHeaders(),
+    });
+
+    if (response.status === 401) {
+      handleUnauthorized();
+      throw new HttpError("인증이 만료되었습니다.", 401, {
+        title: "인증 만료",
+        message: "다시 로그인해주세요.",
+      });
+    }
+
     if (!response.ok) {
       const info = await response.json();
-      throw new HttpError("Failed to body data", response.status, info);
+      throw new HttpError("Failed to fetch data", response.status, info);
     }
     const data = await response.json();
     return data;
@@ -52,17 +84,21 @@ export async function fetchData<T = unknown>({ signal, params, searchTerm }: Fet
   }
 }
 
-// Body Data는 types/index.ts에서 import
-
 export async function updateBodyData(data: BodyData): Promise<BodyData> {
   try {
-    const response = await fetch(`${BASE_URL}/api/bodyInfo`, {
+    const response = await fetch(`${BASE_URL}/api/bodyinfo`, {
       method: "POST",
       body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
     });
+
+    if (response.status === 401) {
+      handleUnauthorized();
+      throw new HttpError("인증이 만료되었습니다.", 401, {
+        title: "인증 만료",
+        message: "다시 로그인해주세요.",
+      });
+    }
 
     const responseData = await response.json();
 
@@ -105,10 +141,16 @@ export async function updateMealsData(data: MealRecord): Promise<MealRecord> {
     const response = await fetch(`${BASE_URL}/api/meals`, {
       method: "POST",
       body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
     });
+
+    if (response.status === 401) {
+      handleUnauthorized();
+      throw new HttpError("인증이 만료되었습니다.", 401, {
+        title: "인증 만료",
+        message: "다시 로그인해주세요.",
+      });
+    }
 
     const responseData = await response.json();
 
@@ -136,6 +178,21 @@ export interface SignUpData {
 
 export interface SignUpResponse {
   message: string;
+  user: {
+    id: string;
+    userId: string;
+    username: string;
+  };
+}
+
+export interface LoginData {
+  userId: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  message: string;
+  token: string;
   user: {
     id: string;
     userId: string;
@@ -172,6 +229,59 @@ export async function signUp(data: SignUpData): Promise<SignUpResponse> {
   }
 }
 
+export async function login(data: LoginData): Promise<LoginResponse> {
+  try {
+    const response = await fetch(`${BASE_URL}/api/auth/login`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new HttpError("Failed to login", response.status, {
+        message: responseData.message || "로그인에 실패했습니다.",
+      });
+    }
+    return responseData;
+  } catch (error) {
+    if (error instanceof HttpError) {
+      throw error;
+    }
+    throw new HttpError("서버 연결에 실패했습니다.", 500, {
+      title: "연결 오류",
+      message: "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.",
+    });
+  }
+}
+
+export async function verifyToken(): Promise<{ user: LoginResponse["user"] }> {
+  try {
+    const response = await fetch(`${BASE_URL}/api/auth/me`, {
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new HttpError("Token verification failed", response.status, {
+        message: "토큰 검증에 실패했습니다.",
+      });
+    }
+
+    return await response.json();
+  } catch (error) {
+    if (error instanceof HttpError) {
+      throw error;
+    }
+    throw new HttpError("서버 연결에 실패했습니다.", 500, {
+      title: "연결 오류",
+      message: "서버에 연결할 수 없습니다.",
+    });
+  }
+}
+
 // AI Image Analysis Types
 export interface AnalyzedFood {
   name: string;
@@ -189,12 +299,10 @@ export interface FoodAnalysisResponse {
 
 export async function analyzeFoodImage(base64Image: string): Promise<FoodAnalysisResponse> {
   try {
-    const response = await fetch(`${BASE_URL}/api/analyze-food-image`, {
+    const response = await fetch(`${BASE_URL}/api/analyze/food-image`, {
       method: "POST",
       body: JSON.stringify({ image: base64Image }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
     });
 
     const responseData = await response.json();
