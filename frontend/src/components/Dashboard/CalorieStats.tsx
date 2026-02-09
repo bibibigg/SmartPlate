@@ -14,6 +14,7 @@ interface CalorieStatsProps {
   bodyData: {
     goal: "maintain" | "lose" | "gain";
   } | null;
+  enableCountUp?: boolean; // 랜딩페이지용 count-up 애니메이션
 }
 
 type GoalType = "maintain" | "lose" | "gain";
@@ -29,6 +30,7 @@ function CalorieStats({
   calorieStats,
   todayCalories,
   bodyData,
+  enableCountUp = false,
 }: CalorieStatsProps) {
   // 파생 상태를 useMemo로 최적화
   const { mygoal, goalType, remaining, isOver } = useMemo(() => {
@@ -84,6 +86,7 @@ function CalorieStats({
               current={todayCalories}
               target={calorieStats.targetCalories}
               goal={goalType}
+              enableCountUp={enableCountUp}
             />
           </div>
         </div>

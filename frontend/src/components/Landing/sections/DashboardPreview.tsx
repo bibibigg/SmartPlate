@@ -50,6 +50,7 @@ export default function DashboardPreview() {
             }}
             todayCalories={DEMO_CALORIE_STATS.todayCalories}
             bodyData={{ goal: DEMO_BODY_DATA.goal }}
+            enableCountUp={true}
           />
         </motion.div>
 
