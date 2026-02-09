@@ -25,7 +25,7 @@ function CalorieProgressChart({
     if (!isOver && goal === "lose")
       return { main: "#22c55e", light: "#86efac" };
     if (isOver && goal === "gain") return { main: "#22c55e", light: "#86efac" };
-    return { main: "#00BCD4", light: "#67e8f9" };
+    return { main: "#22c55e", light: "#86efac" };
   }, [isOver, goal]);
 
   // 차트 데이터 객체 (useMemo로 최적화)
@@ -70,7 +70,7 @@ function CalorieProgressChart({
         },
       },
     }),
-    []
+    [],
   );
 
   return (
