@@ -89,7 +89,7 @@ function CalorieProgressChart({
   const backgroundOptions: ChartOptions<"doughnut"> = useMemo(
     () => ({
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false, // 절대 위치 겹침을 위해 false
       animation: false, // 애니메이션 비활성화
       plugins: {
         legend: { display: false },
@@ -103,7 +103,7 @@ function CalorieProgressChart({
   const foregroundOptions: ChartOptions<"doughnut"> = useMemo(
     () => ({
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false, // 절대 위치 겹침을 위해 false
       animation: {
         duration: enableCountUp ? 1500 : 1000,
         easing: "easeOutQuart",
