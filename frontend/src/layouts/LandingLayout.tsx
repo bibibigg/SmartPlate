@@ -21,7 +21,7 @@ export default function LandingLayout() {
       <LandingNavigation />
 
       {/* 페이지 콘텐츠 */}
-      <main className="pt-16">
+      <main>
         <Outlet />
       </main>
     </div>

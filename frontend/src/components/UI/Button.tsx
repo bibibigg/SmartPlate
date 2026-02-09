@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface ButtonProps {
   type?: "button" | "submit";
   variant?: "primary" | "link";
@@ -5,6 +7,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  to?: string; // React Router 경로 (선택적)
   children: React.ReactNode;
 }
 
@@ -15,6 +18,7 @@ const Button = ({
   fullWidth = true,
   disabled = false,
   onClick,
+  to,
   children,
 }: ButtonProps) => {
   const baseStyles = "transition-colors";
@@ -30,7 +34,7 @@ const Button = ({
     link: "text-sm text-[#00BCD4] hover:text-[#0097A7] dark:text-[#00BCD4] dark:hover:text-[#4DD0E1]",
   };
 
-  return (
+  const buttonElement = (
     <button
       type={type}
       disabled={disabled}
@@ -40,6 +44,17 @@ const Button = ({
       {children}
     </button>
   );
+
+  // to prop이 있으면 Link로 감싸기
+  if (to && !disabled) {
+    return (
+      <Link to={to} className="inline-block">
+        {buttonElement}
+      </Link>
+    );
+  }
+
+  return buttonElement;
 };
 
 export default Button;

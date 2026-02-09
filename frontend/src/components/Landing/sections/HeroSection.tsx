@@ -12,15 +12,8 @@ import { CTA_TEXT } from "../../../constants/landingContent";
 export default function HeroSection() {
   const navigate = useNavigate();
 
-  const handleDemoClick = () => {
-    const previewSection = document.getElementById("preview");
-    if (previewSection) {
-      previewSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <section className="relative h-screen flex items-center justify-center">
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* 배경 그라데이션 */}
       <AnimatedGradient />
 
@@ -33,10 +26,10 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          당신의 건강한 식습관,
+          당신의 건강한 식습관
           <br />
           <span className="bg-gradient-to-r from-[#00BCD4] to-[#0097A7] bg-clip-text text-transparent">
-            AI가 함께합니다
+            저희가 함께합니다
           </span>
         </motion.h1>
 

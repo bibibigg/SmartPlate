@@ -20,7 +20,7 @@ export default function LandingNavigation() {
     <motion.header
       className={`
         fixed top-0 left-0 right-0 z-40
-        transition-[background-color,box-shadow,backdrop-filter] duration-300
+        transition-[background-color,box-shadow,backdrop-filter,height] duration-300
         ${
           isScrolled
             ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-md"
@@ -31,7 +31,9 @@ export default function LandingNavigation() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <nav
+        className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300 ${isScrolled ? "h-14" : "h-16"}`}
+      >
         {/* 로고 */}
         <Link
           to="/welcome"
@@ -41,11 +43,11 @@ export default function LandingNavigation() {
         </Link>
 
         {/* 네비게이션 링크 (데스크탑) */}
-        <ul className="hidden md:flex gap-8 text-gray-700 dark:text-gray-200">
+        {/* <ul className="hidden md:flex gap-10 text-gray-700 dark:text-gray-200">
           <li>
             <a
               href="#preview"
-              className="hover:text-[#00BCD4] dark:hover:text-[#00BCD4] transition-colors"
+              className="py-2 px-1 hover:text-[#00BCD4] dark:hover:text-[#00BCD4] transition-colors"
             >
               미리보기
             </a>
@@ -53,32 +55,25 @@ export default function LandingNavigation() {
           <li>
             <Link
               to="/info"
-              className="hover:text-[#00BCD4] dark:hover:text-[#00BCD4] transition-colors"
+              className="py-2 px-1 hover:text-[#00BCD4] dark:hover:text-[#00BCD4] transition-colors"
             >
               소개
             </Link>
           </li>
-        </ul>
+        </ul> */}
 
         {/* CTA 버튼 + 다크모드 토글 */}
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-4 items-center">
           {/* 다크모드 토글 */}
           <DarkModeToggle
             size="24"
             strokeWidth="2"
-            className="text-gray-700 dark:text-gray-200 hover:text-[#00BCD4] dark:hover:text-[#00BCD4]"
+            className="text-gray-700 dark:text-gray-200 hover:text-[#00BCD4] dark:hover:text-[#00BCD4] hover:scale-110 transition-transform"
           />
 
-          <Link to="/login">
-            <Button variant="link" fullWidth={false}>
-              로그인
-            </Button>
-          </Link>
-          <Link to="/signup">
-            <Button variant="primary" size="medium" fullWidth={false}>
-              시작하기
-            </Button>
-          </Link>
+          <Button variant="primary" size="medium" fullWidth={false} to="/login">
+            로그인
+          </Button>
         </div>
       </nav>
     </motion.header>
