@@ -52,7 +52,7 @@ function CalorieProgressChart({
           data: [target],
           backgroundColor: [isDark ? "#374151" : "#ffffff"],
           borderColor: [isDark ? "#4b5563" : "#e5e7eb"],
-          borderWidth: 2,
+          borderWidth: 0,
           cutout: "75%",
         },
       ],
@@ -68,9 +68,6 @@ function CalorieProgressChart({
     const consumed = Math.min(animatedCurrent, target);
     const remaining = Math.max(0, target - animatedCurrent);
 
-    // 0%일 때 border가 보이지 않도록 설정
-    const isZero = consumed === 0;
-
     return {
       labels: ["섭취", "남음"],
       datasets: [
@@ -78,7 +75,7 @@ function CalorieProgressChart({
           data: [consumed, remaining],
           backgroundColor: [colors.main, "transparent"], // 남은 부분은 투명
           borderColor: [colors.main, "transparent"],
-          borderWidth: isZero ? 0 : 2,
+          borderWidth: 0,
           cutout: "75%",
         },
       ],
