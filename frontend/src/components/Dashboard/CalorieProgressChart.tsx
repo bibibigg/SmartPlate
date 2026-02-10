@@ -127,7 +127,7 @@ function CalorieProgressChart({
   return (
     <div
       ref={chartRef}
-      className="relative w-full max-w-[250px] mx-auto"
+      className="relative w-full max-w-[250px] aspect-square mx-auto"
       role="img"
       aria-label={`칼로리 달성률 ${percentage}%, ${current}칼로리 섭취, 목표 ${target}칼로리`}
     >
