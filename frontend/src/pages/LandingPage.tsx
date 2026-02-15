@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/auth/authSlice';
 import HeroSection from '../components/Landing/sections/HeroSection';
 import DashboardPreview from '../components/Landing/sections/DashboardPreview';
+import AIAnalysisSection from '../components/Landing/sections/AIAnalysisSection';
 
 /**
  * 랜딩페이지 메인 페이지
@@ -23,8 +24,8 @@ export default function LandingPage() {
     <div>
       <HeroSection />
       <DashboardPreview />
+      <AIAnalysisSection />
       {/* TODO: 추가 섹션들은 Phase 2에서 구현 */}
-      {/* <AIAnalysisFeature /> */}
       {/* <PersonalizedFeature /> */}
       {/* <FinalCTA /> */}
     </div>

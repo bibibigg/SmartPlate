@@ -7,9 +7,9 @@ export const DEMO_BODY_DATA = {
   bodyFat: 15,
   muscleMass: 32,
   age: 28,
-  gender: 'male' as const,
-  goal: 'maintain' as const,
-  activityLevel: 'moderate' as const,
+  gender: "male" as const,
+  goal: "maintain" as const,
+  activityLevel: "moderate" as const,
 };
 
 // 데모 칼로리 통계
@@ -31,10 +31,10 @@ export const SECTION_HEADLINES = {
       "신체 정보를 입력하면 자동으로 계산되는 BMR, TDEE, 목표 칼로리. 실시간으로 추적되는 섭취 칼로리를 시각적으로 확인하세요.",
   },
   aiAnalysis: {
-    title: "일일이 음식 검색? 이제 그만!",
-    subtitle: "사진 한 장으로 끝내는 칼로리 분석",
+    title: "음식 검색은 이제 그만",
+    subtitle: "사진 한 장으로 칼로리 분석",
     description:
-      "OpenAI GPT-5.2 Vision 기술로 음식 사진을 자동 분석합니다. 95% 이상의 정확도로 칼로리와 영양소를 즉시 확인하세요.",
+      "AI 이미지 분석 기술로 음식 사진을 자동으로 인식하고 칼로리와 영양소를 즉시 계산합니다.",
   },
   personalizedCalorie: {
     title: "당신만을 위한 맞춤형 목표",
@@ -70,7 +70,7 @@ export const AI_FEATURES = [
   {
     icon: "✓",
     title: "확신도 제공",
-    description: "AI 분석 신뢰도 95%+",
+    description: "AI 분석 확신도 수치로 표시",
   },
 ] as const;
 
@@ -100,29 +100,29 @@ export const PERSONALIZED_FEATURES = [
 
 // Social Proof 통계
 export const SOCIAL_PROOF_STATS = [
-  { label: '활성 사용자', value: 10000, suffix: '+' },
-  { label: '식품 데이터', value: 45000, suffix: '+' },
-  { label: '데이터 정확도', value: 99.9, decimals: 1, suffix: '%' },
+  { label: "활성 사용자", value: 10000, suffix: "+" },
+  { label: "식품 데이터", value: 45000, suffix: "+" },
+  { label: "데이터 정확도", value: 99.9, decimals: 1, suffix: "%" },
 ];
 
 // CTA 텍스트
 export const CTA_TEXT = {
   hero: {
-    primary: '무료로 시작하기',
-    secondary: '데모 보기',
+    primary: "무료로 시작하기",
+    secondary: "데모 보기",
   },
   final: {
-    title: '지금 바로 시작하세요',
-    subtitle: '무료로 모든 기능을 사용해보세요',
-    primary: '회원가입하기',
-    secondary: '이미 계정이 있으신가요?',
+    title: "지금 바로 시작하세요",
+    subtitle: "무료로 모든 기능을 사용해보세요",
+    primary: "회원가입하기",
+    secondary: "이미 계정이 있으신가요?",
   },
 };
 
 // 랜딩페이지 색상 (Tailwind 클래스)
 export const LANDING_COLORS = {
-  gradient: 'from-[#00BCD4] to-[#0097A7]',
-  gradientDark: 'from-[#0097A7] to-[#00796B]',
-  bgLight: 'from-blue-50 via-white to-cyan-50',
-  bgDark: 'from-gray-900 via-gray-800 to-gray-900',
+  gradient: "from-[#00BCD4] to-[#0097A7]",
+  gradientDark: "from-[#0097A7] to-[#00796B]",
+  bgLight: "from-blue-50 via-white to-cyan-50",
+  bgDark: "from-gray-900 via-gray-800 to-gray-900",
 };
